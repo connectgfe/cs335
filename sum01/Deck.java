@@ -128,9 +128,71 @@ class Player {
     } 
     
     System.out.println(); 
+ }
 
+ public void order(){
+
+
+  int cnt=-1;
+   while(cnt!=0){ 
+
+      cnt=0; 
+       for(int j=0;j<4;j++){
+
+        if(compareRank(hand.get(j).rank,hand.get(j+1).rank)==1){
+
+        hand.add(j,hand.remove(j+1));
+        cnt++; 
+        }
+       }
+    
+  }
+ 
+
+}
+
+ public int compareRank(String fst, String scd){
+
+
+     int a=0;
+     int b=0;
+
+     if( fst.equals("2") ){ a = 1;} 
+     if( fst.equals("3") ){ a = 2;} 
+     if( fst.equals("4") ){ a = 3;}
+     if( fst.equals("5") ){ a = 4;} 
+     if( fst.equals("6") ){ a = 5;} 
+     if( fst.equals("7") ){ a = 6;}
+     if( fst.equals("8") ){ a = 7;} 
+     if( fst.equals("9") ){ a = 8;} 
+     if( fst.equals("10") ){ a = 9;}
+     if( fst == "J" ){ a = 10;} 
+     if( fst == "Q" ){ a = 11;} 
+     if( fst == "K" ){ a = 12;}
+     if( fst == "A" ){ a = 13;} 
+ 
+     if( scd.equals("2") ){ b = 1;} 
+     if( scd.equals("3") ){ b = 2;} 
+     if( scd.equals("4") ){ b = 3;}
+     if( scd.equals("5") ){ b = 4;} 
+     if( scd.equals("6") ){ b = 5;} 
+     if( scd.equals("7") ){ b = 6;}
+     if( scd.equals("8") ){ b = 7;} 
+     if( scd.equals("9") ){ b = 8;} 
+     if( scd.equals("10") ){ b = 9;}
+     if( scd == "J" ){ b = 10;} 
+     if( scd == "Q" ){ b = 11;} 
+     if( scd == "K" ){ b = 12;}
+     if( scd == "A" ){ b = 13;} 
+
+
+
+     if(a==b){ return -1;}
+     if(a>b){return 1;}
+     return 0;
 
  }
+
 
 }
 
