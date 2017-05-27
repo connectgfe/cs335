@@ -1,8 +1,10 @@
 
-
+import java.util.Collection;
 import java.util.LinkedList;
 
-public class Deck {
+public class Deck implements Comparable<Card> {
+
+  Collection<Card> testc;
 
   LinkedList<Card> deck;
 
@@ -90,6 +92,15 @@ public class Deck {
     }
     
   } 
+
+  public int compareTo(Card cd){
+
+     int val=0;
+
+
+    return val;
+
+  }
 
 
 }

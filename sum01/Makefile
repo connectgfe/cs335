@@ -1,10 +1,13 @@
-all: testjava Deck
+all: testjava Deck Colltest
 
 testjava: testjava.java
 	javac testjava.java
 
 Deck: Deck.java
 	javac Deck.java
+
+Colltest: Colltest.java
+	javac Colltest.java
 
 clean:
 	rm -f *.class
