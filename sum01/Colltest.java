@@ -1,13 +1,48 @@
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Colltest{
 
 public static void main(String[] args){
 
-   Comptest test=new Comptest();
 
+    Pokerhand jim= new Pokerhand();
+    jim.gethand();
+
+    Pokerhand steve=new Pokerhand();
+    steve.gethand();
+ 
+
+    jim.compareTo(steve);
+   
+    System.out.println(jim.fourkind());
+
+/*
+
+    LinkedList<Card> phil = new LinkedList<Card>();
+    Deck no1 = new Deck();
+    no1.deal2(phil);
+
+    for(int i=0;i<5;i++){
+
+    System.out.println(phil.get(i)+" "+phil.get(i).rank);
+
+    }
+
+ 
+    System.out.println(Collections.min(phil));
+
+    Collections.sort(phil);
+
+    for(int i=0;i<5;i++){
+
+    System.out.println(phil.get(i)+" "+phil.get(i).rank);
+
+    }
+
+*/
 
 
  }
@@ -19,7 +54,7 @@ public static void main(String[] args){
 
 
 
-
+/*
 class Comptest{
 
   Collection<Card> testc;
@@ -35,3 +70,4 @@ class Comptest{
 
   }
 }
+*/

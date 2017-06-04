@@ -1,4 +1,4 @@
-all: testjava Deck Colltest
+all:  testjava  Deck Colltest  
 
 testjava: testjava.java
 	javac testjava.java
