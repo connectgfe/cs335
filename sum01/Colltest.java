@@ -15,9 +15,9 @@ public static void main(String[] args){
     steve.gethand();
  
 
-    jim.compareTo(steve);
+    System.out.println(jim.compareTo(steve));
    
-    System.out.println(jim.fourkind());
+//    System.out.println(jim.fourkind());
 
 /*
 

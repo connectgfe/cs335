@@ -423,17 +423,142 @@ class Pokerhand implements Comparable<Pokerhand> {
 
   public int compareTo(Pokerhand jam){
 
+  // return 1 this > jam ; 0 this = jam ; -1 this < jam
+
+  // 9=ryfl 8=stfl 7=4knd 6=flhs 5=fl 4=st 3=3knd 2=22knd 1=2knd 0=hc
+
+    int val1=0;
+    int val2=0;
+  // kinds
+    String frtemp=fourkind();
+    if(frtemp!=null){ val1=7;} 
+    
+    String frtempjam=jam.fourkind();
+    if(frtempjam!=null){ val2=7;} 
+
+
+    // 4knd tie
+    if(val1==7 && val2==7){
+      if(compareRank(frtemp,frtempjam)==1){
+         return 1;}
+      if(compareRank(frtemp,frtempjam)==-1){
+         return -1;}
+      if(compareRank(frtemp,frtempjam)==0){
+         return 0;}
+    }
+ 
+    String trtemp=threekind();
+    String frtwtemp=null;
+
+    if(trtemp!=null){
+
+       frtwtemp=ntwokind(trtemp);
+       
+         if(frtwtemp!=null){ 
+            val1=6;
+         }else{val1=3;}
+    } 
+
+    String trtempjam=jam.threekind();
+    String frtwtempjam=null;
+    if(trtempjam!=null){
+
+       frtwtempjam=jam.ntwokind(trtempjam);
+       
+         if(frtwtempjam!=null){ 
+            val2=6;
+         }else{val2=3;}
+    } 
+
+    // flhs tie
+    if(val1==6 && val2==6){
+      if(compareRank(trtemp,trtempjam)==1){
+         return 1;}
+      if(compareRank(trtemp,trtempjam)==-1){
+         return -1;}
+      if(compareRank(trtemp,trtempjam)==0){
+         
+         if(compareRank(frtwtemp,frtwtempjam)==1){
+            return 1;}
+
+         if(compareRank(frtwtemp,frtwtempjam)==-1){
+            return -1;}
+
+         if(compareRank(frtwtemp,frtwtempjam)==0){
+            return 0;}
+
+       } 
+    }   
+
+    // 3 kind tie 
+    if(val1==3 && val2==3){
+      if(compareRank(trtemp,trtempjam)==1){
+         return 1;}
+      if(compareRank(trtemp,trtempjam)==-1){
+         return -1;}
+      if(compareRank(trtemp,trtempjam)==0){
+         return 0;}
+    } 
+
+
+    String twtemp=twokind();
+    if(twtemp!=null){
+
+      String twtemp2=ntwokind(twtemp);
+       
+         if(twtemp2!=null){ 
+            val1=2;
+         }else{val1=1;}
+    } 
+
+    String twtempjam=jam.twokind();
+    if(twtempjam!=null){
+
+      String twtemp2jam=jam.ntwokind(twtempjam);
+       
+         if(twtemp2jam!=null){ 
+            val2=2;
+         }else{val2=1;}
+    } 
+
+
+// compare 22kind for higher pair
+
+
+    // 2knd tie
+    if(val1==1 && val2==1){
+      if(compareRank(twtemp,twtempjam)==1){
+         return 1;}
+      if(compareRank(twtemp,twtempjam)==-1){
+         return -1;}
+      if(compareRank(twtemp,twtempjam)==0){
+         return 0;}
+    } 
+
+
+
+System.out.println(val1+" "+val2);
+
+/*   
+    if(val1>val2){ return 1;}
+    if(val2>val1){ return -1;}
+ 
+
 
 
   // highcard
  
     if(highcrd(jam)==1){
        System.out.println("F winner"); 
-     }
+       return 1;  
+    }
  
-     if(highcrd(jam)==-1){
+    if(highcrd(jam)==-1){
        System.out.println("L  winner"); 
-     }
+       return -1;  
+    }
+
+*/
 
 /*
   if(retval==1){
@@ -450,7 +575,7 @@ class Pokerhand implements Comparable<Pokerhand> {
  
 */  
 
-  return -2;
+  return 0;
 
 
 
@@ -495,10 +620,72 @@ class Pokerhand implements Comparable<Pokerhand> {
       
     }
    
+    if(cnt==3){ return retval;}
+    
+    return retval;
+  }
+
+  public String threekind(){
+
+    int cnt=0;
+    String retval=null;
+
+    for(int i=0;i<4;i++){
+
+      if(hand.get(i).rank.compareTo(hand.get(i+1).rank)==0){
+        retval=hand.get(i).rank; 
+        cnt++;
+      }
+      
+    }
+   
+    if(cnt==2){ return retval;}
+    
+    return retval;
+  }
+
+  public String twokind(){
+
+    int cnt=0;
+    String retval=null;
+
+    for(int i=0;i<4;i++){
+
+      if(hand.get(i).rank.compareTo(hand.get(i+1).rank)==0){
+        retval=hand.get(i).rank; 
+        cnt++;
+      }
+      
+    }
+   
     if(cnt==1){ return retval;}
     
     return retval;
   }
 
+
+  public String ntwokind(String jump){
+
+    int cnt=0;
+    String retval=null;
+
+    for(int i=0;i<4;i++){
+      
+     if(hand.get(i).rank.compareTo(jump)==0){
+      continue; 
+      }
+
+
+      if(hand.get(i).rank.compareTo(hand.get(i+1).rank)==0){
+        retval=hand.get(i).rank; 
+        cnt++;
+      }
+      
+    }
+   
+    if(cnt==1){ return retval;}
+    
+    return retval;
+  }
 
 }
