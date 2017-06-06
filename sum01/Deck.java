@@ -737,6 +737,40 @@ System.out.println(val1+" "+val2);
   }
 
 
+  public int straight(){
 
+// if i+1 is 1 greater
+
+   int a=0;
+   int b=0;
+   for(int i=0;i<5;i++){
+ 
+     String fst=hand.get(i).rank;
+//System.out.println(fst);
+     if( fst.equals("2") ){ a = 1;} 
+     if( fst.equals("3") ){ a = 2;} 
+     if( fst.equals("4") ){ a = 3;}
+     if( fst.equals("5") ){ a = 4;} 
+     if( fst.equals("6") ){ a = 5;} 
+     if( fst.equals("7") ){ a = 6;}
+     if( fst.equals("8") ){ a = 7;} 
+     if( fst.equals("9") ){ a = 8;} 
+     if( fst.equals("10") ){ a = 9;}
+     if( fst.equals( "J" )){ a = 10;} 
+     if( fst.equals( "Q" )){ a = 11;} 
+     if( fst.equals( "K" )){ a = 12;}
+     if( fst.equals( "A" )){ a = 13;} 
+
+     if(i==0){ 
+System.out.println("no1"+a+" "+b+fst);
+        b=a;}else{
+      if(b==(a-1)){b=a;}else{return 0;}}
+
+System.out.println(a+" "+b);
+
+   }
+
+   return 1;
+  }
 
 }

@@ -52,6 +52,10 @@ public static void main(String[] args){
 
     System.out.println(flhs.compareTo(flush));
 
+
+    Pokerhand strght=new Pokerhand("5H","6C","3S","8C","9H");
+    System.out.println("new"+strght.straight());    
+
 //    System.out.println(jim.fourkind());
 
 /*
