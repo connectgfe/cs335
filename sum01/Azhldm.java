@@ -7,7 +7,7 @@ public class Azhldm{
 
 public static void main(String[] args){
  
-   Azholdem g1 = new Azholdem(4);
+   Azholdem g1 = new Azholdem(10);
 
 }
 }

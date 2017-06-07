@@ -80,14 +80,22 @@ public class Deck {
  
   public void deal5(LinkedList<Card> comm){
 
-    int cnt=0;
-    while(cnt<5){
+   if(deck.size()<6){
+    System.out.println("Deck done");
+   }
+    int crdcnt=0;
+    int cnt=deck.size(); 
+    while(crdcnt<5){
    
-       int crd=(int)(Math.random()* 52);
+       int crd=(int)(Math.random()* cnt);
      //  System.out.println(deck.get(cnt).rank);
-
-       comm.add(cnt,deck.get(crd)); 
-       cnt++;
+       comm.add(crdcnt,deck.get(crd)); 
+       
+       deck.remove(crd);
+       crdcnt++;
+       cnt--; 
+        
+  
     }
     
   } 
@@ -95,14 +103,33 @@ public class Deck {
  
   public void deal2(Pokerhand pkhand){
 
-    int cnt=0;
+   if(deck.size()<3){
+     System.out.println("Deck done");
+    }
+
+
+    int cnt=deck.size();
+    int crdcnt=0; 
     while(cnt<2){
-   
+/*   
        int crd=(int)(Math.random()* 52);
      //  System.out.println(deck.get(cnt).rank);
 
        pkhand.hand.add(cnt,deck.get(crd)); 
        cnt++;
+*/
+ 
+       int crd=(int)(Math.random()* cnt);
+     //  System.out.println(deck.get(cnt).rank);
+       pkhand.hand.add(crdcnt,deck.get(crd)); 
+       
+       deck.remove(crd);
+       crdcnt++;
+       cnt--; 
+        
+
+
+
     }
     
   } 
@@ -207,9 +234,6 @@ class Player {
   ante=100.00; 
   pkhand = new Pokerhand();
 
-  Deck deck1= new Deck();
-  deck1.deal2(pkhand);
-
  
  }
 
@@ -227,21 +251,25 @@ class Azholdem {
 
   LinkedList<Player> game;
   LinkedList<Card> comm;
+  Deck deck;  
+
 
   public Azholdem(int plyrs){
-
+    
+    deck= new Deck();
     game= new LinkedList<Player>();
     comm= new LinkedList<Card>();
 
     for(int i=0;i<plyrs;i++){
       Player plr= new Player(Integer.toString(i)); 
       game.add(i,plr);
+      deck.deal5(game.get(i).pkhand.hand);
      }
  
     showhands();
-  
-    Deck deal=new Deck(); 
-    deal.deal5(comm); 
+
+/*  
+    deck.deal5(comm); 
  
      for(int i=0;i<plyrs;i++){
       Player plr= new Player(Integer.toString(i)); 
@@ -250,7 +278,7 @@ class Azholdem {
      }
 
     showhands();
-
+*/
   }
 
   public void showhands(){
