@@ -353,24 +353,43 @@ class Pokerhand implements Comparable<Pokerhand> {
 
    hand = new LinkedList<Card>();
 
-   Card first = new Card(c1.substring(0,1),c1.substring(1));
+   Card first = mkcard(c1);
    hand.add(0,first);
  
-   Card second = new Card(c2.substring(0,1),c2.substring(1));
+   Card second = mkcard(c2);
    hand.add(1,second);
  
-   Card third = new Card(c3.substring(0,1),c3.substring(1));
+   Card third = mkcard(c3);
    hand.add(2,third);
  
-   Card fourth = new Card(c4.substring(0,1),c4.substring(1));
+   Card fourth = mkcard(c4);
    hand.add(3,fourth);
 
-   Card fifth = new Card(c5.substring(0,1),c5.substring(1));
+   Card fifth = mkcard(c5);
    hand.add(4,fifth);
 
    order();
  
    }
+
+
+  public Card mkcard(String crd){
+
+   String rnk=null;
+   String sut=null;
+     if(crd.length()==3){
+        rnk=crd.substring(0,2); 
+        sut=crd.substring(2); 
+     }else{
+     rnk=crd.substring(0,1);
+     sut=crd.substring(1);
+     }
+     
+
+     Card retval=new Card(rnk,sut);
+
+     return retval;
+  }
 
 
    public void gethand(){
@@ -490,6 +509,13 @@ class Pokerhand implements Comparable<Pokerhand> {
     } 
 
 
+
+  // flush
+   if(flush()==1){val1=5;}
+   if(jam.flush()==1){val2=5;}
+  
+
+
 // compare 22kind for higher pair
 
     // flhs
@@ -527,23 +553,43 @@ class Pokerhand implements Comparable<Pokerhand> {
 
 
 
-  // flush
-   if(flush()==1){val1=8;}
-   if(jam.flush()==1){val2=8;}
-  
+  // straight
+   if(straight()==1){val1=8;}
+   if(jam.straight()==1){val2=8;}
+
+  // straight flush
+   if(straight()==1 && flush()==1){val1=9;}
+   if(jam.straight()==1 && jam.flush()==1){val2=9;}
+
+  // royal flush
+   if(straight()==1 && flush()==1 && hand.get(4).rank.equals("A")){val1=10;}
+   if(jam.straight()==1 && jam.flush()==1 && jam.hand.get(4).rank.equals("A")){val2=10;}
+
+
+
 
 System.out.println(val1+" "+val2);
 
 
+    if(val1>val2){ return 1;}
+    if(val1<val2){ return -1;}
+
+
+  // straight tie
+  
+
+
    // flush tie
+
+   if(val1==5 || val1==7 || val1==8 || val1==9){
  
     if(highcrd(jam)==1){
        return 1;   
     }
      if(highcrd(jam)==-1){
        return -1;  
+    }
    }
-
 
     // 4knd tie
     if(val1==7 && val2==7){
@@ -597,12 +643,6 @@ System.out.println(val1+" "+val2);
          return 0;}
     } 
  
-
-    if(val1>val2){ return 1;}
-    if(val1<val2){ return -1;}
-
-
-
 
 
   return 0;
@@ -762,15 +802,18 @@ System.out.println(val1+" "+val2);
      if( fst.equals( "A" )){ a = 13;} 
 
      if(i==0){ 
-System.out.println("no1"+a+" "+b+fst);
+//System.out.println("no1"+a+" "+b+fst);
         b=a;}else{
       if(b==(a-1)){b=a;}else{return 0;}}
 
-System.out.println(a+" "+b);
+//System.out.println(a+" "+b);
 
    }
 
    return 1;
   }
+
+ 
+
 
 }
