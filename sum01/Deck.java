@@ -78,7 +78,7 @@ public class Deck {
  }
 
  
-  public void deal(Player plyr){
+  public void deal5(LinkedList<Card> comm){
 
     int cnt=0;
     while(cnt<5){
@@ -86,22 +86,22 @@ public class Deck {
        int crd=(int)(Math.random()* 52);
      //  System.out.println(deck.get(cnt).rank);
 
-       plyr.pkhand.hand.add(cnt,deck.get(crd)); 
+       comm.add(cnt,deck.get(crd)); 
        cnt++;
     }
     
   } 
 
  
-  public void deal2(LinkedList<Card> pkhand){
+  public void deal2(Pokerhand pkhand){
 
     int cnt=0;
-    while(cnt<5){
+    while(cnt<2){
    
        int crd=(int)(Math.random()* 52);
      //  System.out.println(deck.get(cnt).rank);
 
-       pkhand.add(cnt,deck.get(crd)); 
+       pkhand.hand.add(cnt,deck.get(crd)); 
        cnt++;
     }
     
@@ -197,20 +197,18 @@ class Card implements Comparable<Card>{
 class Player {
 
  String player;
-// LinkedList<Card> hand;
-
+ double ante;
  Pokerhand pkhand;
 
 
  public Player(String plyr){
 
-
-  pkhand = new Pokerhand();
-//  hand=new LinkedList<Card>(); 
-
   player=plyr; 
-// System.out.println(player+" is playing");
+  ante=100.00; 
+  pkhand = new Pokerhand();
 
+  Deck deck1= new Deck();
+  deck1.deal2(pkhand);
 
  
  }
@@ -222,108 +220,47 @@ class Player {
  }
 
 
-/*
- public void gethand(){
-
-    for(int i=0;i<5;i++){
-       System.out.print(hand.get(i).rank+""+hand.get(i).suit+" ");
-    } 
-    
-    System.out.println(); 
- }
-
- public void order(){
-
-
-  int cnt=-1;
-   while(cnt!=0){ 
-
-      cnt=0; 
-       for(int j=0;j<4;j++){
-
-        if(compareRank(hand.get(j).rank,hand.get(j+1).rank)==1){
-
-        hand.add(j,hand.remove(j+1));
-        cnt++; 
-        }
-       }
-    
-  }
- 
 
 }
 
- public int compareRank(String fst, String scd){
+class Azholdem {
 
+  LinkedList<Player> game;
+  LinkedList<Card> comm;
 
-     int a=0;
-     int b=0;
+  public Azholdem(int plyrs){
 
-     if( fst.equals("2") ){ a = 1;} 
-     if( fst.equals("3") ){ a = 2;} 
-     if( fst.equals("4") ){ a = 3;}
-     if( fst.equals("5") ){ a = 4;} 
-     if( fst.equals("6") ){ a = 5;} 
-     if( fst.equals("7") ){ a = 6;}
-     if( fst.equals("8") ){ a = 7;} 
-     if( fst.equals("9") ){ a = 8;} 
-     if( fst.equals("10") ){ a = 9;}
-     if( fst == "J" ){ a = 10;} 
-     if( fst == "Q" ){ a = 11;} 
-     if( fst == "K" ){ a = 12;}
-     if( fst == "A" ){ a = 13;} 
+    game= new LinkedList<Player>();
+    comm= new LinkedList<Card>();
+
+    for(int i=0;i<plyrs;i++){
+      Player plr= new Player(Integer.toString(i)); 
+      game.add(i,plr);
+     }
  
-     if( scd.equals("2") ){ b = 1;} 
-     if( scd.equals("3") ){ b = 2;} 
-     if( scd.equals("4") ){ b = 3;}
-     if( scd.equals("5") ){ b = 4;} 
-     if( scd.equals("6") ){ b = 5;} 
-     if( scd.equals("7") ){ b = 6;}
-     if( scd.equals("8") ){ b = 7;} 
-     if( scd.equals("9") ){ b = 8;} 
-     if( scd.equals("10") ){ b = 9;}
-     if( scd == "J" ){ b = 10;} 
-     if( scd == "Q" ){ b = 11;} 
-     if( scd == "K" ){ b = 12;}
-     if( scd == "A" ){ b = 13;} 
+    showhands();
+  
+    Deck deal=new Deck(); 
+    deal.deal5(comm); 
+ 
+     for(int i=0;i<plyrs;i++){
+      Player plr= new Player(Integer.toString(i)); 
+      game.get(i).pkhand.hand.addAll(comm);
+      game.get(i).pkhand.order();
+     }
 
+    showhands();
 
-
-     if(a==b){ return -1;}
-     if(a>b){return 1;}
-     return 0;
-
- }
-
-*/
-
-
-}
-
-class Cardgame {
-
-  Player pl1,pl2;
-
-  public Cardgame(Player p1, Player p2){
-     pl1=p1;
-     pl2=p2;
   }
 
   public void showhands(){
 
-  System.out.println(pl1.player);
-  for(int i=0;i<5;i++){
-       System.out.print(pl1.pkhand.hand.get(i).rank+""+pl1.pkhand.hand.get(i).suit+" ");
-    } 
-    
-    System.out.println(); 
+    for(int i=0;i<game.size();i++){
+     System.out.print("Player "+(i+1)+": ");
+     game.get(i).pkhand.gethand();
 
-  System.out.println(pl2.player);
-  for(int i=0;i<5;i++){
-       System.out.print(pl2.pkhand.hand.get(i).rank+""+pl2.pkhand.hand.get(i).suit+" ");
-    } 
-    
-    System.out.println(); 
+    }
+
 
   }
 
@@ -340,12 +277,13 @@ class Pokerhand implements Comparable<Pokerhand> {
 
    hand = new LinkedList<Card>(); 
 
+/*
    Deck deck= new Deck();
 
-   deck.deal2(hand);
+   deck.deal5(hand);
 
    order();
-
+*/
 
    }
 
@@ -394,7 +332,7 @@ class Pokerhand implements Comparable<Pokerhand> {
 
    public void gethand(){
 
-    for(int i=0;i<5;i++){
+    for(int i=0;i<hand.size();i++){
        System.out.print(hand.get(i).rank+""+hand.get(i).suit+" ");
     } 
     
@@ -408,7 +346,7 @@ class Pokerhand implements Comparable<Pokerhand> {
    while(cnt!=0){ 
 
       cnt=0; 
-       for(int j=0;j<4;j++){
+       for(int j=0;j<(hand.size()-1);j++){
 
         if(compareRank(hand.get(j).rank,hand.get(j+1).rank)==1){
 
