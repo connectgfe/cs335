@@ -509,6 +509,10 @@ class Pokerhand implements Comparable<Pokerhand> {
     } 
 
 
+  // straight
+   if(straight()==1){val1=4;}
+   if(jam.straight()==1){val2=4;}
+
 
   // flush
    if(flush()==1){val1=5;}
@@ -553,17 +557,13 @@ class Pokerhand implements Comparable<Pokerhand> {
 
 
 
-  // straight
-   if(straight()==1){val1=8;}
-   if(jam.straight()==1){val2=8;}
-
   // straight flush
-   if(straight()==1 && flush()==1){val1=9;}
-   if(jam.straight()==1 && jam.flush()==1){val2=9;}
+   if(straight()==1 && flush()==1){val1=8;}
+   if(jam.straight()==1 && jam.flush()==1){val2=8;}
 
   // royal flush
-   if(straight()==1 && flush()==1 && hand.get(4).rank.equals("A")){val1=10;}
-   if(jam.straight()==1 && jam.flush()==1 && jam.hand.get(4).rank.equals("A")){val2=10;}
+   if(straight()==1 && flush()==1 && hand.get(4).rank.equals("A")){val1=9;}
+   if(jam.straight()==1 && jam.flush()==1 && jam.hand.get(4).rank.equals("A")){val2=9;}
 
 
 
@@ -581,7 +581,7 @@ System.out.println(val1+" "+val2);
 
    // flush tie
 
-   if(val1==5 || val1==7 || val1==8 || val1==9){
+   if(val1==5 || val1==7 || val1==8 || val1==4){
  
     if(highcrd(jam)==1){
        return 1;   

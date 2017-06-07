@@ -57,10 +57,16 @@ public static void main(String[] args){
 
     System.out.println("flush vs strght "+flush.compareTo(strght));
 
+    Pokerhand strflush=new Pokerhand("5H","6H","7H","8H","9H");
+    Pokerhand rylflush=new Pokerhand("10C","JC","QC","KC","AC");
+
+
     LinkedList<Pokerhand> games = new LinkedList<Pokerhand>();
     games.add(pair);
+    games.add(rylflush); 
     games.add(strght);
     games.add(flush);
+    games.add(strflush); 
     games.add(thknd);
     games.add(twpair);
     games.add(khigh);
