@@ -8,6 +8,8 @@ public class Azhldm{
 public static void main(String[] args){
  
    Azholdem g1 = new Azholdem(10);
+   g1.getPlyr(1).getbest();
+
 
 }
 }

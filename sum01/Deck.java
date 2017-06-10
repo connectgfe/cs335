@@ -1,4 +1,4 @@
-
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -101,7 +101,7 @@ public class Deck {
   } 
 
  
-  public void deal2(Pokerhand pkhand){
+  public void deal2(LinkedList<Card> hand){
 
    if(deck.size()<3){
      System.out.println("Deck done");
@@ -110,7 +110,7 @@ public class Deck {
 
     int cnt=deck.size();
     int crdcnt=0; 
-    while(cnt<2){
+    while(crdcnt<2){
 /*   
        int crd=(int)(Math.random()* 52);
      //  System.out.println(deck.get(cnt).rank);
@@ -121,14 +121,12 @@ public class Deck {
  
        int crd=(int)(Math.random()* cnt);
      //  System.out.println(deck.get(cnt).rank);
-       pkhand.hand.add(crdcnt,deck.get(crd)); 
+       hand.add(crdcnt,deck.get(crd)); 
        
        deck.remove(crd);
        crdcnt++;
        cnt--; 
         
-
-
 
     }
     
@@ -237,11 +235,92 @@ class Player {
  
  }
 
- public void shwhand(){
+ 
+ public void getbest(){
 
- pkhand.gethand();
+  Pokerhand p1=new Pokerhand();
+  p1.hand.add(0,pkhand.hand.get(0));
+  p1.hand.add(1,pkhand.hand.get(1));
+  p1.hand.add(2,pkhand.hand.get(2));
+  p1.hand.add(3,pkhand.hand.get(3));
+  p1.hand.add(4,pkhand.hand.get(4));
+
+  Pokerhand p2=new Pokerhand();
+  p2.hand.add(0,pkhand.hand.get(1));
+  p2.hand.add(1,pkhand.hand.get(2));
+  p2.hand.add(2,pkhand.hand.get(3));
+  p2.hand.add(3,pkhand.hand.get(4));
+  p2.hand.add(4,pkhand.hand.get(5));
+
+  Pokerhand p3=new Pokerhand();
+  p3.hand.add(0,pkhand.hand.get(2));
+  p3.hand.add(1,pkhand.hand.get(3));
+  p3.hand.add(2,pkhand.hand.get(4));
+  p3.hand.add(3,pkhand.hand.get(5));
+  p3.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p4=new Pokerhand();
+  p4.hand.add(0,pkhand.hand.get(0));
+  p4.hand.add(1,pkhand.hand.get(3));
+  p4.hand.add(2,pkhand.hand.get(4));
+  p4.hand.add(3,pkhand.hand.get(5));
+  p4.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p5=new Pokerhand();
+  p5.hand.add(0,pkhand.hand.get(0));
+  p5.hand.add(1,pkhand.hand.get(1));
+  p5.hand.add(2,pkhand.hand.get(4));
+  p5.hand.add(3,pkhand.hand.get(5));
+  p5.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p6=new Pokerhand();
+  p6.hand.add(0,pkhand.hand.get(0));
+  p6.hand.add(1,pkhand.hand.get(1));
+  p6.hand.add(2,pkhand.hand.get(2));
+  p6.hand.add(3,pkhand.hand.get(5));
+  p6.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p7=new Pokerhand();
+  p7.hand.add(0,pkhand.hand.get(1));
+  p7.hand.add(1,pkhand.hand.get(2));
+  p7.hand.add(2,pkhand.hand.get(3));
+  p7.hand.add(3,pkhand.hand.get(4));
+  p7.hand.add(4,pkhand.hand.get(6));
+
+
+  LinkedList<Pokerhand> best = new LinkedList<Pokerhand>();
+  best.add(p1);
+  best.add(p2);
+  best.add(p3);
+  best.add(p4);
+  best.add(p5);
+  best.add(p6);
+  best.add(p7);
+
+p1.gethand();  
+p2.gethand();  
+p3.gethand();  
+p4.gethand();  
+p5.gethand();  
+p6.gethand();  
+p7.gethand();  
+
+
+
+  Collections.sort(best);
+
+best.get(0).gethand();
+best.get(1).gethand();
+best.get(2).gethand();
+best.get(3).gethand();
+best.get(4).gethand();
+best.get(5).gethand();
+best.get(6).gethand();
+
+
 
  }
+
 
 
 
@@ -263,12 +342,12 @@ class Azholdem {
     for(int i=0;i<plyrs;i++){
       Player plr= new Player(Integer.toString(i)); 
       game.add(i,plr);
-      deck.deal5(game.get(i).pkhand.hand);
+      deck.deal2(game.get(i).pkhand.hand);
      }
  
     showhands();
 
-/*  
+  
     deck.deal5(comm); 
  
      for(int i=0;i<plyrs;i++){
@@ -278,7 +357,7 @@ class Azholdem {
      }
 
     showhands();
-*/
+
   }
 
   public void showhands(){
@@ -292,6 +371,11 @@ class Azholdem {
 
   }
 
+  public Player getPlyr(int val){
+
+   Player retval = game.get(val);
+   return retval;
+  }
 
 
 }
