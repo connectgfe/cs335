@@ -182,7 +182,7 @@ class Card implements Comparable<Card>{
      if( scd == "K" ){ b = 12;}
      if( scd == "A" ){ b = 13;} 
 
-     System.out.println(a+" "+b);
+     //System.out.println(a+" "+b);
 
      if(a==b){ return 0;}
      if(a>b){return 1;}
@@ -288,6 +288,107 @@ class Player {
   p7.hand.add(4,pkhand.hand.get(6));
 
 
+
+  Pokerhand p8=new Pokerhand();
+  p8.hand.add(0,pkhand.hand.get(0));
+  p8.hand.add(1,pkhand.hand.get(2));
+  p8.hand.add(2,pkhand.hand.get(3));
+  p8.hand.add(3,pkhand.hand.get(4));
+  p8.hand.add(4,pkhand.hand.get(5));
+
+  Pokerhand p9=new Pokerhand();
+  p9.hand.add(0,pkhand.hand.get(1));
+  p9.hand.add(1,pkhand.hand.get(3));
+  p9.hand.add(2,pkhand.hand.get(4));
+  p9.hand.add(3,pkhand.hand.get(5));
+  p9.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p10=new Pokerhand();
+  p10.hand.add(0,pkhand.hand.get(0));
+  p10.hand.add(1,pkhand.hand.get(2));
+  p10.hand.add(2,pkhand.hand.get(4));
+  p10.hand.add(3,pkhand.hand.get(5));
+  p10.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p11=new Pokerhand();
+  p11.hand.add(0,pkhand.hand.get(0));
+  p11.hand.add(1,pkhand.hand.get(1));
+  p11.hand.add(2,pkhand.hand.get(3));
+  p11.hand.add(3,pkhand.hand.get(5));
+  p11.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p12=new Pokerhand();
+  p12.hand.add(0,pkhand.hand.get(0));
+  p12.hand.add(1,pkhand.hand.get(1));
+  p12.hand.add(2,pkhand.hand.get(2));
+  p12.hand.add(3,pkhand.hand.get(4));
+  p12.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p13=new Pokerhand();
+  p13.hand.add(0,pkhand.hand.get(0));
+  p13.hand.add(1,pkhand.hand.get(1));
+  p13.hand.add(2,pkhand.hand.get(2));
+  p13.hand.add(3,pkhand.hand.get(3));
+  p13.hand.add(4,pkhand.hand.get(5));
+
+  Pokerhand p14=new Pokerhand();
+  p14.hand.add(0,pkhand.hand.get(1));
+  p14.hand.add(1,pkhand.hand.get(2));
+  p14.hand.add(2,pkhand.hand.get(3));
+  p14.hand.add(3,pkhand.hand.get(4));
+  p14.hand.add(4,pkhand.hand.get(6));
+
+
+  Pokerhand p15=new Pokerhand();
+  p15.hand.add(0,pkhand.hand.get(0));
+  p15.hand.add(1,pkhand.hand.get(1));
+  p15.hand.add(2,pkhand.hand.get(3));
+  p15.hand.add(3,pkhand.hand.get(4));
+  p15.hand.add(4,pkhand.hand.get(5));
+
+  Pokerhand p16=new Pokerhand();
+  p16.hand.add(0,pkhand.hand.get(1));
+  p16.hand.add(1,pkhand.hand.get(2));
+  p16.hand.add(2,pkhand.hand.get(4));
+  p16.hand.add(3,pkhand.hand.get(5));
+  p16.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p17=new Pokerhand();
+  p17.hand.add(0,pkhand.hand.get(0));
+  p17.hand.add(1,pkhand.hand.get(2));
+  p17.hand.add(2,pkhand.hand.get(3));
+  p17.hand.add(3,pkhand.hand.get(5));
+  p17.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p18=new Pokerhand();
+  p18.hand.add(0,pkhand.hand.get(0));
+  p18.hand.add(1,pkhand.hand.get(1));
+  p18.hand.add(2,pkhand.hand.get(3));
+  p18.hand.add(3,pkhand.hand.get(4));
+  p18.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p19=new Pokerhand();
+  p19.hand.add(0,pkhand.hand.get(0));
+  p19.hand.add(1,pkhand.hand.get(1));
+  p19.hand.add(2,pkhand.hand.get(2));
+  p19.hand.add(3,pkhand.hand.get(4));
+  p19.hand.add(4,pkhand.hand.get(5));
+
+  Pokerhand p20=new Pokerhand();
+  p20.hand.add(0,pkhand.hand.get(1));
+  p20.hand.add(1,pkhand.hand.get(2));
+  p20.hand.add(2,pkhand.hand.get(3));
+  p20.hand.add(3,pkhand.hand.get(5));
+  p20.hand.add(4,pkhand.hand.get(6));
+
+  Pokerhand p21=new Pokerhand();
+  p21.hand.add(0,pkhand.hand.get(0));
+  p21.hand.add(1,pkhand.hand.get(2));
+  p21.hand.add(2,pkhand.hand.get(3));
+  p21.hand.add(3,pkhand.hand.get(4));
+  p21.hand.add(4,pkhand.hand.get(6));
+
+
   LinkedList<Pokerhand> best = new LinkedList<Pokerhand>();
   best.add(p1);
   best.add(p2);
@@ -296,7 +397,28 @@ class Player {
   best.add(p5);
   best.add(p6);
   best.add(p7);
+  best.add(p8);
+  best.add(p9);
+  best.add(p10);
+  best.add(p11);
+  best.add(p12);
+  best.add(p13);
+  best.add(p14);
+  best.add(p15);
+  best.add(p16);
+  best.add(p17);
+  best.add(p18);
+  best.add(p19);
+  best.add(p20);
+  best.add(p21);
 
+
+
+
+
+
+
+/*
 p1.gethand();  
 p2.gethand();  
 p3.gethand();  
@@ -305,10 +427,10 @@ p5.gethand();
 p6.gethand();  
 p7.gethand();  
 
-
+*/
 
   Collections.sort(best);
-
+/*
 best.get(0).gethand();
 best.get(1).gethand();
 best.get(2).gethand();
@@ -316,8 +438,10 @@ best.get(3).gethand();
 best.get(4).gethand();
 best.get(5).gethand();
 best.get(6).gethand();
-
-
+*/
+  System.out.print("Best hand: ");
+  best.get(20).gethand();
+  System.out.println();
 
  }
 
@@ -618,7 +742,7 @@ class Pokerhand implements Comparable<Pokerhand> {
 
 
 
-System.out.println(val1+" "+val2);
+//System.out.println(val1+" "+val2);
 
 
     if(val1>val2){ return 1;}
