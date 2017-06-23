@@ -9,6 +9,13 @@ public class FirstGui extends JFrame implements WindowListener, ActionListener{
    int numClick = 0;
    TextField text = new TextField(20);
    JLabel dog = new JLabel();
+   JLabel dog2 = new JLabel();
+   JMenuBar menuBar;
+   JMenu menu, submenu;
+   JMenu menuItem;
+   JRadioButtonMenuItem rbutton;
+
+
 
 
    public FirstGui(String title){
@@ -18,23 +25,20 @@ public class FirstGui extends JFrame implements WindowListener, ActionListener{
    
    frame.setPreferredSize(new Dimension(350,350));
    
-//   JLabel dog = new JLabel(new ImageIcon("dog.png"));
-
-
-// need to create action
 
    addWindowListener(this); 
    Button clickit= new Button("Clickme");
    
    clickit.addActionListener(this); 
-
-
    frame.add(clickit,BorderLayout.NORTH);
-   
-   frame.add(dog,BorderLayout.SOUTH);
-// dog.setIcon(new ImageIcon("dog.png"));
+   frame.add(text,BorderLayout.SOUTH);
 
-   frame.add(text);
+   menuBar= new JMenuBar(); 
+   menu= new JMenu("A Menu");
+   menuBar.add(menu); 
+   frame.setJMenuBar(menuBar);
+
+   
 
    frame.pack(); 
    frame.setVisible(true);
@@ -53,33 +57,23 @@ public class FirstGui extends JFrame implements WindowListener, ActionListener{
    public void actionPerformed(ActionEvent e) {
  
 
-//              JLabel dog = new JLabel(new ImageIcon("dog.png"));
+          numClick++;
+          frame.add(dog,BorderLayout.WEST);
+          frame.add(dog2,BorderLayout.EAST);
 
-//              frame.add(dog, BorderLayout.SOUTH);
-//                dog.setIcon(new ImageIcon("dog.png"));
-                numClick++;
-                dog.setIcon(new ImageIcon("dog.png"));
-               text.setText("Button Clicked " + numClick + " times");
-               if(numClick==3){
-               dog.setIcon(null); 
-               }
-/*
-               if(numClick%2==0){
-                add(dog,BorderLayout.CENTER); 
-                 dog.setIcon(new ImageIcon("dog.png"));
-               add(text,BorderLayout.CENTER);
-               text.setText("Button Clicked " + numClick + " times");
-                }else{
-                 add(dog,BorderLayout.SOUTH); 
-                 dog.setIcon(new ImageIcon("dog.png"));
-                add(text,BorderLayout.SOUTH);
- 
-               text.setText("Button Clicked " + numClick + " times");
-                }
-*/
-   
- //               text.setText("Button Clicked " + numClick + " times");
-        }
+          text.setText("Button Clicked " + numClick + " times");
+     
+          if(numClick%2==0){
+             dog2.setIcon(null);
+             dog.setIcon(new ImageIcon("dog.png"));
+          }
+     
+          if(numClick%2!=0){
+             dog.setIcon(null); 
+             dog2.setIcon(new ImageIcon("dog.png"));
+          }
+
+    }
 
 
         public void windowClosing(WindowEvent e){}
