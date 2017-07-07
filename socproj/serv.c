@@ -11,6 +11,7 @@
 
 void connected();
 int connfd;
+int call;
 
 int main(int argc, char *argv[])
 {
@@ -38,16 +39,18 @@ int main(int argc, char *argv[])
     {
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
 
-
-
+        if(connfd){
+        call=1;
         connected();
 
+        }
+/*
         ticks = time(NULL);
         snprintf(sendBuff, sizeof(sendBuff), "%.24s\r\n", ctime(&ticks));
         write(connfd, sendBuff, strlen(sendBuff)); 
+*/
 
-
-  //      close(connfd);
+        close(connfd);
         sleep(1);
      }
 }
@@ -55,16 +58,20 @@ int main(int argc, char *argv[])
 void connected(){
 
 
-      char* hello= "Username: "; 
-      write(connfd, hello, strlen(hello));
+      while(call){
+
+      char* usrn= "Username: "; 
+      write(connfd, usrn, strlen(usrn));
       sleep(3);      
-       char line[15]; 
+      char line[15]; 
       memset(line, '0', sizeof(line)); 
 
       read(connfd,line,strlen(line));
-     write(connfd, line, strlen(line));
+      write(connfd, line, strlen(line));
+ 
+//     call=0;
 
-
+     }
 
 
 /*
