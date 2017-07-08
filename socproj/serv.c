@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
 
         if(connfd){
         call=1;
+        printf("connected\n");
         connected();
 
         }
@@ -50,6 +51,7 @@ int main(int argc, char *argv[])
         write(connfd, sendBuff, strlen(sendBuff)); 
 */
 
+
         close(connfd);
         sleep(1);
      }
@@ -57,17 +59,37 @@ int main(int argc, char *argv[])
 
 void connected(){
 
-
+      char* usrn= "Enter Username: "; 
+      write(connfd, usrn, strlen(usrn));
+      sleep(3);    
       while(call){
 
-      char* usrn= "Username: "; 
-      write(connfd, usrn, strlen(usrn));
-      sleep(3);      
-      char line[15]; 
-      memset(line, '0', sizeof(line)); 
+//      char* usrn= "Enter Username: "; 
+//      write(connfd, usrn, strlen(usrn));
+//      sleep(3);      
 
+      char line[15]; 
+      memset(line,'0',sizeof(line)); 
       read(connfd,line,strlen(line));
-      write(connfd, line, strlen(line));
+    
+      for(int i=0;i<15;i++){
+       if(line[i]=='0'){ line[i]='\0';}
+      }
+ 
+      printf("%lu, %s\n",strlen(line),line);  
+     
+      if(!strcmp(line,"password\n")){
+       printf("confirmed Username\n");
+       char* suc1="Confirmed"; 
+       write(connfd, suc1, strlen(suc1));
+       call=0;
+
+        }else{
+       char* try2="Try again(1)"; 
+       write(connfd, try2, strlen(try2));
+  
+
+      } 
  
 //     call=0;
 

@@ -57,14 +57,15 @@ int main(int argc, char *argv[])
          
 
 
-      comm(sockfd);
-         char* line="msg recieved";
+        comm(sockfd);
+/* 
+        char* line="msg recieved";
          char* line2="sent msg";
          //printf("%s\n",line);
 
          write(sockfd, line, strlen(line));
-    printf("%s\n",line2);
-
+//    printf("%s\n",line2);
+*/
  
         }else{
 
@@ -95,14 +96,28 @@ void comm(int fd){
   while(getline(&line,&len,stdin)>0){
 
 
-   printf("yes\n");
-   char hello[5]="hello";
-   write(fd,hello,5);
+   printf("sending\n");
+   write(fd,line,strlen(line));
    
    sleep(1);
-   char rec[7]={'\0'}; 
-   read(fd,rec,7);
+   char rec[15]; 
+   memset(rec,'0',sizeof(rec));
+
+   read(fd,rec,15);
+   
+
+   for(int i=0;i<15;i++){
+    if(rec[i]=='0'){ rec[i]='\0';}
+   }
+ 
+
+   if(!strcmp(rec,"Confirmed")){
+    printf("Success\n");
+    exit(1);
+   }
+  
    printf("from serv %s\n",rec);
+   
    sleep(1);
   
   }
