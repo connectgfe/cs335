@@ -16,7 +16,7 @@ int OpenListener(int port)
 {   int sd;
     struct sockaddr_in addr;
  
-    sd = socket(PF_INET, SOCK_STREAM, 0);
+    sd = socket(AF_INET, SOCK_STREAM, 0);
     bzero(&addr, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);
@@ -161,7 +161,7 @@ int main(int count, char *strings[])
  
     portnum = strings[1];
     ctx = InitServerCTX();        /* initialize SSL */
-    LoadCertificates(ctx, "mycert.pem", "mycert.pem"); /* load certs */
+    LoadCertificates(ctx, "domain.crt", "domain.key"); /* load certs */
     server = OpenListener(atoi(portnum));    /* create server socket */
     while (1)
     {   struct sockaddr_in addr;

@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     serv_addr.sin_family = AF_INET;
 
     // assigned port
-    serv_addr.sin_port = htons(3500); 
+    serv_addr.sin_port = htons(21); 
 
 
     // assigned address

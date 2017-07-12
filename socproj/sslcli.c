@@ -1,3 +1,5 @@
+//http://simplestcodings.blogspot.com/2010/08/secure-server-client-using-openssl-in-c.html
+
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
@@ -21,7 +23,7 @@ int OpenConnection(const char *hostname, int port)
         perror(hostname);
         abort();
     }
-    sd = socket(PF_INET, SOCK_STREAM, 0);
+    sd = socket(AF_INET, SOCK_STREAM, 0);
     bzero(&addr, sizeof(addr));
     addr.sin_family = AF_INET;
     addr.sin_port = htons(port);

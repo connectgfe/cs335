@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     // assigned port
-    serv_addr.sin_port = htons(3500); 
+    serv_addr.sin_port = htons(21); 
 
 
     bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)); 
