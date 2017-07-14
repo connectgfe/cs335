@@ -1,3 +1,4 @@
+import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.text.*;
 import javafx.scene.control.Button;
@@ -33,9 +34,9 @@ public class SecondGui extends Application{
 
    public void start(Stage stage){
 
-    stage.setTitle("Trial");
+    stage.setTitle("Test Client");
     window = new BorderPane();
-    Scene scene = new Scene(window, 350, 450);
+    Scene scene = new Scene(window, 350, 250);
 
     setupMenus();
     setupButton(); 
@@ -77,7 +78,8 @@ public class SecondGui extends Application{
    public void setupButton(){
 
     button = new Button("Enter");
-    window.setCenter(button); 
+    window.setAlignment(button,Pos.CENTER); 
+    window.setRight(button); 
 
     ButtonListener buttonListen = new ButtonListener();
 
@@ -103,10 +105,13 @@ public class SecondGui extends Application{
     Font font = new Font(30); 
     greeting.setFont(font);
 
+    window.setAlignment(greeting,Pos.CENTER);
     window.setBottom(greeting);     
 
     inputBox = new TextField();
-    window.setRight(inputBox);
+    window.setAlignment(inputBox,Pos.CENTER);
+
+    window.setLeft(inputBox);
 
 /*
     pic = new Image(val);
@@ -167,6 +172,8 @@ public class SecondGui extends Application{
     public void handle(ActionEvent e)  {
 
     String val = inputBox.getText();
+    Jcli client = new Jcli(val,3500);
+
      Text msg  = new Text(val);
     Font font = new Font(30); 
     greeting.setFont(font);
