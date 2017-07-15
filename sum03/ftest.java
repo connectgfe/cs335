@@ -15,7 +15,6 @@ import javafx.stage.Stage;
 import java.net.*;
 import java.io.*;
 
-
 public class ftest extends Application {
 
 
@@ -23,11 +22,8 @@ public class ftest extends Application {
 
         Parent rootone, roottwo;
 
-        Socket connection;
+        Socket connect;
 
-     BufferedOutputStream bos;
-
-     OutputStreamWriter   osw;
  
 
     @Override
@@ -77,32 +73,25 @@ public class ftest extends Application {
 //    System.out.println(txtbox.getText());
    
 
-/*
+
     String host = "127.0.0.1";//txtfield.getText();
     int port = Integer.parseInt(txtfield.getText());//3500;
 
-    StringBuffer instr = new StringBuffer();
-
 
       InetAddress address = InetAddress.getByName(host);
+      connect = new Socket(address, port);
+      System.out.println("SocketClient initialized");
 
-
-       connection = new Socket(address, port);
-
-     System.out.println("SocketClient initialized");
-
-     bos = new BufferedOutputStream(connection.getOutputStream());
-
-      osw = new OutputStreamWriter(bos);
+         BufferedOutputStream bos = new BufferedOutputStream(connect.getOutputStream());
+       OutputStreamWriter   osw = new OutputStreamWriter(bos);
       System.out.println("**here**");
 
-     String val="HellOOOO";
+      String val="HellOOOO";
 
 
       osw.write(val,0,val.length());
       osw.flush();
 
-*/
 
 
 
@@ -134,10 +123,20 @@ stage.setScene(scene);
    public void sendtxt() throws IOException {
 
 
-System.out.println("heretwo");
+System.out.println("heretwo "+connect.getLocalPort());
     String val = txtbox.getText();
-/*        
+
+
+/*
  System.out.println(val);
+   InetAddress address = InetAddress.getByName(host);
+
+   Socket connect = new Socket(address,port);
+
+          BufferedOutputStream bos = new BufferedOutputStream(connect.getOutputStream());
+       OutputStreamWriter   osw = new OutputStreamWriter(bos);
+
+      
       osw.write(val,0,val.length());
       osw.flush();
 */
