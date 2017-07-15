@@ -22,7 +22,7 @@ public class ftest extends Application {
 
         Parent rootone, roottwo;
 
-        Socket connect;
+        static Socket connect;
 
  
 
@@ -45,17 +45,20 @@ public class ftest extends Application {
     }
 
 
+    public static Socket getSock(){
+     return connect;
+
+    }
 
 
+    public static void setSock(Socket soc){
+
+     ftest.connect= soc;
+
+    }
 
     @FXML
     private TextField txtfield;
-
-    @FXML
-    private Button button;
-
-    @FXML
-    private Button buttontwo;
 
     @FXML
     private TextField txtbox;
@@ -72,14 +75,24 @@ public class ftest extends Application {
 
 //    System.out.println(txtbox.getText());
    
-
+    int check=0;
 
     String host = "127.0.0.1";//txtfield.getText();
-    int port = Integer.parseInt(txtfield.getText());//3500;
+    String input=txtfield.getText();
 
+    if(input.length()<1){return;}
+
+    int port = Integer.parseInt(input);//3500;
+    
+
+    try{
 
       InetAddress address = InetAddress.getByName(host);
       connect = new Socket(address, port);
+      check= connect.getPort();
+
+      setSock(connect); 
+
       System.out.println("SocketClient initialized");
 
          BufferedOutputStream bos = new BufferedOutputStream(connect.getOutputStream());
@@ -93,18 +106,28 @@ public class ftest extends Application {
       osw.flush();
 
 
+     }
+    catch (IOException f) {
+      System.out.println("IOException: " + f);
+    }
+    catch (Exception g) {
+      System.out.println("Exception: " + g);
+    }
+   
 
-
-
+   if(check!=0){
 
  
     loadtwo = new FXMLLoader(getClass().getResource("soccon.fxml"));
 
     roottwo = loadtwo.load();
     Scene scenetwo = new Scene(roottwo);
-    Stage primaryStage = new Stage();
-    primaryStage.setScene(scenetwo);
-    primaryStage.show();
+    Stage secondStage = new Stage();
+    secondStage.setScene(scenetwo);
+    secondStage.show();
+
+   }
+
 
 //    stage.toBack();
 
@@ -123,27 +146,19 @@ stage.setScene(scene);
    public void sendtxt() throws IOException {
 
 
-System.out.println("heretwo "+connect.getLocalPort());
+   System.out.println("heretwo "+getSock().getPort());
     String val = txtbox.getText();
 
 
-/*
- System.out.println(val);
-   InetAddress address = InetAddress.getByName(host);
 
-   Socket connect = new Socket(address,port);
-
-          BufferedOutputStream bos = new BufferedOutputStream(connect.getOutputStream());
+          BufferedOutputStream bos = new BufferedOutputStream(getSock().getOutputStream());
        OutputStreamWriter   osw = new OutputStreamWriter(bos);
 
       
       osw.write(val,0,val.length());
       osw.flush();
-*/
 
-
-
-//    client.sendmsg(val);
+     txtbox.setText("");
 
 
     }
