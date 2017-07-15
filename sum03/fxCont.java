@@ -37,17 +37,19 @@ public class fxCont {
 
 
     @FXML 
-    public void pressed(ActionEvent event) throws IOException{
+    public void pressed() {
 /*
     String val = txtfield.getText();
     client = new Jcli(val,3500);  
 */
 
-
+/*
  Parent blah = FXMLLoader.load(getClass().getResource("soccom.fxml"));
             Scene scene = new Scene(blah);
             Window orig = button.getOwner();
             orig.setScene(scene);
+/*
+
 /* 
     FXMLLoader loadit = new FXMLLoader(getClass().getResource("soccon.fxml"));
     button.getScene().setRoot(loadit.getRoot());
@@ -59,7 +61,7 @@ Stage stage = (Stage) button.getScene().getWindow();
 Scene scene = new Scene(loader.getRoot());
 stage.setScene(scene);
 */   
-//    System.out.println(txtfield.getText());
+    System.out.println(txtfield.getText());
 
     }
 
