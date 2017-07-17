@@ -13,6 +13,50 @@
  
 #define FAIL    -1
  
+int verify_callback(int preverify, X509_STORE_CTX* x509_ctx)
+{
+    int depth = X509_STORE_CTX_get_error_depth(x509_ctx);
+    int err = X509_STORE_CTX_get_error(x509_ctx);
+    
+    X509* cert = X509_STORE_CTX_get_current_cert(x509_ctx);
+    X509_NAME* iname = cert ? X509_get_issuer_name(cert) : NULL;
+    X509_NAME* sname = cert ? X509_get_subject_name(cert) : NULL;
+    
+//    print_cn_name("Issuer (cn)", iname);
+//    print_cn_name("Subject (cn)", sname);
+    
+    if(depth == 0) {
+        /* If depth is 0, its the server's certificate. Print the SANs too */
+//        print_san_name("Subject (san)", cert);
+    }
+
+    return preverify;
+}
+
+
+void LoadCertificates(SSL_CTX* ctx, char* CertFile, char* KeyFile)
+{
+    /* set the local certificate from CertFile */
+    if ( SSL_CTX_use_certificate_file(ctx, CertFile, SSL_FILETYPE_PEM) <= 0 )
+    {
+        ERR_print_errors_fp(stderr);
+        abort();
+    }
+    /* set the private key from KeyFile (may be the same as CertFile) */
+    if ( SSL_CTX_use_PrivateKey_file(ctx, KeyFile, SSL_FILETYPE_PEM) <= 0 )
+    {
+        ERR_print_errors_fp(stderr);
+        abort();
+    }
+    /* verify private key */
+    if ( !SSL_CTX_check_private_key(ctx) )
+    {
+        fprintf(stderr, "Private key does not match the public certificate\n");
+        abort();
+    }
+}
+
+
 int OpenConnection(const char *hostname, int port)
 {   int sd;
     struct hostent *host;
@@ -43,8 +87,12 @@ SSL_CTX* InitCTX(void)
  
     OpenSSL_add_all_algorithms();  /* Load cryptos, et.al. */
     SSL_load_error_strings();   /* Bring in and register error messages */
-    method = TLSv1_2_client_method();  /* Create new client-method instance */
+    method = SSLv23_client_method();  /* Create new client-method instance */
     ctx = SSL_CTX_new(method);   /* Create new context */
+
+//    SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER, verify_callback);
+
+
     if ( ctx == NULL )
     {
         ERR_print_errors_fp(stderr);
@@ -70,7 +118,27 @@ void ShowCerts(SSL* ssl)
         X509_free(cert);     /* free the malloc'ed certificate copy */
     }
     else
-        printf("Info: No client certificates configured.\n");
+        printf("Info: No Server certificates configured.\n");
+}
+
+void ShowOwnCerts(SSL* ssl)
+{   X509 *cert;
+    char *line;
+ 
+    cert = SSL_get_certificate(ssl); /* get the server's certificate */
+    if ( cert != NULL )
+    {
+        printf("Client certificates:\n");
+        line = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0);
+        printf("Subject: %s\n", line);
+        free(line);       /* free the malloc'ed string */
+        line = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0);
+        printf("Issuer: %s\n", line);
+        free(line);       /* free the malloc'ed string */
+        X509_free(cert);     /* free the malloc'ed certificate copy */
+    }
+    else
+        printf("Info: No Client certificates configured.\n");
 }
 
 void conn(SSL *ssl){
@@ -90,6 +158,7 @@ void conn(SSL *ssl){
 
 }
  
+
  
 int main(int count, char *strings[])
 {   SSL_CTX *ctx;
@@ -109,8 +178,12 @@ int main(int count, char *strings[])
     portnum=strings[2];
  
     ctx = InitCTX();
+
+    LoadCertificates(ctx,"mycert.pem", "mycert.pem");
     server = OpenConnection(hostname, atoi(portnum));
     ssl = SSL_new(ctx);      /* create new SSL connection state */
+    ShowOwnCerts(ssl);
+
     SSL_set_fd(ssl, server);    /* attach the socket descriptor */
     if ( SSL_connect(ssl) == FAIL )   /* perform the connection */
         ERR_print_errors_fp(stderr);

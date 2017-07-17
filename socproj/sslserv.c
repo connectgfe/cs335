@@ -7,10 +7,14 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <resolv.h>
+#include <openssl/conf.h>
 #include "openssl/ssl.h"
 #include "openssl/err.h"
  
 #define FAIL    -1
+
+
+
  
 int OpenListener(int port)
 {   int sd;
@@ -52,8 +56,19 @@ SSL_CTX* InitServerCTX(void)
  
     OpenSSL_add_all_algorithms();  /* load & register all cryptos, etc. */
     SSL_load_error_strings();   /* load all error messages */
-    method = TLSv1_2_server_method();  /* create new server-method instance */
+
+    method = SSLv23_server_method();
+//    method = TLSv1_2_server_method();  /* create new server-method instance */
     ctx = SSL_CTX_new(method);   /* create new context from method */
+
+ 
+   // peer auth
+//   SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER,NULL);
+
+printf("verify2: %d\n",SSL_CTX_get_verify_mode(ctx));
+
+
+    
     if ( ctx == NULL )
     {
         ERR_print_errors_fp(stderr);
@@ -84,11 +99,11 @@ void LoadCertificates(SSL_CTX* ctx, char* CertFile, char* KeyFile)
     }
 }
  
-void ShowCerts(SSL* ssl)
+void ShowOwnCerts(SSL* ssl)
 {   X509 *cert;
     char *line;
  
-    cert = SSL_get_peer_certificate(ssl); /* Get certificates (if available) */
+    cert = SSL_get_certificate(ssl); /* Get certificates (if available) */
     if ( cert != NULL )
     {
         printf("Server certificates:\n");
@@ -101,9 +116,29 @@ void ShowCerts(SSL* ssl)
         X509_free(cert);
     }
     else
-        printf("No certificates.\n");
+        printf("No Server certificates.\n");
 }
  
+void ShowCerts(SSL* ssl)
+{   X509 *cert;
+    char *line;
+ 
+    cert = SSL_get_peer_certificate(ssl); /* Get certificates (if available) */
+    if ( cert != NULL )
+    {
+        printf("Client certificates:\n");
+        line = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0);
+        printf("Subject: %s\n", line);
+        free(line);
+        line = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0);
+        printf("Issuer: %s\n", line);
+        free(line);
+        X509_free(cert);
+    }
+    else
+        printf("No Client certificates.\n");
+}
+
 void Servlet(SSL* ssl) /* Serve the connection -- threadable */
 {   char buf[1024];
     char reply[1024];
@@ -161,17 +196,32 @@ int main(int count, char *strings[])
  
     portnum = strings[1];
     ctx = InitServerCTX();        /* initialize SSL */
-    LoadCertificates(ctx, "domain.crt", "domain.key"); /* load certs */
-    server = OpenListener(atoi(portnum));    /* create server socket */
+//    LoadCertificates(ctx, "domain.crt", "domain.key"); /* load certs */
+    LoadCertificates(ctx, "mycert.pem", "mycert.pem"); /* load certs */
+
+
+    server = OpenListener(atoi(portnum));    /* create server listen at port socket */
     while (1)
     {   struct sockaddr_in addr;
         socklen_t len = sizeof(addr);
         SSL *ssl;
- 
+
+       
         int client = accept(server, (struct sockaddr*)&addr, &len);  /* accept connection as usual */
+        // prints client info 
         printf("Connection: %s:%d\n",inet_ntoa(addr.sin_addr), ntohs(addr.sin_port));
         ssl = SSL_new(ctx);              /* get new SSL state with context */
+
+        ShowOwnCerts(ssl);
+
+printf("verify3: %d\n",SSL_get_verify_mode(ssl));
+
+//    SSL_set_verify(ssl,SSL_VERIFY_PEER,0);
+       
+
         SSL_set_fd(ssl, client);      /* set connection socket to SSL state */
+
+
         Servlet(ssl);         /* service connection */
     }
     close(server);          /* close server socket */

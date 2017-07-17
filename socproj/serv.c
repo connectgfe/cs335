@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 
     // assigned port
-    serv_addr.sin_port = htons(21); 
+    serv_addr.sin_port = htons(3500); 
 
 
     bind(listenfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)); 
@@ -70,11 +70,11 @@ void connected(){
 //      write(connfd, usrn, strlen(usrn));
 //      sleep(3);      
 
-      char line[15]; 
+      char line[50]; 
       memset(line,'0',sizeof(line)); 
       read(connfd,line,strlen(line));
     
-      for(int i=0;i<15;i++){
+      for(int i=0;i<50;i++){
        if(line[i]=='0'){ line[i]='\0';}
       }
  
