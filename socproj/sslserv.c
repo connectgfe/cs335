@@ -10,6 +10,9 @@
 #include <openssl/conf.h>
 #include "openssl/ssl.h"
 #include "openssl/err.h"
+#include <sys/fcntl.h>
+#include <time.h>
+
  
 #define FAIL    -1
 
@@ -63,10 +66,6 @@ SSL_CTX* InitServerCTX(void)
 
  
    // peer auth
-//   SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER,NULL);
-
-printf("verify2: %d\n",SSL_CTX_get_verify_mode(ctx));
-
 
     
     if ( ctx == NULL )
@@ -210,7 +209,17 @@ int main(int count, char *strings[])
         int client = accept(server, (struct sockaddr*)&addr, &len);  /* accept connection as usual */
         // prints client info 
         printf("Connection: %s:%d\n",inet_ntoa(addr.sin_addr), ntohs(addr.sin_port));
-        ssl = SSL_new(ctx);              /* get new SSL state with context */
+        int fd1=open("log.txt", O_WRONLY | O_APPEND);
+        char *address = inet_ntoa(addr.sin_addr);
+        time_t t = time(NULL);
+        struct tm *tm = localtime(&t);
+        char s[64];
+        strftime(s, sizeof(s), "%c", tm);
+   
+        strcat(address,s);
+        write(fd1,address,strlen(address));         
+
+       ssl = SSL_new(ctx);              /* get new SSL state with context */
 
         ShowOwnCerts(ssl);
 

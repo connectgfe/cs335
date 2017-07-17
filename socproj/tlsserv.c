@@ -7,6 +7,27 @@
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 
+void Certs(X509 *cert)
+{    char *line;
+ 
+    if ( cert != NULL )
+    {
+        printf("Server certificates:\n");
+        line = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0);
+        printf("Subject: %s\n", line);
+        free(line);       /* free the malloc'ed string */
+        line = X509_NAME_oneline(X509_get_issuer_name(cert), 0, 0);
+        printf("Issuer: %s\n", line);
+        free(line);       /* free the malloc'ed string */
+        X509_free(cert);     /* free the malloc'ed certificate copy */
+    }
+    else
+        printf("Info: No Server certificates configured.\n");
+}
+
+
+
+
 
 void ShowCerts(SSL* ssl)
 {   X509 *cert;
@@ -26,6 +47,8 @@ void ShowCerts(SSL* ssl)
     }
     else
         printf("Info: No Server certificates configured.\n");
+
+//        exit(0);
 }
 
 
@@ -46,7 +69,7 @@ int verify_callback(int preverify, X509_STORE_CTX* x509_ctx)
 //        print_san_name("Subject (san)", cert);
     }
 
-    return preverify;
+    return 0;
 }
 
 
@@ -125,16 +148,32 @@ SSL_CTX *create_context()
     ctx = SSL_CTX_new(method);
 
 
-    SSL_CTX_set_verify(ctx,SSL_VERIFY_FAIL_IF_NO_PEER_CERT,verify_callback);
+    SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER,NULL);
 
-    STACK_OF(X509_NAME) *certn = SSL_load_client_CA_file("mycert.pem");
-    
-    if( SSL_CTX_get_client_CA_list(ctx)==NULL){
-      printf("error\n");}
+
+
+    printf("1verify: %d %d\n",SSL_CTX_get_verify_mode(ctx), SSL_CTX_get_verify_depth(ctx));
+
+//    SSL_CTX_set_cert_verify_callback(ctx,0,NULL);
+
+ //   STACK_OF(X509_NAME) *certn = SSL_load_client_CA_file("/usr/lib/ssl/certs/Equifax_Secure_CA.pem");
+
+     STACK_OF(X509_NAME) *certn = SSL_load_client_CA_file("mycert.pem");
+
+
+    if( certn==NULL){
+      printf("no CA files loaded\n");}else
+    { printf("CA files loaded\n");
 
     SSL_CTX_set_client_CA_list(ctx,certn);
+    }
+ 
+     STACK_OF(X509_NAME) *test = SSL_CTX_get_client_CA_list(ctx); 
+     if( test==NULL){
+      printf("2: no CA files loaded\n");}else
+    { printf("2: CA files loaded\n");}
 
-  
+
     if (!ctx) {
 	perror("Unable to create SSL context");
 	ERR_print_errors_fp(stderr);
@@ -149,7 +188,7 @@ void configure_context(SSL_CTX *ctx)
     SSL_CTX_set_ecdh_auto(ctx, 1);
 
     /* Set the key and cert */
-    if (SSL_CTX_use_certificate_file(ctx, "domain.crt", SSL_FILETYPE_PEM) <= 0) {
+    if (SSL_CTX_use_certificate_chain_file(ctx, "domain.crt") <= 0) {
         ERR_print_errors_fp(stderr);
 	exit(EXIT_FAILURE);
     }
@@ -171,13 +210,27 @@ int main(int argc, char **argv)
     configure_context(ctx);
 
     sock = create_socket(3500);
+     SSL *ssl;
+
+     ssl = SSL_new(ctx);
+
+     X509 *cert;
+ 
+     cert = SSL_get_certificate(ssl);      
+    
+ //    SSL_add_client_CA(ssl,cert);
+
+
+    printf("2verify: %d %d\n",SSL_get_verify_mode(ssl), SSL_get_verify_depth(ssl));
+
+
 
     /* Handle connections */
     while(1) {
         struct sockaddr_in addr;
         uint len = sizeof(addr);
-        SSL *ssl;
-        const char reply[] = "test\n";
+  //      SSL *ssl;
+        const char reply[] = "tEsT\n";
 
         int client = accept(sock, (struct sockaddr*)&addr, &len);
         if (client < 0) {
@@ -185,8 +238,19 @@ int main(int argc, char **argv)
             exit(EXIT_FAILURE);
         }
 
-        ssl = SSL_new(ctx);
+//        ssl = SSL_new(ctx);
+
+
+     STACK_OF(X509_NAME) *test = SSL_get_client_CA_list(ssl); 
+     if( test==NULL){
+      printf("3: no CA files loaded\n");}else
+    { printf("3: CA files loaded\n");}
+
+        
+ 
         SSL_set_fd(ssl, client);
+
+
         ShowCerts(ssl);
         if (SSL_accept(ssl) <= 0) {
             ERR_print_errors_fp(stderr);
