@@ -179,7 +179,10 @@ int main(int count, char *strings[])
  
     ctx = InitCTX();
 
+//    LoadCertificates(ctx,"domain.crt", "domain.key");
     LoadCertificates(ctx,"mycert.pem", "mycert.pem");
+
+
     server = OpenConnection(hostname, atoi(portnum));
     ssl = SSL_new(ctx);      /* create new SSL connection state */
     ShowOwnCerts(ssl);
