@@ -9,9 +9,91 @@
 #include <openssl/stack.h>
 #include <sys/fcntl.h>
 #include <time.h>
-
+#include <signal.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <netinet/in.h>
+#include <openssl/conf.h>
+#define FAIL -1
 
 X509 *okCert;
+pid_t proid;
+int sock;
+int chdcnt=0;
+
+void Servlet(SSL* ssl) // Serve the connection -- threadable 
+{   char buf[1024];
+    char reply[1024];
+    int sd, bytes;
+    const char* HTMLecho="<html><body><pre>%s</pre></body></html>\n\n";
+ 
+    if ( SSL_accept(ssl) == FAIL )     // do SSL-protocol accept //
+        ERR_print_errors_fp(stderr);
+    else
+    {
+   //    ShowCerts(ssl);        // get any certificates //
+       bytes = SSL_read(ssl, buf, sizeof(buf)); // get request //
+
+ 
+       proid = fork();       
+       if(proid == 0){
+       
+       close(sock);
+
+
+         while ( bytes > 0 )
+         {
+
+             
+            buf[bytes] = 0;
+            if(strcmp(buf,"quit\n")==0){break;} 
+            printf("Client msg: %s", buf);
+            sprintf(reply, HTMLecho, buf);   // construct reply 
+            SSL_write(ssl, reply, strlen(reply)); // send reply 
+            bytes = SSL_read(ssl, buf, sizeof(buf));
+
+         }
+
+
+   
+        sleep(3);
+        sd = SSL_get_fd(ssl); 
+//        SSL_free(ssl);  
+        close(sd); 
+ printf("**end2*** %d\n", proid);
+         
+        exit(0);
+      }
+
+
+     printf("child ends with: %d\n",proid);
+     chdcnt++;
+
+     while(chdcnt){
+     proid=waitpid( (pid_t) -1 , NULL, WNOHANG);
+      if(proid < 0)
+      exit(0); 
+     else if(proid == 0) break;
+     else chdcnt--;
+    }
+         
+       
+   }
+  
+          
+    sd = SSL_get_fd(ssl);       /* get socket connection */
+     
+    SSL_free(ssl);         /* release SSL state */
+
+printf("**end***\n");
+    close(sd);          /* close connection */
+   
+
+  }
+
+
+
+
 
 void Certs(X509 *cert)
 {    char *line;
@@ -266,7 +348,6 @@ void configure_context(SSL_CTX *ctx)
 
 int main(int argc, char **argv)
 {
-    int sock;
     SSL_CTX *ctx;
 
     init_openssl_library();
@@ -322,7 +403,11 @@ int main(int argc, char **argv)
         SSL_set_fd(ssl, client);
 
 
-        ShowCerts(ssl);
+        Servlet(ssl);
+
+//        ShowCerts(ssl);
+
+/*
         if (SSL_accept(ssl) <= 0) {
 
             ERR_print_errors_fp(stderr);
@@ -334,10 +419,12 @@ int main(int argc, char **argv)
 
         SSL_free(ssl);
         close(client);
+*/ 
+
     }
 
     close(sock);
     SSL_CTX_free(ctx);
-    cleanup_openssl();
+//    cleanup_openssl();
 }
 

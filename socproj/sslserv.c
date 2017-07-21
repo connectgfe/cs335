@@ -12,13 +12,58 @@
 #include "openssl/err.h"
 #include <sys/fcntl.h>
 #include <time.h>
-
- 
+#include <signal.h>
+#include <stdlib.h> 
+#include <sys/wait.h>
 #define FAIL    -1
 
+X509 *okCert;
+pid_t proid;
+int chdcnt=0;
+int server; 
 
+ int verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
+ {
+    char    buf[256];
+    char    buf2[256]; 
+    X509   *cert;
+    int     err;
+    SSL    *ssl;
+    int     index=0;  
 
  
+    cert = X509_STORE_CTX_get_current_cert(ctx);
+    err = X509_STORE_CTX_get_error(ctx);
+
+
+//    depth = X509_STORE_CTX_get_error_depth(ctx);
+
+    /*
+     * Retrieve the pointer to the SSL of the connection currently treated
+     * and the application specific data stored into the SSL object.
+     */
+    ssl = X509_STORE_CTX_get_ex_data(ctx, SSL_get_ex_data_X509_STORE_CTX_idx());
+
+
+    X509_NAME_oneline(X509_get_subject_name(cert), buf, 256);
+
+   X509_NAME_oneline(X509_get_subject_name(okCert), buf2, 256);
+
+
+
+    printf(" %s\n%s\n",buf,buf2);
+
+    if(strcmp(buf,buf2)==0){ 
+    printf("success\n");
+    return 1;
+    }else{ 
+    printf("socfail\n"); 
+    return 0;}
+
+
+}
+
+
 int OpenListener(int port)
 {   int sd;
     struct sockaddr_in addr;
@@ -38,6 +83,9 @@ int OpenListener(int port)
         perror("Can't configure listening port");
         abort();
     }
+
+    signal(SIGCHLD, SIG_IGN);
+
     return sd;
 }
  
@@ -65,6 +113,51 @@ SSL_CTX* InitServerCTX(void)
     ctx = SSL_CTX_new(method);   /* create new context from method */
 
  
+    SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,verify_callback);
+
+  
+    printf("1verify: %d %d\n",SSL_CTX_get_verify_mode(ctx), SSL_CTX_get_verify_depth(ctx));
+
+
+//    STACK_OF(X509_NAME) *certn = SSL_load_client_CA_file("/usr/lib/ssl/certs/Equifax_Secure_CA.pem");
+
+     STACK_OF(X509_NAME) *certn = SSL_load_client_CA_file("mycert.pem");
+
+
+
+
+    if( certn==NULL){
+      printf("1: no CA files loaded\n");}else
+    { printf("1: CA files loaded\n");
+
+    SSL_CTX_set_client_CA_list(ctx,certn);
+
+
+    }
+
+
+     STACK_OF(X509_NAME) *test = SSL_CTX_get_client_CA_list(ctx); 
+
+     if( test==NULL){
+       printf("2: no CA files loaded\n");}else
+    { printf("2: CA files loaded\n");}
+
+
+
+// create faux ssl to load okCert used for verify
+
+    const SSL_METHOD *m;
+    SSL_CTX *c;
+    m = SSLv23_server_method();
+    c = SSL_CTX_new(m);
+    SSL_CTX_use_certificate_chain_file(c, "mycert.pem"); 
+    SSL *s;
+    s = SSL_new(c);
+    okCert =SSL_get_certificate(s);   
+    //Certs(okCert);
+    
+
+
    // peer auth
 
     
@@ -148,10 +241,18 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
         ERR_print_errors_fp(stderr);
     else
     {
-        ShowCerts(ssl);        /* get any certificates */
-        bytes = SSL_read(ssl, buf, sizeof(buf)); /* get request */
-        while ( bytes > 0 )
-        {
+       ShowCerts(ssl);        /* get any certificates */
+       bytes = SSL_read(ssl, buf, sizeof(buf)); /* get request */
+
+ 
+       proid = fork();       
+       if(proid == 0){
+       
+       close(server);
+
+
+         while ( bytes > 0 )
+         {
 
              
             buf[bytes] = 0;
@@ -161,22 +262,47 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
             SSL_write(ssl, reply, strlen(reply)); /* send reply */
             bytes = SSL_read(ssl, buf, sizeof(buf));
 
-
          }
+
+
+   
+        sleep(3);
+        sd = SSL_get_fd(ssl); 
+        SSL_free(ssl);  
+        close(sd); 
+ printf("**end2*** %d\n", proid);
+         
+        exit(0);
+      }
+
+
+     printf("child ends with: %d\n",proid);
+     chdcnt++;
+
+     while(chdcnt){
+     proid=waitpid( (pid_t) -1 , NULL, WNOHANG);
+      if(proid < 0)
+      exit(0); 
+     else if(proid == 0) break;
+     else chdcnt--;
+    }
+         
        
-       if(bytes == 0){
-            ERR_print_errors_fp(stderr);
-    }}
+   }
+  
+          
     sd = SSL_get_fd(ssl);       /* get socket connection */
+     
     SSL_free(ssl);         /* release SSL state */
 
 printf("**end***\n");
     close(sd);          /* close connection */
+   
+
 }
  
 int main(int count, char *strings[])
 {   SSL_CTX *ctx;
-    int server;
     char *portnum;
 /* 
     if(!isRoot())
@@ -221,7 +347,7 @@ int main(int count, char *strings[])
 
        ssl = SSL_new(ctx);              /* get new SSL state with context */
 
-        ShowOwnCerts(ssl);
+//        ShowOwnCerts(ssl);
 
 printf("verify3: %d\n",SSL_get_verify_mode(ssl));
 
