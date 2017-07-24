@@ -14,22 +14,24 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import java.net.*;
 import java.io.*;
+import javax.net.ssl.*;
 
-public class ftest extends Application {
+
+public class ftest2 extends Application {
 
 
         FXMLLoader loadone, loadtwo;
 
         Parent rootone, roottwo;
 
-        static Socket connect;
+        static SSLSocket connect;
 
  
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         // just load fxml file and display it in the stage:
-        loadone = new FXMLLoader(getClass().getResource("test2.fxml"));
+        loadone = new FXMLLoader(getClass().getResource("test3.fxml"));
         rootone = loadone.load();
         Scene sceneone = new Scene(rootone);
         primaryStage.setScene(sceneone);
@@ -45,17 +47,20 @@ public class ftest extends Application {
     }
 
 
-    public static Socket getSock(){
+    public static SSLSocket getSock(){
      return connect;
 
     }
 
 
-    public static void setSock(Socket soc){
+    public static void setSock(SSLSocket soc){
 
      ftest.connect= soc;
 
     }
+
+    @FXML
+    private Button button;
 
     @FXML
     private TextField txtfield;
@@ -64,7 +69,15 @@ public class ftest extends Application {
     private TextField txtbox;
 
 
-    public ftest(){}
+
+    @FXML
+    private TextField ipadd;
+
+    @FXML
+    private TextField portid;
+
+
+    public ftest2(){}
 
     @FXML
     public void initialize(){}
@@ -77,8 +90,9 @@ public class ftest extends Application {
    
     int check=0;
 
-    String host = "127.0.0.1";//txtfield.getText();
-    String input=txtfield.getText();
+    String host = ipadd.getText();
+    String input=portid.getText();
+    
 
     if(input.length()<1){return;}
 
@@ -87,24 +101,47 @@ public class ftest extends Application {
 
     try{
 
-      InetAddress address = InetAddress.getByName(host);
-      connect = new Socket(address, port);
-      check= connect.getPort();
+//      InetAddress address = InetAddress.getByName(host);
+//      connect = new Socket(address, port);
+
+     SSLSocketFactory factory =
+                (SSLSocketFactory)SSLSocketFactory.getDefault();
+            connect =
+                (SSLSocket)factory.createSocket(host,port);
+
+
+      connect.startHandshake();
+
+      check= connect.getSession().getPeerPort();
 
       setSock(connect); 
+
+
+
+
 
       System.out.println("SocketClient initialized");
 
          BufferedOutputStream bos = new BufferedOutputStream(connect.getOutputStream());
        OutputStreamWriter   osw = new OutputStreamWriter(bos);
-      System.out.println("**here**");
 
-      String val="HellOOOO";
+
+      String oval="Hello";
+      osw.write(oval,0,oval.length());
+      osw.flush();
+
+
+/*
+      while(true){
+
+      String val = txtfield.getText();
 
 
       osw.write(val,0,val.length());
       osw.flush();
 
+      }
+*/
 
      }
     catch (IOException f) {
@@ -118,7 +155,7 @@ public class ftest extends Application {
    if(check!=0){
 
  
-    loadtwo = new FXMLLoader(getClass().getResource("soccon.fxml"));
+    loadtwo = new FXMLLoader(getClass().getResource("soccon2.fxml"));
 
     roottwo = loadtwo.load();
     Scene scenetwo = new Scene(roottwo);
@@ -127,6 +164,7 @@ public class ftest extends Application {
     secondStage.show();
 
    }
+
 
 
 //    stage.toBack();
@@ -140,14 +178,13 @@ stage.setScene(scene);
 //    System.out.println(txtbox.getText());
 
     }
-
+/*
    @FXML 
    public void sendtxt() throws IOException {
 
 
-   System.out.println("heretwo "+getSock().getPort());
     String val = txtbox.getText();
-
+   System.out.println(val+" heretwo "+getSock().getSession().getPeerPort());
 
 
           BufferedOutputStream bos = new BufferedOutputStream(getSock().getOutputStream());
@@ -161,6 +198,28 @@ stage.setScene(scene);
 
 
     }
+*/
+
+   @FXML 
+   public void sendtxt2() throws IOException {
+
+
+    String val = txtbox.getText();
+
+    
+
+          BufferedOutputStream bos = new BufferedOutputStream(getSock().getOutputStream());
+       OutputStreamWriter   osw = new OutputStreamWriter(bos);
+
+      
+      osw.write(val,0,val.length());
+      osw.flush();
+
+     txtbox.setText("");
+
+
+    }
+
 
    
 }
