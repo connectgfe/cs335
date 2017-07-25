@@ -5,15 +5,17 @@ import java.io.*;
 /** The SocketClient class is a simple example of a TCP/IP Socket Client.
  *
  */
+import java.util.*;
 
 public class Jcli {
 
 public static void main(String[] args) {
     /** Define a host server */
-    String host = "127.0.0.1";
+    String host = "www.luckywishbone.com";  
+//    String host =  "127.0.0.1";
     /** Define a port */
-    int port = 3500;
-
+//    int port = 3500;
+    int port = 80;
     StringBuffer instr = new StringBuffer();
     String TimeStamp;
 
@@ -49,8 +51,8 @@ TimeStamp = new java.util.Date().toString();
       String process = "Hello from java\n";
 
       /** Write across the socket connection and flush the buffer */
-      osw.write(process,0,process.length());
-      osw.flush();
+//      osw.write(process,0,process.length());
+//      osw.flush();
 
       /** Instantiate a BufferedInputStream object for reading
       /** Instantiate a BufferedInputStream object for reading
@@ -63,18 +65,58 @@ TimeStamp = new java.util.Date().toString();
        * character encoding.
        */
 
-      InputStreamReader isr = new InputStreamReader(bis, "US-ASCII");
+      InputStreamReader isr = new InputStreamReader(bis, "UTF-8");
 
+      BufferedReader br = new BufferedReader(isr);
+
+      String line= null;
+
+      while( (line = br.readLine()) !=null){
+
+          System.out.println(line);
+      }
       /**Read the socket's InputStream and append to a StringBuffer */
-      int c;
-      while ( (c = isr.read()) != 13)
-        instr.append( (char) c);
 
-      /** Close the socket connection. */
+
+      String bf="000000000000000000";
+      char[] buff=bf.toCharArray();
+
+
+      String enco= isr.getEncoding();
+      int c;
+
+
+      System.out.println("here2 "+enco);
+
+      Scanner sc = new Scanner(System.in);
+
+
+      isr.read(buff,0,15);
+
+       System.out.println(buff);
+
+/*
+      while ( (c = isr.read(buff,0,15)) != 13 && sc.hasNext()){
+       // instr.append( (char) c);
+
+     // Close the socket connection. 
+//      connection.close();
+      System.out.println(buff);
+
+      String next= sc.next();
+      osw.write(next,0,next.length());
+      osw.flush();
+
+ 
+
+      }
+ 
+*/
+
       connection.close();
-      System.out.println(instr);
-     }
-    catch (IOException f) {
+
+   }
+   catch (IOException f) {
       System.out.println("IOException: " + f);
     }
     catch (Exception g) {

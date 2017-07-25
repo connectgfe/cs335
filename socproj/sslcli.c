@@ -147,12 +147,21 @@ void conn(SSL *ssl){
 
    char* line;
    size_t len=0;
+   char buf[1024];
+   int bytes;
+
+   bytes = SSL_read(ssl, buf, sizeof(buf)); 
 
 
-   while(getline(&line,&len,stdin)>0){
-
+   while(getline(&line,&len,stdin)>0 ){
+    buf[bytes]=0;
+    printf("Serv msg: %s\n",buf);
     SSL_write(ssl,line,strlen(line));
 
+  //  bytes = SSL_read(ssl, buf, sizeof(buf)); 
+
+
+   // client sends interrupt from stdin "quit"
     if(strcmp(line,"quit\n")==0){break;}
    }
 
@@ -164,7 +173,8 @@ int main(int count, char *strings[])
 {   SSL_CTX *ctx;
     int server;
     SSL *ssl;
-    char buf[1024];
+    char buf[22024];
+    char buf2[1024]; 
     int bytes;
     char *hostname, *portnum;
  
@@ -191,17 +201,25 @@ int main(int count, char *strings[])
     if ( SSL_connect(ssl) == FAIL )   /* perform the connection */
         ERR_print_errors_fp(stderr);
     else
-    {   char *msg = "Begin Transmission\n";
+    {   
  
         printf("Connected with %s encryption\n", SSL_get_cipher(ssl));
         ShowCerts(ssl);        /* get any certs */
+       
+char *msg = "GET /index.html HTTP/1.1\r\nHost: www.pepsi.com\r\n\r\n";
+//        char *msg = "Begin Transmission\n";
         SSL_write(ssl, msg, strlen(msg));   /* encrypt & send message */
-        bytes = SSL_read(ssl, buf, sizeof(buf)); /* get reply & decrypt */
+     
+        bytes = SSL_read(ssl, buf, sizeof(buf)); // get reply & decrypt 
         buf[bytes] = 0;
-        printf("Received: \"%s\"\n", buf);
+        printf("Received1: \"%s\"\n", buf);
 
- 
-        conn(ssl);
+        int bytes2= SSL_read(ssl, buf2, sizeof(buf2));
+        buf2[bytes2] = 0; 
+//        printf("Received2: \"%s\"\n", buf2);
+
+
+ //       conn(ssl);
 
         sleep(1);
 

@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 import javax.net.ssl.*;
-
+import java.util.*;
 /*
  * This example demostrates how to use a SSLSocket as client to
  * send a HTTP request and get response from an HTTPS server.
@@ -37,16 +37,28 @@ public class JJcli {
              * code.  The only way to tell there was an error is to call
              * PrintWriter.checkError().
              */
+
+
+
             socket.startHandshake();
+
+            Scanner sc = new Scanner(System.in);
 
             PrintWriter out = new PrintWriter(
                                   new BufferedWriter(
                                   new OutputStreamWriter(
                                   socket.getOutputStream())));
 
-            out.println("GET / HTTP/1.0");
-            out.println();
+
+            while(sc.hasNext()){
+
+            String next = sc.next();
+            out.println(next);
             out.flush();
+
+            }
+
+
 
             /*
              * Make sure there were no surprises

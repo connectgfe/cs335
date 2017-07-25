@@ -27,6 +27,7 @@ void Servlet(SSL* ssl) // Serve the connection -- threadable
     int sd, bytes;
     const char* HTMLecho="<html><body><pre>%s</pre></body></html>\n\n";
  
+
     if ( SSL_accept(ssl) == FAIL )     // do SSL-protocol accept //
         ERR_print_errors_fp(stderr);
     else
@@ -361,6 +362,7 @@ int main(int argc, char **argv)
      ssl = SSL_new(ctx);
 
 
+    signal(SIGCHLD, SIG_IGN);
 
 
     printf("2verify: %d %d\n",SSL_get_verify_mode(ssl), SSL_get_verify_depth(ssl));
@@ -374,7 +376,7 @@ int main(int argc, char **argv)
 
         int client = accept(sock, (struct sockaddr*)&addr, &len);
 
-        int fd1=open("log.txt", O_WRONLY | O_APPEND);
+        int fd1=open("log2.txt", O_WRONLY | O_APPEND);
         char *address = inet_ntoa(addr.sin_addr);
         time_t t = time(NULL);
         struct tm *tm = localtime(&t);

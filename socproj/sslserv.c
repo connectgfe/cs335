@@ -21,6 +21,7 @@ X509 *okCert;
 pid_t proid;
 int chdcnt=0;
 int server; 
+FILE *snd;
 
  int verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
  {
@@ -113,7 +114,7 @@ SSL_CTX* InitServerCTX(void)
     ctx = SSL_CTX_new(method);   /* create new context from method */
 
  
-    SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,verify_callback);
+//    SSL_CTX_set_verify(ctx,SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,verify_callback);
 
   
     printf("1verify: %d %d\n",SSL_CTX_get_verify_mode(ctx), SSL_CTX_get_verify_depth(ctx));
@@ -233,7 +234,7 @@ void ShowCerts(SSL* ssl)
 
 void Servlet(SSL* ssl) /* Serve the connection -- threadable */
 {   char buf[1024];
-    char reply[1024];
+    char reply[1024]="got it";
     int sd, bytes;
     const char* HTMLecho="<html><body><pre>%s</pre></body></html>\n\n";
  
@@ -250,6 +251,10 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
        
        close(server);
 
+        // attempt to send file 
+        SSL_write(ssl,snd,10);
+
+   
 
          while ( bytes > 0 )
          {
@@ -258,13 +263,14 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
             buf[bytes] = 0;
             if(strcmp(buf,"quit\n")==0){break;} 
             printf("Client msg: %s", buf);
+
             sprintf(reply, HTMLecho, buf);   /* construct reply */
-            SSL_write(ssl, reply, strlen(reply)); /* send reply */
+    //        SSL_write(ssl, reply, strlen(reply)); /* send reply */
             bytes = SSL_read(ssl, buf, sizeof(buf));
 
          }
 
-
+ //printf("no1\n");
    
         sleep(3);
         sd = SSL_get_fd(ssl); 
@@ -304,6 +310,8 @@ printf("**end***\n");
 int main(int count, char *strings[])
 {   SSL_CTX *ctx;
     char *portnum;
+    snd = fopen("sendit.txt", "r");
+
 /* 
     if(!isRoot())
     {
@@ -335,13 +343,22 @@ int main(int count, char *strings[])
         int client = accept(server, (struct sockaddr*)&addr, &len);  /* accept connection as usual */
         // prints client info 
         printf("Connection: %s:%d\n",inet_ntoa(addr.sin_addr), ntohs(addr.sin_port));
-        int fd1=open("log.txt", O_WRONLY | O_APPEND);
+        int fd1=open("log2.txt", O_WRONLY | O_APPEND);
         char *address = inet_ntoa(addr.sin_addr);
+ 
+        int plen = snprintf(NULL, 0, "%d", ntohs(addr.sin_port));
+        char portno[20];
+        snprintf(portno, plen+1, "%d", ntohs(addr.sin_port));
+        strcat(address,portno);
+
+
         time_t t = time(NULL);
         struct tm *tm = localtime(&t);
         char s[64];
         strftime(s, sizeof(s), "%c", tm);
-   
+        s[strlen(s)]='\n';  
+         s[strlen(s)+1]='\0';  
+
         strcat(address,s);
         write(fd1,address,strlen(address));         
 
