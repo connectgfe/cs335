@@ -176,7 +176,7 @@ int main(int count, char *strings[])
 {   SSL_CTX *ctx;
     int server;
     SSL *ssl;
-    char buf[40000];
+    char buf[60000];
     char buf2[20000]; 
     char buf3[20000];
     int bytes, bytes2, bytes3;
@@ -222,10 +222,10 @@ int main(int count, char *strings[])
 
 //     char *end="\r\nUser-Agent: Mozilla/5.0\r\nAccept: text/xml,application/xml,application/xhtml+xml,text/html*/*\r\nAccept-Language: en-us\r\nAccept-Charset: ISO-8859-1,utf-8\r\nConnection: keep-alive\r\n\r\n";
 
-//     char *end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+     char *end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 
 
-     char *end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Charset: ISO-8859-1, utf-8\r\nConnection: keep-alive\r\n\r\n";
+//     char *end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Charset: utf-8\r\nConnection: keep-alive\r\n\r\n";
 
 
 
@@ -245,7 +245,7 @@ int main(int count, char *strings[])
      
         bytes = SSL_read(ssl, buf, sizeof(buf)); // get reply & decrypt 
         bytes2 =SSL_read(ssl, buf2, sizeof(buf2)); 
-//        bytes3 =SSL_read(ssl, buf3, sizeof(buf3)); 
+        bytes3 =SSL_read(ssl, buf3, sizeof(buf3)); 
 
         sleep(1);
 
@@ -260,10 +260,10 @@ int main(int count, char *strings[])
         buf[bytes] = 0;
 
         buf2[bytes2]=0;
-//        buf3[bytes3]=0;
+        buf3[bytes3]=0;
       
        strcat(buf,buf2);
-//        strcat(buf,buf3);
+       strcat(buf,buf3);
         write(fd1,buf,strlen(buf));
 
         printf("Received1: %s\n%s\n%s\n", buf,buf2,buf3);
