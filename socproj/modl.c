@@ -2,24 +2,42 @@
 #include <stdio.h>
 #include <math.h>
 
-int main(){
+int main(int argc, char *argv[]){
 
+ 
+
+// printf("%s %s %s\n",argv[1],argv[2],argv[3]);
+
+ long long mod=(long long)atoi(argv[3]);
+// long long mod=182828395067;
+ double ppr=(double)atoi(argv[1]);
+ long log=atoi(argv[2]);
+
+ printf("%f^x = %lu mod %llu\n",ppr,log,mod);
+
+
+// exit(0);
 
  double x =1;
- int in;
- long val;
- int arr[10];
- int cnt=0;
- int mult=0;
- int mod=197;
+ long long in;
+ long long val;
+ long long arr[10];
+ long long cnt=0;
+ long long mult=0;
 
+
+/*
+ int mod=13469;
+ double ppr=17.0;
+ int log=12031;
+*/
 
  while(x<11){
   
- val = (long)pow(11.0,x);  
+ val = (long long)pow(ppr,x);  
  in= val % mod;
  arr[cnt]=in; 
- printf("val is :%d %lu %f\n",in, val,x);
+ printf("val is :%llu %llu %f\n",in, val,x);
  x++;
  cnt++;
  }
@@ -34,26 +52,32 @@ int main(){
 
  int j=0;
  cnt++;
- int val2=0;
+ long long val2=0;
  while(val2==0){
 
 
- for(j=0;j<10;j++){ 
-  arr[j]=(arr[j]*mult % mod);
+    for(j=0;j<10;j++){ 
+     arr[j]=((arr[j]*mult) % mod);
 
-  if( arr[j]==110){
-   val2=cnt;
-   printf("val is %d\n",val2);
-   break;
-   } 
- 
-  // printf("arrval#: %d %d\n",arr[j],cnt); 
- 
- cnt++;
- }
+      if( arr[j]==log){
+       val2=cnt;
+       printf("x is %llu\n",val2);
+       break;
+      } 
+      if(cnt<50){ 
+//   printf("arrval#: %llu %d\n",arr[j],cnt); 
+      } 
+     cnt++;
+
+      if(cnt==mod){
+       printf("count reached: %llu\n",cnt); 
+       exit(0);
+      }
+    
+   }
 
 
- }
+  }
 
 
 
