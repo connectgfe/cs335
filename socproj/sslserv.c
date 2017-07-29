@@ -312,6 +312,8 @@ int main(int count, char *strings[])
     char *portnum;
     snd = fopen("sendit.txt", "r");
 
+    
+
 /* 
     if(!isRoot())
     {
