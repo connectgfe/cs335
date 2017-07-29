@@ -14,50 +14,114 @@ int main(int argc, char *argv[]){
 // long long mod=182828394773;
  mpz_t mod, beta, alpha, x;
  mpz_init(x);
- mpz_init_set_str(mod,"182828394773",10);
- mpz_init_set_str(alpha,"14",10);
+ mpz_init_set_str(mod,"17",10);
+ mpz_init_set_str(alpha,"3",10);
 // double ppr=(double)atoi(argv[1]);
- mpz_init_set_str(beta,"993843939",10);
+ mpz_init_set_str(beta,"120",10);
 // long log=atoi(argv[2]);
 
 // printf("%f^x = %lu mod %llu\n",ppr,log,mod);
 
 
 // exit(0);
- mpz_t tens;
- mpz_init_set_str(tens,"11",10);
 
- double x =1;
+
+// double x =1;
  long long in;
- long long val;
- long long arr[10];
+// long long val;
+// long long arr[10];
+
+
  long long cnt=0;
  long long mult=0;
+ 
+ int i=0;
+// manually fill array
+
+ void **nums=(void**)malloc(10*sizeof(void*));
+
+ mpz_t two,three,four,five,six,seven,eight,nine,ten;
+ mpz_t val2,val3,val4,val5,val6,val7,val8,val9,val10;
+ mpz_init(val2);
+ mpz_init(val3);
+ mpz_init(val4);
+ mpz_init(val5);
+ mpz_init(val6);
+ mpz_init(val7);
+ mpz_init(val8);
+ mpz_init(val9);
+ mpz_init(val10);
+
+ //mpz_init(val2); mpz_init(val3);
+ mpz_init_set_str(two,"2",10); 
+ mpz_init_set_str(three,"3",10); 
+ mpz_init_set_str(four,"4",10); 
+ mpz_init_set_str(five,"5",10); 
+ mpz_init_set_str(six,"6",10); 
+ mpz_init_set_str(seven,"7",10); 
+ mpz_init_set_str(eight,"8",10); 
+ mpz_init_set_str(nine,"9",10); 
+ mpz_init_set_str(ten,"10",10); 
+
+
+  *nums=alpha;
+
+  mpz_powm(val2,alpha,two,mod);
+  *(nums+1)=val2;
+
+  mpz_powm(val3,alpha,three,mod);
+  *(nums+2)=val3;
+
+  mpz_powm(val4,alpha,four,mod);
+ *(nums+3)=val4;
+
+  mpz_powm(val5,alpha,five,mod);
+ *(nums+4)=val5;
+
+  mpz_powm(val6,alpha,six,mod);
+ *(nums+5)=val6;
+
+  mpz_powm(val7,alpha,seven,mod);
+ *(nums+6)=val7;
+
+  mpz_powm(val8,alpha,eight,mod);
+ *(nums+7)=val8;
+
+  mpz_powm(val9,alpha,nine,mod);
+ *(nums+8)=val9;
+
+  mpz_powm(val10,alpha,ten,mod);
+ *(nums+9)=val10;
+
+
+ while(i<10){
+ mpz_out_str(stdout,10,*(nums+i));
+ printf("\n");
+ i++;
+ }
+
+
+ for(i=0;i<10;i++){
+ mpz_mul(*(nums+i),val10,*(nums+i));
+ mpz_mod(*(nums+i),*(nums+i),mod);
+
+   if( mpz_cmp(*(nums+i),beta)==0){
+     printf("found it\n");
+     break;
+   }
+ }
+
+ printf("\n");
+
+ int j=0;
+ while(j<10){
+ mpz_out_str(stdout,10,*(nums+j));
+ printf("\n");
+ j++;
+ }
 
 
 /*
- int mod=13469;
- double ppr=17.0;
- int log=12031;
-*/
- while(mpz_cmp(x<tens)){
-// while(x<11){
-  
- val = (long long)pow(ppr,x);  
- in= val % mod;
- arr[cnt]=in; 
- printf("val is :%llu %llu %f\n",in, val,x);
- x++;
- cnt++;
- }
- 
-  mult=arr[9];
-
- for(int i=0;i<10;i++){
-//  printf("arrval: %d %d\n",arr[i],mult);
- }
-
-
 
  int j=0;
  cnt++;
@@ -88,6 +152,6 @@ int main(int argc, char *argv[]){
 
   }
 
-
+*/
 
 }
