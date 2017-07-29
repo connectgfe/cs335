@@ -8,8 +8,8 @@ int main(int argc, char *argv[]){
 
 // printf("%s %s %s\n",argv[1],argv[2],argv[3]);
 
- long long mod=(long long)atoi(argv[3]);
-// long long mod=182828395067;
+// long long mod=(long long)atoi(argv[3]);
+ long long mod=182828394773;
  double ppr=(double)atoi(argv[1]);
  long log=atoi(argv[2]);
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[]){
        break;
       } 
       if(cnt<50){ 
-//   printf("arrval#: %llu %d\n",arr[j],cnt); 
+   printf("arrval#: %llu %llu\n",arr[j],cnt); 
       } 
      cnt++;
 
