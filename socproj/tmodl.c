@@ -14,12 +14,12 @@ int main(int argc, char *argv[]){
 // long long mod=182828394773;
  mpz_t mod, beta, alpha, x;
  mpz_init(x);
- mpz_init_set_str(mod,"182828394971",10);
+ mpz_init_set_str(mod,"18284308",10);
  
 
- mpz_init_set_str(alpha,"",10);
+ mpz_init_set_str(alpha,"25",10);
 // double ppr=(double)atoi(argv[1]);
- mpz_init_set_str(beta,"13741",10);
+ mpz_init_set_str(beta,"992321",10);
 // long log=atoi(argv[2]);
 
 // printf("%f^x = %lu mod %llu\n",ppr,log,mod);
@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
 
 
 // double x =1;
- long long in=182828394971;
+ long long in=1828430008;
 // long long val;
 // long long arr[10];
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]){
      }
    
     cnt++;
-//  if(cnt>130){exit(0);}
+  if(cnt>in){exit(0);}
 
    }
 
