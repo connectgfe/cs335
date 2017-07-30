@@ -14,10 +14,12 @@ int main(int argc, char *argv[]){
 // long long mod=182828394773;
  mpz_t mod, beta, alpha, x;
  mpz_init(x);
- mpz_init_set_str(mod,"17",10);
- mpz_init_set_str(alpha,"3",10);
+ mpz_init_set_str(mod,"182828394971",10);
+ 
+
+ mpz_init_set_str(alpha,"",10);
 // double ppr=(double)atoi(argv[1]);
- mpz_init_set_str(beta,"120",10);
+ mpz_init_set_str(beta,"13741",10);
 // long log=atoi(argv[2]);
 
 // printf("%f^x = %lu mod %llu\n",ppr,log,mod);
@@ -27,12 +29,11 @@ int main(int argc, char *argv[]){
 
 
 // double x =1;
- long long in;
+ long long in=182828394971;
 // long long val;
 // long long arr[10];
 
 
- long long cnt=0;
  long long mult=0;
  
  int i=0;
@@ -41,7 +42,8 @@ int main(int argc, char *argv[]){
  void **nums=(void**)malloc(10*sizeof(void*));
 
  mpz_t two,three,four,five,six,seven,eight,nine,ten;
- mpz_t val2,val3,val4,val5,val6,val7,val8,val9,val10;
+ mpz_t val2,val3,val4,val5,val6,val7,val8,val9,val10,spc10;
+
  mpz_init(val2);
  mpz_init(val3);
  mpz_init(val4);
@@ -51,6 +53,7 @@ int main(int argc, char *argv[]){
  mpz_init(val8);
  mpz_init(val9);
  mpz_init(val10);
+ mpz_init(spc10);
 
  //mpz_init(val2); mpz_init(val3);
  mpz_init_set_str(two,"2",10); 
@@ -93,24 +96,43 @@ int main(int argc, char *argv[]){
   mpz_powm(val10,alpha,ten,mod);
  *(nums+9)=val10;
 
+  mpz_powm(spc10,alpha,ten,mod);
 
+/*
  while(i<10){
  mpz_out_str(stdout,10,*(nums+i));
  printf("\n");
  i++;
  }
+*/
 
+ long long cnt=11;
+ long long getval=0;
 
- for(i=0;i<10;i++){
- mpz_mul(*(nums+i),val10,*(nums+i));
- mpz_mod(*(nums+i),*(nums+i),mod);
+ while(getval==0){
+  
+   for(i=0;i<10;i++){
+    mpz_mul(*(nums+i),spc10,*(nums+i));
+    mpz_mod(*(nums+i),*(nums+i),mod);
 
-   if( mpz_cmp(*(nums+i),beta)==0){
-     printf("found it\n");
-     break;
+//mpz_out_str(stdout,10,*(nums+i));
+//printf("\n");
+ 
+     if( mpz_cmp(*(nums+i),beta)==0){ 
+       getval=cnt;
+       printf("found it %llu\n",getval);
+       exit(0); 
+     }
+   
+    cnt++;
+//  if(cnt>130){exit(0);}
+
    }
- }
 
+ 
+ } 
+
+/*
  printf("\n");
 
  int j=0;
@@ -119,7 +141,7 @@ int main(int argc, char *argv[]){
  printf("\n");
  j++;
  }
-
+*/
 
 /*
 
