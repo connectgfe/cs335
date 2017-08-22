@@ -1,0 +1,14 @@
+/** 
+ * A MyLinkedQueue object stores a collection of elements the size of which
+ * is only limited by the memory on the heap (free store).  It is generic
+ * to allow any type of element. A MyLinkedQueue object represents a FIFO queue. 
+ * One can be instantiated like this:
+ * 
+ *    MyQueue<Integer> q = new MyLinkedQueue<>();
+ *    
+ * @param <E>  The type of elements stored in the queue
+ * 
+*/
+public class MyLinkedQueue<E> implements MyQueue<E> {
+
+}
