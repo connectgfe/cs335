@@ -59,19 +59,22 @@ public class MyLinkedQueue<E> implements MyQueue<E> {
 
           } 
 
-		return str.toString();
-	}
+        return str.toString();
+
+ 	}
 
 	@Override
 	public E peek() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+        return input.get(0);
+
+        }
 
 	@Override
 	public E dequeue() throws NoSuchElementException {
-		// TODO Auto-generated method stub
-		return null;
+
+        return input.remove(0);
+
 	}
 
 }

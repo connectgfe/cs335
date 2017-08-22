@@ -13,6 +13,15 @@ public class tm1MQ {
 
   System.out.println(test1.asString());
 
+  System.out.println(test1.peek());
+
+  System.out.println(test1.asString());
+
+  System.out.println(test1.dequeue());
+
+  System.out.println(test1.asString());
+
+
 
   }
 
