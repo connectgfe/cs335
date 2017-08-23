@@ -55,9 +55,11 @@ public class MyLinkedQueue<E> implements MyQueue<E> {
           for( E s : input){ 
 
             str.append(s);
-            str.append("\t");
+            str.append(" ");
 
           } 
+        
+         str.setLength(str.length()-1);
 
         return str.toString();
 

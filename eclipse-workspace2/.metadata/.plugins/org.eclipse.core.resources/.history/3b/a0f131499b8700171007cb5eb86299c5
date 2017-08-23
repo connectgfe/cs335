@@ -1,0 +1,47 @@
+
+/*
+ * A unit test for MyArrayList
+ */
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.NoSuchElementException;
+
+import org.junit.Test;
+
+public class MyLinkedQueueTest {
+
+  @Test
+  public void testNewListIsEmpty() {
+    MyQueue<Integer> q = new MyLinkedQueue<>();
+    assertEquals(0, q.size());
+    assertTrue(q.isEmpty());
+  }
+/*
+  @Test(expected = NoSuchElementException.class)
+  public void testMakeSureAnExceptionIsThrownWithPeekOnAnEmptyQ() {
+    MyLinkedQueue<String> q = new MyLinkedQueue<>();
+    q.peek();
+  }
+
+
+*/
+  //Add more @Test methods to get 100% code coverage
+
+  @Test
+  public void testEnqueueDequeue() {
+	  
+    MyLinkedQueue<String> q = new MyLinkedQueue<>();
+    q.enqueue("last");
+    assertEquals("last",q.peek());
+    String val= q.dequeue();
+    assertEquals("last",val);
+    
+	  
+	  
+  }
+  
+  
+  
+  
+}
