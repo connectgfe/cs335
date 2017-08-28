@@ -11,11 +11,11 @@ public class testenums{
 
 
   // straight flush A
-  Card sfA1 = new Card(Rank.NINE,Suit.CLUBS);
-  Card sfA2 = new Card(Rank.SIX, Suit.CLUBS);
-  Card sfA3 = new Card(Rank.TEN, Suit.CLUBS);
-  Card sfA4 = new Card(Rank.SEVEN, Suit.CLUBS);
-  Card sfA5 = new Card(Rank.EIGHT, Suit.CLUBS);
+  Card sfA1 = new Card(Rank.DEUCE,Suit.CLUBS);
+  Card sfA2 = new Card(Rank.FIVE, Suit.CLUBS);
+  Card sfA3 = new Card(Rank.ACE, Suit.CLUBS);
+  Card sfA4 = new Card(Rank.THREE, Suit.CLUBS);
+  Card sfA5 = new Card(Rank.FOUR, Suit.CLUBS);
 
   PokerHand strflA = new PokerHand(sfA1, sfA2, sfA3, sfA4, sfA5);
   
@@ -135,7 +135,7 @@ public class testenums{
 
   // full house B
   Card fhB1 = new Card(Rank.DEUCE, Suit.CLUBS);
-  Card fhB2 = new Card(Rank.DEUCE, Suit.DIAMONDS);
+  Card fhB2 = new Card(Rank.DEUCE, Suit.HEARTS);
   Card fhB3 = new Card(Rank.ACE, Suit.SPADES);
   Card fhB4 = new Card(Rank.ACE, Suit.CLUBS);
   Card fhB5 = new Card(Rank.ACE, Suit.HEARTS);
@@ -161,9 +161,9 @@ public class testenums{
   pairA.getHand();
 
   // 1 pair B
-  Card prB1  = new Card(Rank.NINE,Suit.SPADES);
+  Card prB1  = new Card(Rank.NINE,Suit.HEARTS);
   Card prB2 = new Card(Rank.SIX, Suit.CLUBS);
-  Card prB3 = new Card(Rank.JACK, Suit.CLUBS);
+  Card prB3 = new Card(Rank.JACK, Suit.DIAMONDS);
   Card prB4 = new Card(Rank.FOUR, Suit.DIAMONDS);
   Card prB5 = new Card(Rank.JACK, Suit.CLUBS);
 
@@ -189,7 +189,7 @@ public class testenums{
   twpairA.getHand();
 
   // 2 pair B
-  Card twprB1  = new Card(Rank.NINE,Suit.SPADES);
+  Card twprB1  = new Card(Rank.NINE,Suit.HEARTS);
   Card twprB2 = new Card(Rank.JACK, Suit.HEARTS);
   Card twprB3 = new Card(Rank.ACE, Suit.CLUBS);
   Card twprB4 = new Card(Rank.NINE, Suit.DIAMONDS);
@@ -232,11 +232,11 @@ public class testenums{
 
 
   // 4 kind A
-  Card frA1 = new Card(Rank.FOUR,Suit.CLUBS);
+  Card frA1 = new Card(Rank.JACK,Suit.CLUBS);
   Card frA2 = new Card(Rank.JACK, Suit.SPADES);
-  Card frA3 = new Card(Rank.FOUR, Suit.HEARTS);
+  Card frA3 = new Card(Rank.JACK, Suit.HEARTS);
   Card frA4 = new Card(Rank.FOUR, Suit.SPADES);
-  Card frA5 = new Card(Rank.FOUR, Suit.DIAMONDS);
+  Card frA5 = new Card(Rank.JACK, Suit.DIAMONDS);
 
   PokerHand fourkndA = new PokerHand(frA1, frA2, frA3, frA4, frA5);
   

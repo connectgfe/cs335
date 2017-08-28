@@ -13,19 +13,25 @@ public class MyLinkedQueueTest {
 
   @Test
   public void testNewListIsEmpty() {
-    MyQueue<Integer> q = new MyLinkedQueue<>();
+    MyLinkedQueue<Integer> q = new MyLinkedQueue<>();
     assertEquals(0, q.size());
     assertTrue(q.isEmpty());
   }
-/*
+
   @Test(expected = NoSuchElementException.class)
   public void testMakeSureAnExceptionIsThrownWithPeekOnAnEmptyQ() {
     MyLinkedQueue<String> q = new MyLinkedQueue<>();
     q.peek();
   }
 
-
-*/
+  @Test(expected = NoSuchElementException.class)
+  public void testMakeSureAnExceptionIsThrownWithDequeueOnAnEmptyQ() {
+    MyLinkedQueue<String> q = new MyLinkedQueue<>();
+    q.dequeue();
+  }
+  
+  
+  
   //Add more @Test methods to get 100% code coverage
 
   @Test

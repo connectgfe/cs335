@@ -1,15 +1,15 @@
-package tests;
-
 import java.util.*;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+/*
 import model.Card;
 import model.DuplicateCardException;
 import model.PokerHand;
 import model.Rank;
 import model.Suit;
+*/
 
 /**
  * Tests the PokerHand class and the enums 
@@ -23,7 +23,7 @@ import model.Suit;
  * 
  * The include enums Suit and Rank @Tests should pass since both enums are complete
 */
-public class PokerHandTest {
+public class PokerHandTest{
 
   @Test
   public void testSuitEnum() {
@@ -48,13 +48,16 @@ public class PokerHandTest {
     new PokerHand(C2, C3, C4, C5, C5);
   }
 
+/*
   @Test(expected = DuplicateCardException.class)
   public void testPair2() {
     PokerHand a = new PokerHand(H3, CA, D4, H6, DA);
     a.toString();
-    PokerHand b = new PokerHand(H3, C5, HA, SA, C6);
+    PokerHand b = new PokerHand(H3, C7, HA, SA, C6);
     assertTrue(a.compareTo(b) < 0);
   }
+*/
+
 
   @Test
   public void testTwoPairWhenOnePairIsEqual() {
@@ -166,148 +169,75 @@ public class PokerHandTest {
   // Many more tests needed
 
 
+  @Test
+  public void strflush() {
+    PokerHand strflA = new PokerHand(C9, C6, C10, C7, C8);
+    PokerHand strflB = new PokerHand(H9, HJ, H10 , H7, H8);
+    assertTrue(strflA.compareTo(strflB)<0);
+  }
 
-  // straight flush A
-  PokerHand strflA = new PokerHand(C9, C6, C10, C7, C8);
-  
-  strflA.order();
-  strflA.getHand();
-
-  // straight flush B
-  PokerHand strflB = new PokerHand(H9, HJ, H10 , H7, H8);
-  
-  strflB.order();
-  strflB.getHand();
-
-  System.out.println("test strfl:(-1) "+strflA.compareTo(strflB));
-
-
-  // straight  A
-  PokerHand strA = new PokerHand(C2, S5, C4, HA, C3);
-  
-  strA.order();
-  strA.getHand();
-
-  // straight  B
-  PokerHand strB = new PokerHand(D9, HJ, H10, C7 , H8);
-  
-  strB.order();
-  strB.getHand();
-
-  System.out.println("test str:(-1) "+strA.compareTo(strB));
+  @Test
+  public void straight() {
+    PokerHand strA = new PokerHand(C2, S5, C4, HA, C3);
+    PokerHand strB = new PokerHand(D9, HJ, H10, C7 , H8);
+    assertTrue(strA.compareTo(strB)<0);
+  }
 
 
-
-  // high card A
-  PokerHand hcrdA = new PokerHand(H9, C6, D4, D8, C7);
-  
-  hcrdA.order();
-  hcrdA.getHand();
-
-  // high card B
-  PokerHand hcrdB = new PokerHand(H9, C4, D10, D8, CA);
- 
-  hcrdB.order();
-  hcrdB.getHand();
-
-  System.out.println("test hcrd:(-1) "+hcrdA.compareTo(hcrdB));
+  @Test
+  public void highCard() {
+    PokerHand hcrdA = new PokerHand(H9, C6, D4, D8, C7);
+    PokerHand hcrdB = new PokerHand(H9, C4, D10, D8, CA);
+    assertTrue(hcrdA.compareTo(hcrdB)<0);
+  }
 
 
-
-  // flush A
-  PokerHand flushA = new PokerHand(C9, C2, C10, C7, CJ);
-  
-  flushA.order();
-  flushA.getHand();
-
-  // flush B
-  PokerHand flushB = new PokerHand(C5, C2, C10, CA, CJ);
-  
-  flushB.order();
-  flushB.getHand();
-
-  System.out.println("test flush:(-1) "+flushA.compareTo(flushB));
+  @Test
+  public void flush() {
+    PokerHand flushA = new PokerHand(C9, C2, C10, C7, CJ);
+    PokerHand flushB = new PokerHand(C5, C2, C10, CA, CJ);
+    assertTrue(flushA.compareTo(flushB)<0);
+  }
 
 
+  @Test
+  public void fullhouse() {
+    PokerHand fulhsA = new PokerHand(C9, D9, S4, C4, H9);
+    PokerHand fulhsB = new PokerHand(C2, D2, SA, CA, HA);
+    assertTrue(fulhsA.compareTo(fulhsB)<0);
+  }
 
-  // full house A
-  PokerHand fulhsA = new PokerHand(C9, D9, S4, C4, H9);
-  
-  fulhsA.order();
-  fulhsA.getHand();
-
-  // full house B
-  PokerHand fulhsB = new PokerHand(C2, D2, SA, CA, HA);
-  
-  fulhsB.order();
-  fulhsB.getHand();
-
-  System.out.println("test fulhs:(-1) "+fulhsA.compareTo(fulhsB));
-
-
-  // 1 pair A
-  PokerHand pairA = new PokerHand(S9, C6, C9, D4, C8);
-  
-  pairA.order();
-  pairA.getHand();
-
-  // 1 pair B
-  PokerHand pairB = new PokerHand(S9, C6, CJ, D4, CJ);
-  
-  pairB.order();
-  pairB.getHand();
-
-  System.out.println("test pair:(-1) "+pairA.compareTo(pairB));
+  @Test
+  public void onePair() {
+    PokerHand pairA = new PokerHand(S9, C6, C9, D4, C8);
+    PokerHand pairB = new PokerHand(S9, C6, CJ, D4, CJ);
+    assertTrue(pairA.compareTo(pairB)<0);
+  }
 
 
-
-  // 2 pair A
-  PokerHand twpairA = new PokerHand(S9, C6, C9, D4, H6);
-  
-  twpairA.order();
-  twpairA.getHand();
-
-  // 2 pair B
-  PokerHand twpairB = new PokerHand(S9, HJ, CA, D9, CJ);
-  
-  twpairB.order();
-  twpairB.getHand();
-
-  System.out.println("test twpair:(-1) "+twpairA.compareTo(twpairB));
+  @Test
+  public void twoPair() {
+    PokerHand twpairA = new PokerHand(S9, C6, C9, D4, H6);
+    PokerHand twpairB = new PokerHand(S9, HJ, CA, D9, CJ);
+    assertTrue(twpairA.compareTo(twpairB)<0);
+  }
 
 
+  @Test
+  public void threeKind() {
+    PokerHand thrkndA = new PokerHand(C10, D6, H10, S10, C8);
+    PokerHand thrkndB = new PokerHand(CJ, D4, HJ, S10, DJ);
+    assertTrue(thrkndA.compareTo(thrkndB)<0);
+  }
 
-  // 3 kind A
-  PokerHand thrkndA = new PokerHand(C10, D6, H10, S10, C8);
-  
-  thrkndA.order();
-  thrkndA.getHand();
+  @Test
+  public void fourKind() {
+    PokerHand fourkndA = new PokerHand(C4, SJ, H4, S4, D4);
+    PokerHand fourkndB = new PokerHand(CJ, SJ, HJ, S10, DJ);
+    assertTrue(fourkndA.compareTo(fourkndB)<0);
+  }
 
-  // 3 kind B
-  PokerHand thrkndB = new PokerHand(CJ, D4, HJ, S10, DJ);
-  
-  thrkndB.order();
-  thrkndB.getHand();
-
-  System.out.println("test thrknd:(-1) "+thrkndA.compareTo(thrkndB));
-
-
-  // 4 kind A
-  PokerHand fourkndA = new PokerHand(C4, SJ, H4, S4, D4);
-  
-  fourkndA.order();
-  fourkndA.getHand();
-
-  // 4 kind B
-  PokerHand fourkndB = new PokerHand(CJ, SJ, HJ, S10, DJ);
-  
-  fourkndB.order();
-  fourkndB.getHand();
-
-  System.out.println("test fourknd:(-1) "+fourkndA.compareTo(fourkndB));
-
-
-
+/*
   LinkedList<PokerHand> best = new LinkedList<PokerHand>();
 
   best.add(strflA);
@@ -347,6 +277,6 @@ public class PokerHandTest {
   
  }
 
-
+*/
 
 }

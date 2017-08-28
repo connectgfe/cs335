@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="MyLinkedQueueTest" project="QueueGiulioEsposito" tests="3" started="3" failures="0" errors="0" ignored="0">
-  <testsuite name="MyLinkedQueueTest" time="0.006">
-    <testcase name="testEnqueueDequeue" classname="MyLinkedQueueTest" time="0.004"/>
-    <testcase name="testAsString" classname="MyLinkedQueueTest" time="0.001"/>
-    <testcase name="testNewListIsEmpty" classname="MyLinkedQueueTest" time="0.001"/>
-  </testsuite>
-</testrun>

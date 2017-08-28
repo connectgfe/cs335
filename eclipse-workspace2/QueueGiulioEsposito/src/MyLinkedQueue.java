@@ -67,6 +67,10 @@ public class MyLinkedQueue<E> implements MyQueue<E> {
 
 	@Override
 	public E peek() throws NoSuchElementException {
+
+        if(input.size() == 0){ 
+          throw new NoSuchElementException();
+        }
 	
         return input.get(0);
 
@@ -75,6 +79,10 @@ public class MyLinkedQueue<E> implements MyQueue<E> {
 	@Override
 	public E dequeue() throws NoSuchElementException {
 
+	    if(input.size() == 0){ 
+	        throw new NoSuchElementException();
+	    }	
+		
         return input.remove(0);
 
 	}

@@ -30,6 +30,9 @@ public class tm1MQ {
 
   System.out.println(test2.asString());
 
+  MyLinkedQueue<Integer> test3 = new MyLinkedQueue<Integer>();
+
+  test3.peek(); 
 
   }
 
