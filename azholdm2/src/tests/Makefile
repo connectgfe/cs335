@@ -1,0 +1,5 @@
+all:
+	javac -cp ".:/home/gesposito/cs335/azholdm/arizona-holdem-connectgfe/src:junit-4.12.jar:hamcrest-core-1.3.jar" PokerHandTest.java -Xlint
+
+run:
+	java -cp /home/gesposito/cs335/azholdm/arizona-holdem-connectgfe/src:junit-4.12.jar:hamcrest-core-1.3.jar: org.junit.runner.JUnitCore PokerHandTest
