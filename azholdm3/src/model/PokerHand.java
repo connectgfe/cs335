@@ -17,7 +17,7 @@ public class PokerHand implements Comparable<PokerHand> {
 
   // Construct a five card poker hand.
   public PokerHand(Card c1, Card c2, Card c3, Card c4, Card c5) {
-  
+ 
   hand.add(c1);
   hand.add(c2);
   hand.add(c3);
@@ -25,6 +25,7 @@ public class PokerHand implements Comparable<PokerHand> {
   hand.add(c5);
 
   order(hand);
+
  // checkDup(hand);
 
    }
@@ -109,6 +110,8 @@ public class PokerHand implements Comparable<PokerHand> {
   // 9=ryfl 8=stfl 7=4knd 6=flhs 5=fl 4=st 3=3knd 2=22knd 1=2knd 0=hc
 
   order(jam.hand);
+
+ 
 
 /*
   // handle DUPCARDS
@@ -227,12 +230,17 @@ public class PokerHand implements Comparable<PokerHand> {
 
 //System.out.println("Vals: "+val1+" "+val2);
 
-
+ 
     if(val1>val2){ return 1;}
     if(val1<val2){ return -1;}
 
+  @SuppressWarnings("unchecked")
+  LinkedList<Card> tempHand = (LinkedList<Card>)hand.clone();
 
-  // ALL TIES
+  @SuppressWarnings("unchecked")
+  LinkedList<Card> tempHandJam = (LinkedList<Card>)jam.hand.clone();
+
+ // ALL TIES
 
   // straight tie
     if(val1==4 || val1==8){
@@ -328,11 +336,16 @@ public class PokerHand implements Comparable<PokerHand> {
 //jam.getHand();
  
            if(hand.get(0).getValue()>jam.hand.get(0).getValue()){
+              hand = tempHand;
+              jam.hand = tempHandJam;
               return 1;}
            if(hand.get(0).getValue()<jam.hand.get(0).getValue()){
+              hand = tempHand;
+              jam.hand = tempHandJam;
               return -1;}
 
-
+          hand = tempHand;
+          jam.hand = tempHandJam;
         return 0;      
         }
      }
@@ -366,16 +379,23 @@ public class PokerHand implements Comparable<PokerHand> {
                 break;
              }
           }
-//getHand();
-//jam.getHand();
 
          if(highcrd(jam)==1){
+            hand = tempHand;
+            jam.hand = tempHandJam;
+
             return 1;
          }
          if(highcrd(jam)==-1){
+            hand = tempHand;
+            jam.hand = tempHandJam;
+
             return -1;
          }
          if(highcrd(jam)==0){
+            hand = tempHand;
+            jam.hand = tempHandJam;
+
             return 0;
          }
  

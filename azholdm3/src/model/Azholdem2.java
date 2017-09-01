@@ -7,7 +7,7 @@ Date Due: 8/30/17 11:55 pm at GitHub
 package model;
 import java.util.*;
 
-public class Azholdem {
+public class Azholdem2 {
 
   LinkedList<Player> game;
   LinkedList<Card> commCards;
@@ -15,10 +15,21 @@ public class Azholdem {
   LinkedList<PokerHand> winner;
   int players;
 
-  public Azholdem(int plyrs){
+  public Azholdem2(int plyrs){
+    
+    players = plyrs;
+    game= new LinkedList<Player>();
+    winner = new LinkedList<PokerHand>();
+
+      for(int i=0;i<plyrs;i++){
+        Player plr= new Player(); 
+        game.add(i,plr);
+       }
+
+   }
 
 
-
+ public void runGame(){
 // set up deck    
     deck= new LinkedList<Card>();
  Card C2 = new Card(Rank.DEUCE, Suit.CLUBS);
@@ -94,22 +105,14 @@ public class Azholdem {
 
 
 
-    // set game, deal Players 2 cards
-    game= new LinkedList<Player>();
-    winner = new LinkedList<PokerHand>();
-
-      for(int i=0;i<plyrs;i++){
-        Player plr= new Player(); 
-        game.add(i,plr);
-       }
-
-      for(int i=0;i<plyrs;i++){
-        game.get(i).pkhand.clear();
-      }
+//      for(int i=0;i<plyrs;i++){
+//        game.get(i).pkhand.clear();
+//      }
      
 
+
  
-    for(int i=0;i<plyrs;i++){
+    for(int i=0;i<players;i++){
       deal2(game.get(i).pkhand);
      }
  
@@ -122,6 +125,12 @@ public class Azholdem {
 
     getPlayerInfo();
 
+    for(int i=0;i<players;i++){
+        game.get(i).pkhand.clear();
+    
+     }
+
+     winner.clear();
 
   }
 

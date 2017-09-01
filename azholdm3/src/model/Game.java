@@ -5,7 +5,7 @@ import model.PokerHand;
 import model.Suit;
 import model.Card;
 import model.Rank;
-import model.Azholdem;
+import model.Azholdem2;
 import model.Player;
 
 public class Game{
@@ -19,11 +19,12 @@ public class Game{
    Scanner sc = new Scanner(System.in);
    int i = sc.nextInt();
    
+   Azholdem2 game1 = new Azholdem2(i);
    // main game loop
      while(i!=0){
 
-       Azholdem game1 = new Azholdem(i);
-       
+       game1.runGame(); 
+      
        System.out.print("Play another game? ");         
 
        gameOn = sc.next();

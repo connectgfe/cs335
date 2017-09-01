@@ -51,7 +51,7 @@ public class Player {
   pkhand.get(3),pkhand.get(4),pkhand.get(5));
 
 
-/*
+
 
   PokerHand p4=new PokerHand(pkhand.get(0),pkhand.get(6),
   pkhand.get(3),pkhand.get(4),pkhand.get(5));
@@ -125,16 +125,12 @@ public class Player {
   PokerHand p21=new PokerHand(pkhand.get(0),pkhand.get(3),
   pkhand.get(6),pkhand.get(4),pkhand.get(2));
 
-*/
+
 
   LinkedList<PokerHand> best = new LinkedList<PokerHand>();
   best.add(p1);
   best.add(p2);
-
-
-
   best.add(p3);
-/*
   best.add(p4);
   best.add(p5);
   best.add(p6);
@@ -153,7 +149,7 @@ public class Player {
   best.add(p19);
   best.add(p20);
   best.add(p21);
-*/
+
 
 
 
@@ -171,11 +167,11 @@ p7.gethand();
 
 */
 
-
+/*
   for(int i=0;i<best.size();i++){
     best.get(i).getHand();
   }
-
+*/
 
 
   Collections.sort(best);
@@ -183,11 +179,11 @@ p7.gethand();
 
 
   System.out.print("Best hand: ");
-  best.get(2).getHand();
+  best.get(20).getHand();
   System.out.println();
 
 
-  return best.get(1);
+  return best.get(20);
 
  }
 

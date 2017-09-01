@@ -31,13 +31,56 @@ public class CollTest{
 
   PokerHand two = new PokerHand(D1,D2,D3,D4,D5);
 
+  
+ 
+
+
   System.out.println(one.compareTo(two));
 
   LinkedList<PokerHand> best = new LinkedList<PokerHand>();
   best.add(one);
   best.add(two);
 
+
+
   Collections.sort(best);
+
+
+  best.get(1).getHand();
+
+/*
+  LinkedList<Card> temp = new LinkedList<Card>();
+  temp.add(C1);
+  temp.add(C2);
+  temp.add(C3);
+
+  for(int i=0;i<temp.size();i++){
+   System.out.print(temp.get(i).toString());
+  }
+  System.out.println();
+
+  @SuppressWarnings("unchecked")
+  LinkedList<Card> temp2 = (LinkedList<Card>)temp.clone();
+
+  temp.remove(2);
+  temp.remove(1);
+
+  for(int i=0;i<temp.size();i++){
+   System.out.print(temp.get(i).toString());
+  }
+  System.out.println();
+
+  temp = temp2;
+
+   for(int i=0;i<temp.size();i++){
+   System.out.print(temp.get(i).toString());
+  }
+  System.out.println();
+
+
+  
+*/
+
 
 
  }
