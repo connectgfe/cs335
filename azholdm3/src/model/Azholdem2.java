@@ -108,9 +108,31 @@ public class Azholdem2 {
 //      for(int i=0;i<plyrs;i++){
 //        game.get(i).pkhand.clear();
 //      }
-     
 
 
+/*     
+///////////////////////////////////////
+    // test for ties
+    LinkedList<Card> tie = new LinkedList<Card>();
+    tie.add(D3);
+    tie.add(D10);
+    tie.add(S7);
+    tie.add(HJ);
+    tie.add(CQ);
+    tie.add(DJ);
+    tie.add(S4);
+
+    for(int i=0; i< players;i++){
+     game.get(i).pkhand = tie;
+    }
+   
+    getPlayerInfo();
+    winner.clear();
+////////////////////////////////////////
+*/
+
+
+    //main game
  
     for(int i=0;i<players;i++){
       deal2(game.get(i).pkhand);
@@ -132,6 +154,8 @@ public class Azholdem2 {
 
      winner.clear();
 
+
+
   }
 
 
@@ -149,6 +173,7 @@ public class Azholdem2 {
      game.get(i).getCards();
    
      // add in comm cards 
+// must add back in regual game
      game.get(i).pkhand.addAll(commCards);
      winner.add(i,game.get(i).getBest()); 
 //     winner.get(i).getHand();
@@ -159,7 +184,13 @@ public class Azholdem2 {
     LinkedList<PokerHand> tempWinner = (LinkedList<PokerHand>)winner.clone();    
 
      Collections.sort(tempWinner);
+   
+    // check for ties
+     int tieVal = tieCheck(tempWinner);
+System.out.println("tie report: "+tieVal);
+    // tieVal returns 1 if no ties or number of entries in tempWinner that are tied  
 
+     if(tieVal==1){
      int val=0;
      for(int i=0;i<winner.size();i++){
      
@@ -175,6 +206,14 @@ public class Azholdem2 {
      System.out.print("Winner: "+(val+1)+" "+game.get(val).ante+" ");
      tempWinner.get(tempWinner.size()-1).getHand();
      System.out.print("\n\n");
+     
+     }else{
+
+     LinkedList<Player> winnerList = new LinkedList<Player>();
+     
+
+     } 
+ 
   }
 
   public void getCommCards(){
@@ -245,6 +284,27 @@ public class Azholdem2 {
        cnt--; 
      }      
   }
+
+  public int tieCheck(LinkedList<PokerHand> winner){
+
+   int cnt=0;
+
+     for(int i=(winner.size()-1);i>0;i--){ 
+       
+         winner.get(i).getHand();
+         winner.get(i-1).getHand(); 
+         int w = winner.get(i).compareTo(winner.get(i-1));
+         System.out.println("w val: "+w);
+         if(w==0){ 
+           System.out.println("Got it");
+          cnt++;
+         }
+ 
+     }
+    
+     return cnt+1;
+  }
+
 
 
 }
