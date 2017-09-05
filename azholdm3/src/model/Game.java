@@ -24,7 +24,7 @@ public class Game{
      while(i!=0){
 
        game1.runGame(); 
-      
+        
        System.out.print("Play another game? ");         
 
        gameOn = sc.next();
@@ -33,7 +33,7 @@ public class Game{
         i=0;
        } 
      
-
+       System.out.println("------------------");
 
     }
 
