@@ -261,7 +261,7 @@ public class PokerHand implements Comparable<PokerHand> {
     }  
 
 
-   // flush
+   // flush tie
 
    if(val1==5){
  
@@ -279,13 +279,113 @@ public class PokerHand implements Comparable<PokerHand> {
    }
 
     // 4knd tie
-    if(val1==7 || val1==6 || val1==3){
+    if(val1==7){
       if(frtemp>frtempjam){
-         return 1;}else{
+         return 1;}
+      if(frtemp<frtempjam){
          return -1;}
+     // remove frtemp from hands 
+
+          for(int i=0;i<hand.size();i++){
+             if(hand.get(i).getValue()==frtemp){
+                hand.remove(i);
+                hand.remove(i);
+                hand.remove(i);
+                hand.remove(i);
+                break; 
+             }
+          }
+        // do same for jam
+           for(int i=0;i<jam.hand.size();i++){
+             if(jam.hand.get(i).getValue()==frtemp){
+                jam.hand.remove(i);
+                jam.hand.remove(i);
+                jam.hand.remove(i);
+                jam.hand.remove(i);
+                break; 
+             }
+            } 
+
+
+          if(hand.get(0).getValue()>jam.hand.get(0).getValue()){
+              hand = tempHand;
+              jam.hand = tempHandJam;
+              return 1;}
+           if(hand.get(0).getValue()<jam.hand.get(0).getValue()){
+              hand = tempHand;
+              jam.hand = tempHandJam;
+              return -1;}
+
+          hand = tempHand;
+          jam.hand = tempHandJam;
+        return 0;      
+ 
+
+       
      }
      
-    
+  
+     // 3knd tie
+    if(val1==3){
+      if(trtemp>trtempjam){
+         return 1;}
+      if(trtemp<trtempjam){
+         return -1;}
+      // remove trtemp from hands 
+
+          for(int i=0;i<hand.size();i++){
+             if(hand.get(i).getValue()==trtemp){
+                hand.remove(i);
+                hand.remove(i);
+                hand.remove(i);
+                break; 
+             }
+          }
+        // do same for jam
+           for(int i=0;i<jam.hand.size();i++){
+             if(jam.hand.get(i).getValue()==trtemp){
+                jam.hand.remove(i);
+                jam.hand.remove(i);
+                jam.hand.remove(i);
+                break; 
+             }
+            } 
+
+       if(highcrd(jam)==1){
+           hand = tempHand;
+           jam.hand = tempHandJam; 
+           return 1;   
+        }
+       if(highcrd(jam)==-1){
+           hand = tempHand;
+           jam.hand = tempHandJam;
+           return -1;  
+        }
+        if(highcrd(jam)==0){
+            hand = tempHand;
+            jam.hand = tempHandJam;
+            return 0;  
+        }
+
+
+
+     }
+
+ 
+    // fulhs tie
+     if(val1==6){
+      if(trtemp>trtempjam){
+         return 1;}
+      if(trtemp<trtempjam){
+         return -1;}
+           if(frtwtemp>frtwtempjam){
+             return 1;}
+            if(frtwtemp<frtwtempjam){
+             return -1;}
+        return 0; 
+     }
+
+ 
 
     // 2 2knd tie
 

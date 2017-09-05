@@ -189,30 +189,38 @@ public class Azholdem2 {
      int tieVal = tieCheck(tempWinner);
 System.out.println("tie report: "+tieVal);
     // tieVal returns 1 if no ties or number of entries in tempWinner that are tied  
-
-     if(tieVal==1){
+     
+     int[] winners = new int[tieVal+1];
      int val=0;
      for(int i=0;i<winner.size();i++){
      
         if(winner.get(i)==tempWinner.get(tempWinner.size()-1)){
 //          System.out.println("got it");
-          val = i; 
-          break;
+     //     val = i; 
+
+/// need to account for tie not being same object as first
+
+
+          winners[val]=i;
+          val++;
+
+           //    break;
         }
 
      }
+    System.out.print("Winners:");
+    for(int i=0;i<winners.length;i++){
+     System.out.print(" "+winners[i]);
+    }
+    System.out.println();
 
-     game.get(val).ante=(game.get(val).ante+(game.size()*2));
-     System.out.print("Winner: "+(val+1)+" "+game.get(val).ante+" ");
+
+     game.get(winners[0]).ante=(game.get(winners[0]).ante+(game.size()*2));
+     System.out.print("Winner: "+(winners[0])+" "+game.get(winners[0]).ante+" ");
      tempWinner.get(tempWinner.size()-1).getHand();
      System.out.print("\n\n");
      
-     }else{
 
-     LinkedList<Player> winnerList = new LinkedList<Player>();
-     
-
-     } 
  
   }
 
@@ -295,15 +303,16 @@ System.out.println("tie report: "+tieVal);
          winner.get(i-1).getHand(); 
          int w = winner.get(i).compareTo(winner.get(i-1));
          System.out.println("w val: "+w);
-         if(w==0){ 
+         if(w==0 && (cnt+i+1)==winner.size()){ 
            System.out.println("Got it");
           cnt++;
          }
+        } 
  
-     }
+     return cnt;
+     
+    }
     
-     return cnt+1;
-  }
 
 
 
