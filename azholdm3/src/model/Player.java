@@ -180,7 +180,8 @@ p7.gethand();
 
   System.out.print("Best hand: ");
   best.get(20).getHand();
-  System.out.println();
+  System.out.print(" "+best.get(20).getName());
+  System.out.print("\n\n");
 
 
   return best.get(20);

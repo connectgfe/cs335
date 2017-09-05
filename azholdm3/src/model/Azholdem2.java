@@ -122,9 +122,20 @@ public class Azholdem2 {
     tie.add(DJ);
     tie.add(S4);
 
-    for(int i=0; i< players;i++){
+    for(int i=0; i< (players-1);i++){
      game.get(i).pkhand = tie;
     }
+
+    LinkedList<Card> tie2 = new LinkedList<Card>();
+    tie2.add(D3);
+    tie2.add(D10);
+    tie2.add(S7);
+    tie2.add(HJ);
+    tie2.add(CQ);
+    tie2.add(DK);
+    tie2.add(S4);
+
+    game.get(players-1).pkhand = tie2;
    
     getPlayerInfo();
     winner.clear();
@@ -215,13 +226,20 @@ public class Azholdem2 {
 
     // distribute ante
      for(int i=0;i<winners.length;i++){
-     game.get(winners[i]-1).ante=(game.get(winners[i]-1).ante+((game.size()*2)/winners.length));
+     double splitAnte = ((game.size()*2)/(double)winners.length);
+     double updateAnte1=(game.get(winners[i]-1).ante+splitAnte);
+     double updateAnte2 = Math.round( updateAnte1* 100.0)/ 100.0;
+//System.out.println(splitAnte);
+//System.out.println(updateAnte1+" "+updateAnte2);
+     game.get(winners[i]-1).ante= updateAnte2;
      }
 
      for(int i=0;i<winners.length;i++){
 
-     System.out.print("Winner: "+(winners[i])+"  $"+game.get(winners[0]-1).ante+"0 ");
+     System.out.print("Winner: "+(winners[i])+"  $"+game.get(winners[0]-1).ante+" ");
      tempWinner.get(tempWinner.size()-(i+1)).getHand();
+     System.out.println(" "+tempWinner.get(tempWinner.size()-(i+1)).getName());
+
      } 
 
      System.out.print("\n\n");

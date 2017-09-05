@@ -14,6 +14,8 @@ public class PokerHand implements Comparable<PokerHand> {
 
 
   LinkedList<Card> hand = new LinkedList<Card>();
+  int val1;
+
 
   // Construct a five card poker hand.
   public PokerHand(Card c1, Card c2, Card c3, Card c4, Card c5) {
@@ -97,10 +99,24 @@ public class PokerHand implements Comparable<PokerHand> {
 //       System.out.print(hand.get(i).rank+""+hand.get(i).suit+" ");
     } 
     
-    System.out.println(); 
+//    System.out.println(); 
    }
 
 
+  public String getName(){
+
+  if(val1==0){ return "High Card";}
+  if(val1==1){ return "Pair";}
+  if(val1==2){ return "Two Pair";}
+  if(val1==3){ return "Three Kind";}
+  if(val1==4){ return "Straight";}
+  if(val1==5){ return "Flush";}
+  if(val1==6){ return "Full House";}
+  if(val1==7){ return "Four Kind";}
+  if(val1==8){ return "Straight Flush";}
+
+    return "no input";
+  }
 
   @Override
   public int compareTo(PokerHand jam){
@@ -122,7 +138,7 @@ public class PokerHand implements Comparable<PokerHand> {
 //  checkDup(testDup); 
 */
 
-    int val1=-1;
+    val1=-1;
     int val2=-1;
 
 
