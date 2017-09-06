@@ -115,7 +115,7 @@ public class PokerHand implements Comparable<PokerHand> {
   if(val1==7){ return "Four Kind";}
   if(val1==8){ return "Straight Flush";}
 
-    return "no input";
+    return "High Card";
   }
 
   @Override

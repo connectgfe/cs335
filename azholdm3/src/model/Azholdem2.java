@@ -6,6 +6,7 @@ Date Due: 8/30/17 11:55 pm at GitHub
 */
 package model;
 import java.util.*;
+import java.text.*;
 
 public class Azholdem2 {
 
@@ -176,11 +177,17 @@ public class Azholdem2 {
   public void getPlayerInfo(){
   
 
-
+    System.out.println();
     for(int i=0;i<game.size();i++){
      System.out.print("Player "+(i+1));
      game.get(i).ante=(game.get(i).ante-2.0);
-     System.out.print(": $"+game.get(i).ante+" - ");
+     NumberFormat cur = DecimalFormat.getCurrencyInstance();
+
+    System.out.print(": "+cur.format(game.get(i).ante)+" - ");
+    
+//     System.out.print(": $"+game.get(i).ante+" - ");
+
+
      game.get(i).getCards();
    
      // add in comm cards 
@@ -236,7 +243,9 @@ public class Azholdem2 {
 
      for(int i=0;i<winners.length;i++){
 
-     System.out.print("Winner: "+(winners[i])+"  $"+game.get(winners[0]-1).ante+" ");
+     NumberFormat cur2 = DecimalFormat.getCurrencyInstance();
+
+     System.out.print("Winner: "+(winners[i])+"  "+cur2.format(game.get(winners[i]-1).ante)+" ");
      tempWinner.get(tempWinner.size()-(i+1)).getHand();
      System.out.println(" "+tempWinner.get(tempWinner.size()-(i+1)).getName());
 

@@ -1,4 +1,4 @@
-
+//package model;
 
 import java.util.*;
 import model.PokerHand;
@@ -13,7 +13,7 @@ public class Game{
    public static void main(String[] args){
 
   
-   System.out.print("How many players? ");
+   System.out.print("\nWELCOME TO ARIZONA HOLDEM!!\n\nHow many players? ");
 
    String gameOn;
    Scanner sc = new Scanner(System.in);
@@ -37,7 +37,7 @@ public class Game{
 
     }
 
-   
+   System.out.println("GoodBye!!");   
 
    }
 
