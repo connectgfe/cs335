@@ -12,14 +12,20 @@ int main(int argc, char *argv[]){
 
 // long long mod=(long long)atoi(argv[3]);
 // long long mod=182828394773;
- mpz_t mod, beta, alpha, x;
+ mpz_t mod, beta, alpha, x, cnt, stop;
  mpz_init(x);
- mpz_init_set_str(mod,"18284308",10);
+// mpz_init_set_str(mod,"7243469162906133262707138361729247674528418426076702186281286038623238274842547507072974617594640311",10);
  
-
- mpz_init_set_str(alpha,"25",10);
+ mpz_init_set_str(mod,"94640311",10);
+ 
+ mpz_init_set_str(alpha,"3242736143229285405697273596419677873912657748731448981302390864459158863881443495029809033284732127",10);
 // double ppr=(double)atoi(argv[1]);
- mpz_init_set_str(beta,"992321",10);
+// mpz_init_set_str(beta,"4047679502946697500382100420979357527035012439448927745472004125213748856817534928269760021436528985",10);
+
+ mpz_init_set_str(beta,"36528985",10);
+
+
+
 // long log=atoi(argv[2]);
 
 // printf("%f^x = %lu mod %llu\n",ppr,log,mod);
@@ -29,13 +35,11 @@ int main(int argc, char *argv[]){
 
 
 // double x =1;
- long long in=1828430008;
 // long long val;
 // long long arr[10];
 
 
- long long mult=0;
- 
+ long one=1; 
  int i=0;
 // manually fill array
 
@@ -105,27 +109,34 @@ int main(int argc, char *argv[]){
  i++;
  }
 */
+ mpz_init_set_str(cnt,"11",10);
+ mpz_init_set_str(stop,"10000000",10);
 
- long long cnt=11;
+// long long cnt=11;
  long long getval=0;
 
  while(getval==0){
   
-   for(i=0;i<10;i++){
+   for(i=0;i<2;i++){
     mpz_mul(*(nums+i),spc10,*(nums+i));
     mpz_mod(*(nums+i),*(nums+i),mod);
-
+    
 //mpz_out_str(stdout,10,*(nums+i));
 //printf("\n");
  
      if( mpz_cmp(*(nums+i),beta)==0){ 
-       getval=cnt;
+//       getval=cnt;
        printf("found it %llu\n",getval);
        exit(0); 
      }
    
-    cnt++;
-  if(cnt>in){exit(0);}
+//    cnt++;
+     mpz_add_ui(cnt,cnt,one); 
+//mpz_out_str(stdout,10,cnt);
+//printf("\n");
+
+//  if(cnt>in){exit(0);}
+    if(mpz_cmp(cnt,mod)==0){exit(0);}
 
    }
 

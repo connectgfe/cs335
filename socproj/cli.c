@@ -10,12 +10,19 @@
 #include <arpa/inet.h> 
 
 void comm(int);
+char *hostname;
+
+
 
 int main(int argc, char *argv[])
 {
     int sockfd = 0, n = 0;
     char recvBuff[1024];
     struct sockaddr_in serv_addr; 
+
+    hostname=argv[1];
+    printf("%s\n",hostname);
+
 
     if(argc != 2)
     {
@@ -45,6 +52,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+printf("no1\n");
 
     // new socket sockfd
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
@@ -52,16 +60,21 @@ int main(int argc, char *argv[])
        printf("\n Error : Connect Failed \n");
        return 1;
     } 
+printf("no2\n");
+
+    comm(sockfd);
 
     while ( (n = read(sockfd, recvBuff, sizeof(recvBuff)-1)) > 0)
     {
-        recvBuff[n] = 0;
+   
+printf("no3\n");
+     recvBuff[n] = 0;
      
        if(fputs(recvBuff, stdout) != EOF){
          
+printf("recvBuff: %s\n",recvBuff);        
 
-
-        comm(sockfd);
+//        comm(sockfd);
 /* 
         char* line="msg recieved";
          char* line2="sent msg";
@@ -96,6 +109,39 @@ void comm(int fd){
  
   char *line;
   size_t len=0;
+
+  char buf[30000];
+  int bytes;
+
+  char msg[50]="GET / HTTP/1.1\r\nHost: ";
+  strcat(msg,hostname);
+
+//     char *end="\r\n\r\n";
+
+//     char *end="\r\nUser-Agent: Mozilla/5.0\r\nAccept: text/xml,application/xml,application/xhtml+xml,text/html*/*\r\nAccept-Language: en-us\r\nAccept-Charset: ISO-8859-1,utf-8\r\nConnection: keep-alive\r\n\r\n";
+
+     char *end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+
+     strcat(msg,end);
+
+     printf("%s",msg);
+
+
+//        char *msg = "Begin Transmission\n";
+ 
+     write(fd, msg, strlen(msg));  
+
+    while( bytes= read(fd,buf,sizeof(buf))>0){
+
+
+    buf[bytes]=0;
+
+    printf("%s\n",buf);
+
+    printf("end input\n");
+     
+    }
+/*
  
   while(getline(&line,&len,stdin)>0){
 
@@ -126,7 +172,7 @@ void comm(int fd){
   
   }
 
-
+*/
 
 
 }

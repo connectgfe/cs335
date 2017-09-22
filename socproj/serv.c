@@ -61,9 +61,28 @@ int main(int argc, char *argv[])
 
 void connected(){
 
+      char *greet= "Hello\n"; 
+      write(connfd, greet, strlen(greet));
+      sleep(3);    
+
+      char buf[30000];
+
+      int bytes=0;
+      memset(buf,'0',sizeof(buf)); 
+
+      bytes= read(connfd, buf, strlen(buf));
+      buf[bytes]=0;
+      printf("%s\n",buf);
+
+
+/*
+
       char* usrn= "Enter Username: "; 
       write(connfd, usrn, strlen(usrn));
       sleep(3);    
+
+
+
       while(call){
 
 //      char* usrn= "Enter Username: "; 
@@ -96,7 +115,7 @@ void connected(){
 //     call=0;
 
      }
-
+*/
 
 /*
     

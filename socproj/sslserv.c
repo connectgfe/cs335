@@ -234,7 +234,7 @@ void ShowCerts(SSL* ssl)
 
 void Servlet(SSL* ssl) /* Serve the connection -- threadable */
 {   char buf[1024];
-    char reply[1024]="got it";
+    char reply[1024]="this is got it 2";
     int sd, bytes;
     const char* HTMLecho="<html><body><pre>%s</pre></body></html>\n\n";
  
@@ -248,29 +248,48 @@ void Servlet(SSL* ssl) /* Serve the connection -- threadable */
  
        proid = fork();       
        if(proid == 0){
-       
+ printf("no1\n");
+      
        close(server);
+printf("no2\n");
 
+
+
+/*
         // attempt to send file 
         SSL_write(ssl,snd,10);
 
-   
+        // attempt to send msg
+        char msg1[10]="new connection\n";
+        SSL_write(ssl,msg1, sizeof(msg1));
+*/
+ 
+        // this will loop until client has fulfiled request
 
          while ( bytes > 0 )
          {
+printf("no3\n");
 
              
             buf[bytes] = 0;
             if(strcmp(buf,"quit\n")==0){break;} 
-            printf("Client msg: %s", buf);
+            printf("Client msg:\n%s", buf);
 
-            sprintf(reply, HTMLecho, buf);   /* construct reply */
-    //        SSL_write(ssl, reply, strlen(reply)); /* send reply */
+     //       sprintf(reply, HTMLecho, buf);   /* construct reply */
+
+        char msg1[50]="new connection\n";
+        SSL_write(ssl,msg1, sizeof(msg1));
+
+/*
+            SSL_write(ssl, reply, strlen(reply));
             bytes = SSL_read(ssl, buf, sizeof(buf));
+*/
+
+printf("no4\n");
 
          }
 
- //printf("no1\n");
+printf("no5\n");
    
         sleep(3);
         sd = SSL_get_fd(ssl); 
