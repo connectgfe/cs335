@@ -51,30 +51,33 @@ TimeStamp = new java.util.Date().toString();
 
 */
 
-      System.out.println("**here**");
 
-      String process = "Hello from java\n";
+      Scanner scan = new Scanner(System.in);
 
-  String msg="GET /2014/programs/primitive.html HTTP/1.1\r\nHost: ";
+
+
+//  String msg="GET /2014/programs/primitive.html HTTP/1.1\r\nHost: ";
   
-   msg.concat(host);
+//   msg.concat(host);
 //     char *end="\r\n\r\n";
 
 //     char *end="\r\nUser-Agent: Mozilla/5.0\r\nAccept: text/xml,application/xml,application/xhtml+xml,text/html*/*\r\nAccept-Language: en-us\r\nAccept-Charset: ISO-8859-1,utf-8\r\nConnection: keep-alive\r\n\r\n";
 
-     String end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
+//     String end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Encoding: gzip, deflate\r\nConnection: keep-alive\r\n\r\n";
 
-   msg.concat(end);
-System.out.println(msg);
+//   msg.concat(end);
+//System.out.println(msg);
 
 //        char *msg = "Begin Transmission\n";
  
-   //    write(fd, msg, strlen(msg));  
+//      write(fd, msg, strlen(msg));  
 
 
       /** Write across the socket connection and flush the buffer */
-//      osw.write(process,0,process.length());
-//      osw.flush();
+      osw.write(scan.next(),0,scan.next().length());
+      osw.flush();
+
+System.out.println("Sent msg");
 
       /** Instantiate a BufferedInputStream object for reading
       /** Instantiate a BufferedInputStream object for reading
@@ -93,9 +96,18 @@ System.out.println(msg);
 
       String line= null;
 
+
+
       while( (line = br.readLine()) !=null){
 
+          osw.write(scan.next(),0,scan.next().length());
+
+
           System.out.println(line);
+
+
+
+
       }
       /**Read the socket's InputStream and append to a StringBuffer */
 

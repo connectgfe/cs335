@@ -23,6 +23,22 @@ int chdcnt=0;
 int server; 
 FILE *snd;
 
+
+
+ char* getBuf(char* file){
+
+  char buf[15];
+
+  int fd1=open(file, O_RDONLY);
+  read(fd1,buf,15);
+  
+  return buf;
+
+ }
+
+
+
+
  int verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
  {
     char    buf[256];
@@ -274,16 +290,25 @@ printf("no3\n");
             buf[bytes] = 0;
             if(strcmp(buf,"quit\n")==0){break;} 
             printf("Client msg:\n%s", buf);
+            
+            char file[1000];
 
+            int fd1 = open(buf, O_RDONLY);
+            read(fd1,file,1000);
+
+ 
+             printf("file contents: %s\n", file);
      //       sprintf(reply, HTMLecho, buf);   /* construct reply */
 
-        char msg1[50]="new connection\n";
-        SSL_write(ssl,msg1, sizeof(msg1));
+        char msg1[500]="Server response:\n";
 
-/*
-            SSL_write(ssl, reply, strlen(reply));
+//        strcat(msg1,file);
+
+        SSL_write(ssl,file, sizeof(file));
+
+
+//            SSL_write(ssl, reply, strlen(reply));
             bytes = SSL_read(ssl, buf, sizeof(buf));
-*/
 
 printf("no4\n");
 

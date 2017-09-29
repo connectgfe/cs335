@@ -176,7 +176,7 @@ int main(int count, char *strings[])
 {   SSL_CTX *ctx;
     int server;
     SSL *ssl;
-    char buf[500];
+    char buf[1000];
     char buf2[500]; 
     char buf3[500];
     int bytes, bytes2, bytes3;
@@ -232,18 +232,20 @@ printf("no1\n");
 //     char *end="\r\nUser-Agent: Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Mobile Safari/537.36\r\nAccept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.8\r\nAccept-Charset: utf-8\r\nConnection: keep-alive\r\n\r\n";
 
 
-
+    char tempMsg[12]="test1.html";
 
 
      strcat(msg,end);
 
-     printf("%s",msg);
+     printf("%s\n",tempMsg);
 
 
 //        char *msg = "Begin Transmission\n";
 printf("no2\n");
 
-       SSL_write(ssl, msg, strlen(msg));   // encrypt & send message */
+//       SSL_write(ssl, msg, strlen(msg));   // encrypt & send message 
+
+       SSL_write(ssl, tempMsg, strlen(tempMsg)); 
 
 printf("no3\n");
 
@@ -280,8 +282,8 @@ printf("no5\n");
 
 
 
-        printf("Received1: %s\n%s\n%s\n", buf,buf2,buf3);
-        system("google-chrome buf.html");
+        printf("Received 1: %s\n%s\n%s\n", buf,buf2,buf3);
+        system("see buf.html");
 
 
 
