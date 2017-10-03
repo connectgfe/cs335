@@ -297,15 +297,11 @@ System.out.println("In paint objs: "+val+" "+drw);
 
 
   private GridPane createGridPane() {
-    // TODO 1: Construct 2 RadioButton objects
+    
     RadioButton rect = new RadioButton("Rectangle");
     RadioButton oval = new RadioButton("Oval");
     RadioButton line = new RadioButton("Line");
     RadioButton picture = new RadioButton("Picture");
-
-
-    // TODO 2: Construct a ToggleGroup so only one can be selected
-    // and add the radio buttons to it
 
 
     ToggleGroup group = new ToggleGroup();
@@ -329,8 +325,6 @@ System.out.println("In paint objs: "+val+" "+drw);
 
 
 
-    // TODO 3: Add the ColorPicker that will be needed when the color is changed
-
     colorPicker = new ColorPicker(Color.BLUE);
     colorPicker.setOnAction(new ColorChanger());
 
@@ -346,11 +340,6 @@ System.out.println("this is mouse cliked val "+val);
     drw=2;
 
 
-/*
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setHeaderText("You just clicked RadioButton one");
-      alert.showAndWait();
-*/
 
     });
 
@@ -366,11 +355,6 @@ System.out.println("this is mouse cliked val "+val);
 
 
 
-/*
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setHeaderText("You just clicked RadioButton two");
-      alert.showAndWait();
-*/
     });
 
 
@@ -383,16 +367,6 @@ System.out.println("this is mouse cliked val "+val);
 
      drw=1;
 
-//   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-//   drawPaintObjects();
-
-
-
-/*
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setHeaderText("You just clicked RadioButton two");
-      alert.showAndWait();
-*/
     });
 
     picture.setOnAction(event -> {
@@ -404,16 +378,6 @@ System.out.println("this is mouse cliked val "+val);
 
      drw=4;
 
-//   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-//   drawPaintObjects();
-
-
-
-/*
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setHeaderText("You just clicked RadioButton two");
-      alert.showAndWait();
-*/
     });
 
 
@@ -430,7 +394,6 @@ System.out.println("this is mouse cliked val "+val);
 
       color = colorPicker.getValue();
 
-//     gridPane.setStyle("-fx-background-color: '"+color+"'");
 
 System.out.println(color);
 
