@@ -5,7 +5,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import java.awt.Point;
 import java.util.Vector;
 import javafx.scene.canvas.Canvas;
@@ -33,11 +40,13 @@ public class Client extends Application {
 
   Canvas canvas; 
   double inXval, inYval, curXval, curYval, outXval, outYval;
-;
   GraphicsContext gc;
-  int val;
-
+  int val,drw;
   Vector<PaintObject> allPaintObjects;
+  private ColorPicker colorPicker;
+  private GridPane gridPane;
+  Color color;
+
 
 
   public static void main(String[] args) {
@@ -50,6 +59,9 @@ public class Client extends Application {
     canvas = new Canvas(800, 550);
     all.setCenter(canvas);
 
+    gridPane = createGridPane();
+    all.setBottom(gridPane);
+
     gc = canvas.getGraphicsContext2D();
     allPaintObjects = new Vector<>();
 
@@ -60,8 +72,8 @@ public class Client extends Application {
     primaryStage.show();
     initCanvas();
 
-    
-
+    drw=2; 
+    color = Color.BLUE;
 
   }
 
@@ -69,7 +81,6 @@ public class Client extends Application {
     public void initCanvas(){
 
      
-    
 
      canvas.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -86,7 +97,7 @@ public class Client extends Application {
         inYval = arg0.getY(); 
 
 
-       System.out.println("in: "+val+" "+inXval+" "+inYval);
+System.out.println("in: "+val+" "+drw+" "+inXval+" "+inYval);
 
        getMouseMove();
 
@@ -96,52 +107,75 @@ public class Client extends Application {
        outXval = arg0.getX();
        outYval = arg0.getY(); 
 
-       System.out.println("out: "+val+" "+outXval+" "+outYval);
+System.out.println("out: "+val+" "+drw+" "+outXval+" "+outYval);
 
-//       drawRectangle();
+       // make new PaintObject
+      if(drw==2){
 
-     Rectangle rectangle = new Rectangle(Color.BLUE,new Point((int)inXval,(int)inYval),new Point((int)outXval,(int)outYval));
-
+       Rectangle rectangle = new Rectangle(color,new Point((int)inXval,(int)inYval),new Point((int)outXval,(int)outYval));
 
 
      allPaintObjects.add(rectangle);
+
+   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+   drawPaintObjects();
+ 
+
+
+     }
+
+
+      if(drw==3){
+
+
+       Oval oval = new Oval(color,new Point((int)inXval,(int)inYval),new Point((int)outXval,(int)outYval));
+
+
+     allPaintObjects.add(oval);
+
+   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+   drawPaintObjects();
+ 
+
+     }
+
+      if(drw==1){
+
+       Line line = new Line(color,new Point((int)inXval,(int)inYval),new Point((int)outXval,(int)outYval));
+
+
+     allPaintObjects.add(line);
+
+   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+   drawPaintObjects();
+ 
+
+      }
+
+
+      if(drw==4){
+
+       Picture picture = new Picture(new Point((int)inXval,(int)inYval),new Point((int)outXval,(int)outYval), "doge.jpeg");
+
+
+     allPaintObjects.add(picture);
+
+   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+   drawPaintObjects();
+ 
+
+      }
+
 
        }
        
 
 
-//      getMouseMove();
-
-
-       
-
-//   drawRectangle();
-
 
      }
     });
 
 
-
-/*
-     canvas.setOnMouseReleased(new EventHandler<MouseEvent>(){
-
-    @Override
-    public void handle(MouseEvent arg0) {
-        outXval = arg0.getX();
-        outYval = arg0.getY(); 
-
-       val=0;
-       System.out.println("out: "+val+" "+outXval+" "+outYval);
-
-//   drawRectangle();
-
-
-
-     }
-    });
-
-*/
 
 
    }
@@ -161,34 +195,30 @@ public class Client extends Application {
 //System.out.println("move val2: "+val);
 
        if(val%2!=0){
-      drawPaintObjects();
 
 
         curXval = arg0.getX();
         curYval = arg0.getY(); 
 
-       System.out.println("cur: "+curXval+" "+curYval);
+System.out.println("cur: "+drw+" "+curXval+" "+curYval);
 
 
 
 
-       }
+//       }
 
-
-//   gc.clearRect(inXval, inYval, curXval, curYval);
-// draw canvas
 
     
      
    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
    
- 
-   drawRectangle();
+    drawPaintObjects();
 
+   drawTempPaintObject();
+}
 
-   drawPaintObjects();
+//   drawPaintObjects();
    
-//        }  
 
 
      }
@@ -200,20 +230,54 @@ public class Client extends Application {
    }
 
 
-   public void drawRectangle(  ){
+   public void drawTempPaintObject(  ){
 
 
-//   Rectangle rectangle = new Rectangle(Color.BLUE,new Point((int)inXval,(int)inYval),new Point((int)inXval+50,(int)inYval+50));
+
+System.out.println("In temp paint: "+val+" "+drw);
 
 
- System.out.println("In rct"+val);
+        if(drw==2){
 
 
-     Rectangle rectangle = new Rectangle(Color.BLUE,new Point((int)inXval,(int)inYval),new Point((int)curXval,(int)curYval));
-
-
+     Rectangle rectangle = new Rectangle(color,new Point((int)inXval,(int)inYval),new Point((int)curXval,(int)curYval));
 
      rectangle.draw(gc); 
+
+       }
+
+      if(drw==3){
+
+
+       Oval oval = new Oval(color,new Point((int)inXval,(int)inYval),new Point((int)curXval,(int)curYval));
+
+     oval.draw(gc); 
+
+      } 
+
+
+      if(drw==1){
+
+
+      Line line = new Line(color,new Point((int)inXval,(int)inYval),new Point((int)curXval,(int)curYval));
+
+    line.draw(gc); 
+
+
+      }
+
+
+
+      if(drw==4){
+
+       Picture picture = new Picture(new Point((int)inXval,(int)inYval),new Point((int)curXval,(int)curYval), "doge.jpeg");
+
+      picture.draw(gc);
+
+
+      }
+
+
 
 
    }
@@ -221,13 +285,158 @@ public class Client extends Application {
 
    public void drawPaintObjects(){
 
-//   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-   
+System.out.println("In paint objs: "+val+" "+drw);
+  
    for( PaintObject po: allPaintObjects){
         po.draw(gc);
       }
 
    }
+
+
+
+
+  private GridPane createGridPane() {
+    // TODO 1: Construct 2 RadioButton objects
+    RadioButton rect = new RadioButton("Rectangle");
+    RadioButton oval = new RadioButton("Oval");
+    RadioButton line = new RadioButton("Line");
+    RadioButton picture = new RadioButton("Picture");
+
+
+    // TODO 2: Construct a ToggleGroup so only one can be selected
+    // and add the radio buttons to it
+
+
+    ToggleGroup group = new ToggleGroup();
+    rect.setToggleGroup(group);
+    oval.setToggleGroup(group);
+    line.setToggleGroup(group);
+    picture.setToggleGroup(group);
+ 
+    
+
+    GridPane gridPane = new GridPane();
+    gridPane.setHgap(3);
+    gridPane.setVgap(3);
+    gridPane.setAlignment(Pos.CENTER);
+
+    gridPane.add(rect, 0, 0);
+    gridPane.add(oval, 1, 0);
+    gridPane.add(line, 2, 0);
+    gridPane.add(picture, 3, 0);
+
+
+
+
+    // TODO 3: Add the ColorPicker that will be needed when the color is changed
+
+    colorPicker = new ColorPicker(Color.BLUE);
+    colorPicker.setOnAction(new ColorChanger());
+
+    gridPane.add(colorPicker, 4, 0);
+
+    // Execute this code when one RadioButon is clicked
+    rect.setOnAction(event -> {
+
+    rect.setSelected(true);
+    rect.requestFocus();
+System.out.println("this is mouse cliked val "+val);
+
+    drw=2;
+
+
+/*
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setHeaderText("You just clicked RadioButton one");
+      alert.showAndWait();
+*/
+
+    });
+
+    // Execute this code when the other RadioButon is clicked
+    oval.setOnAction(event -> {
+
+    oval.setSelected(true);
+    oval.requestFocus();
+
+System.out.println("this is mouse cliked val "+val);
+
+    drw=3;
+
+
+
+/*
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setHeaderText("You just clicked RadioButton two");
+      alert.showAndWait();
+*/
+    });
+
+
+    line.setOnAction(event -> {
+
+    line.setSelected(true);
+    line.requestFocus();
+
+System.out.println("this is mouse cliked val "+val);
+
+     drw=1;
+
+//   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+//   drawPaintObjects();
+
+
+
+/*
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setHeaderText("You just clicked RadioButton two");
+      alert.showAndWait();
+*/
+    });
+
+    picture.setOnAction(event -> {
+
+    picture.setSelected(true);
+    picture.requestFocus();
+
+System.out.println("this is mouse cliked val "+val);
+
+     drw=4;
+
+//   gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+//   drawPaintObjects();
+
+
+
+/*
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setHeaderText("You just clicked RadioButton two");
+      alert.showAndWait();
+*/
+    });
+
+
+
+
+    return gridPane;
+  }
+
+
+  private class ColorChanger implements EventHandler<ActionEvent> {
+
+    @Override
+    public void handle(ActionEvent event) {
+
+      color = colorPicker.getValue();
+
+//     gridPane.setStyle("-fx-background-color: '"+color+"'");
+
+System.out.println(color);
+
+
+    }
+  }
 
 
 
