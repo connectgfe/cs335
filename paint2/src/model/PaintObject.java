@@ -1,5 +1,6 @@
 //package model;
 import java.io.*;
+import java.io.Serializable;
 import java.awt.Point;
 import javafx.scene.canvas.GraphicsContext;
 //import javafx.scene.paint.Color;

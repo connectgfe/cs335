@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import java.io.*;
 
 
-public class Picture extends PaintObject {
+public class Picture extends PaintObject implements Serializable{
 
 
 //   Point x,y;

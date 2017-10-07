@@ -3,6 +3,8 @@
  * not a JavaFX application, we can starts new threads in a Runnable.
  * The GUI client needs a Task  
  */
+
+import java.io.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,15 +12,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
+import java.awt.Point;
+import java.awt.Color;
 
-public class Server {
+
+
+
+
+public class Server implements Serializable{
 
   private static ServerSocket serverSocket;
   private static List<ObjectOutputStream> outputStreams = new Vector<>();
-
+  private static Vector<PaintObject> vector = new Vector<PaintObject>();
 
 
   public static void main(String[] args) throws IOException {
+
+System.out.println("intro: "+outputStreams.size()+" "+vector.size());
+
+
+
     serverSocket = new ServerSocket(4001);
     // System.out.println("Server started on port " + SERVER_PORT);
 
@@ -26,10 +39,10 @@ public class Server {
     while (true) {
       Socket socket = serverSocket.accept();
       ObjectInputStream inputFromClient = new ObjectInputStream(socket.getInputStream());
-      ObjectOutputStream ouputToClient = new ObjectOutputStream(socket.getOutputStream());
+      ObjectOutputStream outputToClient = new ObjectOutputStream(socket.getOutputStream());
       
       // TODO 1: Maintain a list of output streams so this Server can to alls
-      outputStreams.add(ouputToClient);
+      outputStreams.add(outputToClient);
 
       // System.out.println("Accepted a new connection from " + socket.getInetAddress());
 
@@ -38,6 +51,8 @@ public class Server {
       // This thread allows the Server to wait for each client's writing of a String message.
       // TODO 2: Start a new ClientHandler in a new Thread
       ClientHandler clientHandler = new ClientHandler(inputFromClient);
+
+
       Thread thread = new Thread(clientHandler);
       thread.start();
 
@@ -47,12 +62,29 @@ public class Server {
 
   private static class ClientHandler implements Runnable {
 
-    private ObjectInputStream input;
-    String msg;
 
+
+    private ObjectInputStream input;
+    PaintObject obj;
 
     public ClientHandler(ObjectInputStream input) {
       this.input = input;
+
+
+try{
+//       for( String str : vector ){
+       for(  PaintObject object : vector ){
+         
+          outputStreams.get(outputStreams.size()-1).reset();
+          outputStreams.get(outputStreams.size()-1).writeObject((PaintObject)object); 
+       }
+
+} catch(IOException e){
+//} catch(ClassNotFoundException cnfe){
+}
+
+
+
     }
  
     @Override
@@ -61,16 +93,45 @@ public class Server {
       // to read any new messages from the server. When a new read
       // happens, write the new message to all Clients
 
+System.out.println("new: "+outputStreams.size()+" "+vector.size());
+
+
+
+
 
 
           try{
                  while(true){
 
-                    msg = null;
- 
-                    msg = (String)input.readObject();
+                
 
-                    writeStringToClients(msg); 
+ 
+//                Tj obj = (Tj)input.readObject();
+System.out.println("here");
+
+                   obj = (PaintObject)input.readObject();
+
+//                    obj = (String)input.readObject();
+//                    obj = (Tj2)input.readObject();
+
+
+                    vector.add(obj);
+ 
+                    writeVectorToClients(obj); 
+
+ 
+
+// new
+/*
+
+                    obj = (String)input.readObject();
+                    vector.add(obj);
+                
+//                   for( String obj : vector ){
+                    writeVectorToClients(obj); 
+//                    }
+*/
+
                  }
 
 
@@ -108,15 +169,17 @@ public class Server {
     }
 
     // TODO 4: Complete this message to write message to all output streams
-    private void writeStringToClients(String message) throws ClassNotFoundException{
+    private void writeVectorToClients(PaintObject object) throws ClassNotFoundException{
 
- 
+//     private void writeVectorToClients(String object) throws ClassNotFoundException{
+
+
   
             for(ObjectOutputStream stream : outputStreams){   
 
               try{
                  stream.reset(); 
-                 stream.writeObject(msg);
+                 stream.writeObject((PaintObject)object);
 
                   } catch (IOException ioe){
 

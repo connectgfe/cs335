@@ -1,9 +1,9 @@
 //package model;
 
-
+import java.io.*;
 import java.awt.Color;
 
-public class ColorTypeConverter {
+public class ColorTypeConverter implements Serializable{
 
 //  public static void main(String[] args) {
 //    javafx.scene.paint.Color fxColor = Awt2Fx(new Color(100, 150, 250 ));

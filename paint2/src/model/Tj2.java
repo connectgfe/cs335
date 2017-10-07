@@ -3,7 +3,7 @@
 import java.io.*;
 import java.io.Serializable;
 
-import java.awt.Point;
+//import java.awt.Point;
 import javafx.scene.canvas.GraphicsContext;
 //import javafx.scene.paint.Color;
 import java.awt.Color;
@@ -11,21 +11,23 @@ import java.awt.Color;
 
 
 
-public class Rectangle extends PaintObject implements Serializable{
+public class Tj2 extends Atj implements Serializable{
 
 
    private ColorTypeConverter con;
 
+//   Point x,y;
+   Color color;
 
-   public Rectangle(Color color, Point x, Point y){
+    public Tj2(){
 
-   super(color,x,y);
-
-   con = new ColorTypeConverter();
+//   con = new ColorTypeConverter();
 
    }
 
     public void draw(GraphicsContext gc){
+
+/*
 
     javafx.scene.paint.Color color2 = con.Awt2Fx(color);
 
@@ -60,7 +62,7 @@ public class Rectangle extends PaintObject implements Serializable{
 
      }
 
-
+*/
 
 
     }

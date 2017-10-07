@@ -90,7 +90,6 @@ public class Client extends Application implements Serializable{
   public void start(Stage primaryStage) throws Exception {
 
 
-    openConnection();
 
     BorderPane all = new BorderPane();
     canvas = new Canvas(800, 550);
@@ -105,6 +104,7 @@ public class Client extends Application implements Serializable{
     gc = canvas.getGraphicsContext2D();
     allPaintObjects = new Vector<>();
 
+    openConnection();
 
     Scene scene = new Scene(all, 800, 650);
 
@@ -157,8 +157,8 @@ public class Client extends Application implements Serializable{
 
 // test writing to server
 try{
-   String sent = "just added rectangle";
-   outputToServer.writeObject((String)sent);
+     outputToServer.writeObject(rectangle);
+
 } catch(IOException e){
 }
 
@@ -178,6 +178,12 @@ try{
 
      allPaintObjects.add(oval);
 
+try{
+     outputToServer.writeObject(oval);
+
+} catch(IOException e){
+}
+
    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
    drawPaintObjects();
  
@@ -190,6 +196,12 @@ try{
 
 
      allPaintObjects.add(line);
+
+try{
+     outputToServer.writeObject(line);
+
+} catch(IOException e){
+}
 
    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
    drawPaintObjects();
@@ -204,6 +216,13 @@ try{
 
 
      allPaintObjects.add(picture);
+
+try{
+     outputToServer.writeObject(picture);
+
+} catch(IOException e){
+}
+
 
    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
    drawPaintObjects();
@@ -459,9 +478,18 @@ try{
 
          while(true){
            // instance above
+/*
            String msg = (String)inputFromServer.readObject();
-System.out.println(msg); 
+ System.out.println(msg); 
            //sentMessages.add(message);
+*/
+ System.out.println("here"); 
+
+           PaintObject obj = (PaintObject)inputFromServer.readObject();
+
+           allPaintObjects.add(obj);           
+           gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+           drawPaintObjects();
 
 
          }
