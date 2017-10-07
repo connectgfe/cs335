@@ -5,6 +5,10 @@ import java.awt.Point;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
+
+//import javax.swing.ImageIcon;
+
+
 import java.io.*;
 
 
@@ -13,8 +17,10 @@ public class Picture extends PaintObject implements Serializable{
 
 //   Point x,y;
 //   String pic;
-   Image image;
-   File file;
+//    Image image;
+
+
+//    File file;
 
 
    public Picture(Point x, Point y, String pic){
@@ -26,9 +32,11 @@ public class Picture extends PaintObject implements Serializable{
 //     this.x=x;
 //     this.y=y;
     
-     file= new File(pic);
+//     file= new File(pic);
 //     image = new Image(file.toURI().toString());
-     image = new Image("file:doge.jpeg");
+//     image = new Image("file:doge.jpeg");
+//     image = new Image("file:doge.jpeg");
+
 
    }
 
@@ -38,6 +46,7 @@ public class Picture extends PaintObject implements Serializable{
 //    gc.drawImage(image,x.getX(),x.getY(), 25,25);
 //    gc.drawImage(image, 30 ,40, 25 , 25);
 
+     Image image = new Image("file:doge.jpeg");
 
 
      if(x.getX()<y.getX() && x.getY()<y.getY()){
