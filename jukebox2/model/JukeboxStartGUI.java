@@ -54,7 +54,7 @@ public class JukeboxStartGUI extends Application {
 
 
         window = new BorderPane(); 
-        window.setStyle( "-fx-background-image: url(\"file:doge.jpeg\")");
+        window.setStyle( "-fx-background-image: url(\"file:jukeboxLabel.jpeg\")");
 
 
         acctGrid = new GridPane();
@@ -141,7 +141,7 @@ public class JukeboxStartGUI extends Application {
          if(loginB==(Button) arg0.getSource()){
 
             if(acctT.getText().equals("") || pswdT.getText().equals("")){
-              loginMsg.setText("Try Again");
+              loginMsg.setText("Enter Acct/Pswd");
             }else{
               man.checkUser(acctT.getText(),pswdT.getText());
             } 
@@ -196,19 +196,14 @@ public class JukeboxStartGUI extends Application {
 
             FileReader fr = new FileReader(file.getAbsoluteFile());
             BufferedReader br = new BufferedReader(fr);
+            StringBuilder str = new StringBuilder(br.readLine());
 
-System.out.println(br.readLine());
+System.out.println(str.toString());
  
-              if(br.readLine().equals(pswdT.getText())){
-System.out.println("no1");
-
-
+              if(str.toString().equals(pswdT.getText())){
                   loginMsg.setText("Success");
               }else{
-System.out.println("no2");
-
-
-                  loginMsg.setText("Try Again");
+                  loginMsg.setText("Bad Pswd");
               }  
           
              br.close(); 
