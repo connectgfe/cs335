@@ -10,20 +10,19 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
 
 import javafx.event.*;
-import javafx.stage.Stage;
 import javafx.scene.control.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-
+import javafx.scene.text.Font;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,7 +31,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import java.net.*;
 import java.io.*;
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
 
 public class JukeboxStartGUI extends Application {
@@ -40,16 +41,21 @@ public class JukeboxStartGUI extends Application {
 
 
         private BorderPane window;
-        private TextField acctT, pswdT; 
+        private TextField acctT;
+        private PasswordField pswdT; 
         private Button loginB, logoutB;
         private GridPane acctGrid, buttonGrid;
-        private Label acctLabl, pswdLabl; 
+        private Label acctLabl, pswdLabl, loginMsg; 
+        private FileManager man;
+
 
     @Override
     public void start(Stage stage) throws Exception {
 
 
         window = new BorderPane(); 
+        window.setStyle( "-fx-background-image: url(\"file:doge.jpeg\")");
+
 
         acctGrid = new GridPane();
  
@@ -62,6 +68,8 @@ public class JukeboxStartGUI extends Application {
         stage.setScene(scene);
 
         stage.show();
+
+        man = new FileManager();
 
     }
 
@@ -76,10 +84,23 @@ public class JukeboxStartGUI extends Application {
     public void setUp(){
 
     loginB = new Button("Login");
+    loginB.setFont( new Font("Arial", 14));
+
+
     acctT = new TextField();
-    pswdT = new TextField();
+    pswdT = new PasswordField();
     acctLabl = new Label("Account Name");
     pswdLabl = new Label("Password");   
+    loginMsg = new Label("Sign In");
+    acctLabl.setFont( new Font("Arial", 18));
+    pswdLabl.setFont( new Font("Arial", 18));
+    loginMsg.setFont( new Font("Arial", 24));
+
+
+    window.setAlignment(loginMsg, Pos.CENTER); 
+    window.setMargin(loginMsg, new Insets(10,10,10,10));
+    window.setTop(loginMsg);
+
 
     acctT.setMaxHeight(15.0);
     pswdT.setMaxHeight(15.0);
@@ -95,11 +116,11 @@ public class JukeboxStartGUI extends Application {
 
 
     window.setAlignment(acctGrid, Pos.CENTER); 
-    window.setMargin(acctGrid, new Insets(30,10,10,10));
+    window.setMargin(acctGrid, new Insets(10,10,10,10));
     window.setCenter(acctGrid);
 
     window.setAlignment(buttonGrid, Pos.CENTER); 
-    window.setMargin(buttonGrid, new Insets(10,10,50,50));
+    window.setMargin(buttonGrid, new Insets(10,10,100,125));
     window.setBottom(buttonGrid);
 
     buttonGrid.add(loginB,1,1);
@@ -119,9 +140,14 @@ public class JukeboxStartGUI extends Application {
    
          if(loginB==(Button) arg0.getSource()){
 
-          System.out.println(acctT.getText());
-          pswdT.setText(acctT.getText());
+            if(acctT.getText().equals("") || pswdT.getText().equals("")){
+              loginMsg.setText("Try Again");
+            }else{
+              man.checkUser(acctT.getText(),pswdT.getText());
+            } 
 
+          acctT.setText("");
+          pswdT.setText("");
 
          }
 /*
@@ -141,6 +167,60 @@ public class JukeboxStartGUI extends Application {
 
 
    }
+
+
+  public class FileManager {
+
+    public FileManager(){};
+
+    public  void checkUser(String user, String pswd) {
+        try{
+            // Create new file
+           // String content = "This is the content to write into create file";
+            String path="Users/"+user;
+            File file = new File(path);
+
+            // If file doesn't exists, then create it
+            if (!file.exists()) {
+                loginMsg.setText("New User");
+                file.createNewFile();
+
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            // Write in file
+            bw.write(pswd);
+            bw.close();
+
+            }else{
+
+            FileReader fr = new FileReader(file.getAbsoluteFile());
+            BufferedReader br = new BufferedReader(fr);
+
+System.out.println(br.readLine());
+ 
+              if(br.readLine().equals(pswdT.getText())){
+System.out.println("no1");
+
+
+                  loginMsg.setText("Success");
+              }else{
+System.out.println("no2");
+
+
+                  loginMsg.setText("Try Again");
+              }  
+          
+             br.close(); 
+            }
+            // Close connection
+        }
+        catch(Exception e){
+            System.out.println(e);
+        }
+    }
+  }
+
 
 
 }
