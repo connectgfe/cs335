@@ -35,12 +35,11 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDate;
+import java.util.*;
 
 
 
-import java.time.format.DateTimeFormatter;
-
-public class JukeboxStartGUI extends Application {
+public class JukeboxStartGUI extends Application implements Serializable{
   
 
 
@@ -50,9 +49,10 @@ public class JukeboxStartGUI extends Application {
         private Button loginB, logoutB;
         private GridPane acctGrid, buttonGrid;
         private Label acctLabl, pswdLabl, loginMsg; 
-        private FileManager man;
-
-
+//        private FileManager man;
+        private Vector<User> users;
+        private FileMan2 man;
+ 
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -60,6 +60,7 @@ public class JukeboxStartGUI extends Application {
         window = new BorderPane(); 
         window.setStyle( "-fx-background-image: url(\"file:jukeboxLabel.jpeg\")");
 
+        users = new Vector<User>();
 
         acctGrid = new GridPane();
  
@@ -73,7 +74,10 @@ public class JukeboxStartGUI extends Application {
 
         stage.show();
 
-        man = new FileManager();
+//        man = new FileManager();
+
+        man = new FileMan2();
+
 
     }
 
@@ -147,7 +151,7 @@ public class JukeboxStartGUI extends Application {
             if(acctT.getText().equals("") || pswdT.getText().equals("")){
               loginMsg.setText("Enter Acct/Pswd");
             }else{
-              man.checkUser(acctT.getText(),pswdT.getText());
+              man.checkU(acctT.getText(),pswdT.getText());
 
 
             } 
@@ -173,6 +177,49 @@ public class JukeboxStartGUI extends Application {
 
 
    }
+
+  public class FileMan2 {
+
+  
+   public FileMan2(){
+
+   try {
+    FileInputStream fin = new FileInputStream("thequeue.dat");
+    ObjectInputStream ois = new ObjectInputStream(fin);
+    users = (Vector) ois.readObject();
+    ois.close();
+    }
+   catch (Exception e) { e.printStackTrace(); }
+
+   }
+
+   public void checkU(String user, String pswd){
+
+      User us1 = new User();
+
+      users.add(us1); 
+
+   System.out.println(users.size());
+
+
+   try {
+      FileOutputStream fout = new FileOutputStream("thequeue.dat");
+      ObjectOutputStream oos = new ObjectOutputStream(fout);
+      oos.writeObject(users);
+      oos.close();
+      }
+    catch (Exception e) { e.printStackTrace(); }
+ 
+    } 
+
+  public void getVector(){
+
+
+  }
+
+
+  }
+
 
 
   public class FileManager {
@@ -213,7 +260,7 @@ public class JukeboxStartGUI extends Application {
             StringBuilder dayDate = new StringBuilder(br.readLine());
          
 System.out.println("User: "+acctT.getText()+"\n"+"Password: "+usrPswd+"\n"+"Total Min Used: "+totMins+"\n"+"Date Joined: "+dateJoin+"\n"+"Day: "+dayDate);
-            updatePlays("hill"); 
+            updatePlays(acctT.getText()); 
               if(usrPswd.toString().equals(pswdT.getText())){
                   loginMsg.setText("Success");
               }else{
@@ -237,15 +284,68 @@ System.out.println("User: "+acctT.getText()+"\n"+"Password: "+usrPswd+"\n"+"Tota
         
            
            for(File file : list){
-          System.out.println(file.toString());             
 
-           }
+             if(file.getName().equals(user)){
+System.out.println("got: "+file.getName());             
+                try{
+                  FileReader tempFr = new FileReader(file.getAbsoluteFile());
+                  FileReader fr = new FileReader(file.getAbsoluteFile());
+                  BufferedReader tempBr = new BufferedReader(tempFr);
+                  BufferedReader br = new BufferedReader(fr);
+              
+         //         StringBuilder ln2 = new StringBuilder(br.readLine());
+                    int cnt=0; 
+                    while(tempBr.readLine()!=null){ 
+
+                     cnt++;
+                    }
+
+
+                FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
+                BufferedWriter bw = new BufferedWriter(fw);
+
+
+
+                    for(int i=0;i<cnt;i++){
+
+                       bw.write("hello");
+                    }
+
+
+
+            FileReader tfr = new FileReader(file.getAbsoluteFile());
+            BufferedReader tbr = new BufferedReader(tfr);
+            StringBuilder usrPswd = new StringBuilder(tbr.readLine());
+            StringBuilder totMins = new StringBuilder(tbr.readLine());
+            StringBuilder dateJoin = new StringBuilder(tbr.readLine());
+            StringBuilder dayDate = new StringBuilder(tbr.readLine());
+         
+System.out.println("User: "+acctT.getText()+"\n"+"Password: "+usrPswd+"\n"+"Total Min Used: "+totMins+"\n"+"Date Joined: "+dateJoin+"\n"+"Day: "+dayDate);
+
+
+
+//           StringBuilder ln1 = new StringBuilder(br.readLine());
+ 
+// System.out.println(ln1);             
+
+//                 bw.write("hello");
+                 }catch(Exception e){
+                   System.out.println(e);
+                 } 
+            
+            }
+
+          }
    
      }
 
 
 
   }
+
+
+
+
 
 
 
