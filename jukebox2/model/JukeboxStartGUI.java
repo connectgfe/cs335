@@ -34,7 +34,11 @@ import java.io.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.time.LocalDate;
 
+
+
+import java.time.format.DateTimeFormatter;
 
 public class JukeboxStartGUI extends Application {
   
@@ -144,6 +148,8 @@ public class JukeboxStartGUI extends Application {
               loginMsg.setText("Enter Acct/Pswd");
             }else{
               man.checkUser(acctT.getText(),pswdT.getText());
+
+
             } 
 
           acctT.setText("");
@@ -189,18 +195,26 @@ public class JukeboxStartGUI extends Application {
             BufferedWriter bw = new BufferedWriter(fw);
 
             // Write in file
-            bw.write(pswd);
+            bw.write(pswd+"\n");
+            bw.write("0"+"\n");
+            LocalDate date = LocalDate.now();
+            bw.write(date.toString()+"\n");
+            String day= Integer.toString(date.getDayOfYear());
+            bw.write(day);
             bw.close();
 
             }else{
 
             FileReader fr = new FileReader(file.getAbsoluteFile());
             BufferedReader br = new BufferedReader(fr);
-            StringBuilder str = new StringBuilder(br.readLine());
-
-System.out.println(str.toString());
- 
-              if(str.toString().equals(pswdT.getText())){
+            StringBuilder usrPswd = new StringBuilder(br.readLine());
+            StringBuilder totMins = new StringBuilder(br.readLine());
+            StringBuilder dateJoin = new StringBuilder(br.readLine());
+            StringBuilder dayDate = new StringBuilder(br.readLine());
+         
+System.out.println("User: "+acctT.getText()+"\n"+"Password: "+usrPswd+"\n"+"Total Min Used: "+totMins+"\n"+"Date Joined: "+dateJoin+"\n"+"Day: "+dayDate);
+            updatePlays("hill"); 
+              if(usrPswd.toString().equals(pswdT.getText())){
                   loginMsg.setText("Success");
               }else{
                   loginMsg.setText("Bad Pswd");
@@ -214,7 +228,26 @@ System.out.println(str.toString());
             System.out.println(e);
         }
     }
+  
+
+     public void updatePlays(String user){
+
+           File users = new File("Users");
+           File[] list = users.listFiles();
+        
+           
+           for(File file : list){
+          System.out.println(file.toString());             
+
+           }
+   
+     }
+
+
+
   }
+
+
 
 
 
