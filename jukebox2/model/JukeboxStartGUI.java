@@ -15,6 +15,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
+import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 
 import javafx.event.*;
 import javafx.scene.control.*;
@@ -39,20 +43,23 @@ import java.util.*;
 
 
 
-public class JukeboxStartGUI extends Application implements Serializable{
+public class JukeboxStartGUI extends Application {
   
 
 
-        private BorderPane window;
+        private static BorderPane window;
+        private MenuBar menuBar;
         private TextField acctT;
         private PasswordField pswdT; 
         private Button loginB, logoutB;
         private GridPane acctGrid, buttonGrid;
         private Label acctLabl, pswdLabl, loginMsg; 
-//        private FileManager man;
         private Vector<User> users;
-        private FileMan2 man;
- 
+        private FileManager man;
+        private User mainUser;
+        private String mainHours, mainPlays;
+        private MenuItem hoursVal, playsVal;
+  
     @Override
     public void start(Stage stage) throws Exception {
 
@@ -67,16 +74,20 @@ public class JukeboxStartGUI extends Application implements Serializable{
         buttonGrid = new GridPane();
 
         Scene scene = new Scene(window, 300, 250);
+      
+        man = new FileManager();
 
-        setUp();
+        setUpGrids();
 
+//        setUpMenus();
+
+//        window.setTop(menuBar); 
         stage.setScene(scene);
 
         stage.show();
 
 //        man = new FileManager();
 
-        man = new FileMan2();
 
 
     }
@@ -89,7 +100,7 @@ public class JukeboxStartGUI extends Application implements Serializable{
 
 
 
-    public void setUp(){
+    public void setUpGrids(){
 
     loginB = new Button("Login");
     loginB.setFont( new Font("Arial", 14));
@@ -141,6 +152,84 @@ public class JukeboxStartGUI extends Application implements Serializable{
     }
 
 
+  private void setUpMenus() {
+
+    hoursVal = new MenuItem(mainHours); 
+    Menu totHours = new Menu("Total Hours Used");
+    totHours.getItems().addAll(hoursVal);
+
+    playsVal = new MenuItem(mainPlays);
+    Menu dailyPlays = new Menu("Daily Available");
+    dailyPlays.getItems().addAll(playsVal);
+
+    Menu account = new Menu("Account");
+    account.getItems().addAll(totHours, dailyPlays);
+
+    // add songs for menu selections
+    MenuItem buttonV = new MenuItem("Button");
+    MenuItem textAreaV = new MenuItem("TextArea");
+    MenuItem textAreaD = new MenuItem("Drawing");
+    Menu playlist = new Menu("Playlist");
+    playlist.getItems().addAll(buttonV, textAreaV, textAreaD);
+
+    MenuItem quit = new MenuItem("Quit");
+    Menu options = new Menu("Menu");
+    options.getItems().addAll(account, playlist, quit);
+
+    menuBar = new MenuBar();
+    menuBar.getMenus().addAll(options);
+
+    // Add the same listener to all menu items requiring action
+    MenuItemListener menuListener = new MenuItemListener();
+
+//    totHours.setOnAction(menuListener);
+//    dailyPlays.setOnAction(menuListener);
+    quit.setOnAction(menuListener);
+
+    textAreaV.setOnAction(menuListener);
+/*
+    textAreaD.setOnAction(menuListener);
+    intermediate.setOnAction(menuListener);
+*/
+  }
+
+
+  private class MenuItemListener implements EventHandler<ActionEvent> {
+
+    @Override
+    public void handle(ActionEvent e) {
+      // Find out the text of the JMenuItem that was just clicked
+      String text = ((MenuItem) e.getSource()).getText();
+        if (text.equals("Quit")){
+            
+            loginMsg.setText("Sign In"); 
+            window.setTop(loginMsg);
+            window.setCenter(acctGrid);
+            window.setBottom(buttonGrid);
+
+        }else if (text.equals("TextArea")){
+
+             mainUser.setMins(2.3);
+             mainHours = mainUser.getMins();
+             hoursVal.setText(mainHours);
+             man.push();
+
+        }else if (text.equals("Drawing")){
+
+        }else if (text.equals("New Game")){
+
+        }else if (text.equals("Intermediate")){
+  
+        }else if (text.equals("RandomAI")){
+
+        }
+
+     }
+ } 
+
+
+
+
    private class ButtonListener implements EventHandler<ActionEvent>{
 
       @Override
@@ -176,11 +265,13 @@ public class JukeboxStartGUI extends Application implements Serializable{
 
    }
 
-  public class FileMan2 {
+  public class FileManager {
 
   
-   public FileMan2(){
+   public FileManager(){
 
+    pull();
+/*
    try {
     FileInputStream fin = new FileInputStream("thequeue.dat");
     ObjectInputStream ois = new ObjectInputStream(fin);
@@ -188,32 +279,54 @@ public class JukeboxStartGUI extends Application implements Serializable{
     ois.close();
     }
    catch (Exception e) { e.printStackTrace(); }
-
+*/
    }
 
    public void checkUser(String logUser, String pswd){
 
+//System.out.println("no1 "+users.size());
+
+      int cnt=0;
+
       for( User user : users ){
 
+        cnt++;
         if(user.getName().equals(logUser)){
+          cnt--;
           if(user.getPassword().equals(pswd)){
-            System.out.println("Success");
+
+             mainUser = user; 
+             mainHours = mainUser.getMins();
+             mainPlays = mainUser.getPassword();
+//             hoursVal.setText(mainHours); 
+//             playsVal.setText(mainPlays); 
+             setUpMenus();
+ 
+             loginMsg.setText("Success");   
+             window.setTop(menuBar);
+             window.setCenter(null);
+             window.setBottom(null);
+
           }else{
-            System.out.println("Try Again");
+             loginMsg.setText("Try Again");   
           }
 
         }
 
       } 
 
+//System.out.println("no2 "+users.size());
 
-      User addUser = new User(logUser,pswd, "test");
+      if(cnt==users.size()){
+         loginMsg.setText("New User");   
+         User addUser = new User(logUser,pswd, "test");
+         users.add(addUser); 
+      }
 
-      users.add(addUser); 
+//System.out.println("no3 "+users.size());
+     push();
 
-   System.out.println(users.size());
-
-
+/*
    try {
       FileOutputStream fout = new FileOutputStream("thequeue.dat");
       ObjectOutputStream oos = new ObjectOutputStream(fout);
@@ -221,22 +334,53 @@ public class JukeboxStartGUI extends Application implements Serializable{
       oos.close();
       }
     catch (Exception e) { e.printStackTrace(); }
- 
-    } 
+*/ 
+
+   } 
 
   public void getVector(){
 
 
   }
 
+  @SuppressWarnings("unchecked")
+  public void pull(){
+
+    try {
+     FileInputStream fin = new FileInputStream("thequeue.dat");
+     ObjectInputStream ois = new ObjectInputStream(fin);
+     users = (Vector) ois.readObject();
+     ois.close();
+     }
+    catch (Exception e) { e.printStackTrace(); 
+    }
+
+
+
+  }
+
+  public void push(){
+
+    try {
+       FileOutputStream fout = new FileOutputStream("thequeue.dat");
+       ObjectOutputStream oos = new ObjectOutputStream(fout);
+       oos.writeObject(users);
+       oos.close();
+        }
+     catch (Exception e) { e.printStackTrace(); 
+    }
+
 
   }
 
 
+ }
 
-  public class FileManager {
 
-    public FileManager(){};
+/*
+  public class FileMan2 {
+
+    public FileMan2(){};
 
     public  void checkUser(String user, String pswd) {
         try{
@@ -357,7 +501,7 @@ System.out.println("User: "+acctT.getText()+"\n"+"Password: "+usrPswd+"\n"+"Tota
 
 
 
-
+*/
 
 
 
