@@ -151,9 +151,7 @@ public class JukeboxStartGUI extends Application implements Serializable{
             if(acctT.getText().equals("") || pswdT.getText().equals("")){
               loginMsg.setText("Enter Acct/Pswd");
             }else{
-              man.checkU(acctT.getText(),pswdT.getText());
-
-
+              man.checkUser(acctT.getText(),pswdT.getText());
             } 
 
           acctT.setText("");
@@ -193,11 +191,25 @@ public class JukeboxStartGUI extends Application implements Serializable{
 
    }
 
-   public void checkU(String user, String pswd){
+   public void checkUser(String logUser, String pswd){
 
-      User us1 = new User();
+      for( User user : users ){
 
-      users.add(us1); 
+        if(user.getName().equals(logUser)){
+          if(user.getPassword().equals(pswd)){
+            System.out.println("Success");
+          }else{
+            System.out.println("Try Again");
+          }
+
+        }
+
+      } 
+
+
+      User addUser = new User(logUser,pswd, "test");
+
+      users.add(addUser); 
 
    System.out.println(users.size());
 
