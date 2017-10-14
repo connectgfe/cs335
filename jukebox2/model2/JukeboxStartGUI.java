@@ -7,11 +7,13 @@
  * completed and are working correctly. This program will be used to 
  * test your code for the first 100 points of the JukeBox project.
  */
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.GridPane;
@@ -53,7 +55,7 @@ public class JukeboxStartGUI extends Application {
         private Menu userMenuBar, adminMenuBar;
         private TextField acctT;
         private PasswordField pswdT; 
-        private Button loginB, playB, pauseB, stopB;
+        private Button loginB, playB, pauseB, stopB, createU;
         private GridPane acctGrid, loginGrid, buttonGrid;
         private Label acctLabl, pswdLabl, loginMsg; 
         private Vector<User> users;
@@ -181,10 +183,16 @@ public class JukeboxStartGUI extends Application {
     window.setBottom(loginGrid);
 
     loginGrid.add(loginB,1,1);
- 
-    LoginButtonListener handler1 = new LoginButtonListener();
-    loginB.setOnAction(handler1);
 
+    createU = new Button("Create"); 
+    window.setAlignment(createU, Pos.CENTER); 
+    window.setMargin(createU, new Insets(10,10,100,125));
+ 
+
+    LoginButtonListener handler1 = new LoginButtonListener();
+
+    loginB.setOnAction(handler1);
+    createU.setOnAction(handler1);
 
 
     }
@@ -268,7 +276,7 @@ public class JukeboxStartGUI extends Application {
     AdminMenuItemListener adminMenuListener = new AdminMenuItemListener();
 
     MenuItem quit2 = new MenuItem("Sign Out");
-
+    MenuItem createUser = new MenuItem("Create User");
 
     Menu usr = new Menu("Users");
 
@@ -284,7 +292,7 @@ public class JukeboxStartGUI extends Application {
 
     Menu adminOptions = new Menu("Admin");
     
-    adminOptions.getItems().addAll(usr,quit2);
+    adminOptions.getItems().addAll(usr,createUser,quit2);
 /*
     adminMenuBar = new Menu("For Admin");
     adminMenuBar.getItems().addAll(adminOptions);
@@ -294,6 +302,8 @@ public class JukeboxStartGUI extends Application {
 //    totHours.setOnAction(menuListener);
 //    dailyPlays.setOnAction(menuListener);
     quit2.setOnAction(adminMenuListener);
+    createUser.setOnAction(adminMenuListener);
+
 
     mainMenu.getMenus().addAll(adminOptions);
 
@@ -351,12 +361,52 @@ public class JukeboxStartGUI extends Application {
             window.setBottom(loginGrid);
 
         }
+ 
+         if (text.equals("Create User")){
+            
+//            loginMsg.setText("Sign In"); 
+//            window.setTop(loginMsg);
+            window.setCenter(acctGrid);
+            window.setBottom(createU);
 
-        for( User usr : users ){
+        }
+       
 
+//        for( User usr : users ){
+        for( Iterator<User> iter = users.iterator(); iter.hasNext();){
+
+           User usr = iter.next();
            if (text.equals(usr.getName())){
 
-           System.out.println("got it 2"); 
+System.out.println("got it 2"); 
+
+           Alert alert = new Alert(AlertType.CONFIRMATION);
+
+           alert.setHeaderText("Remove User?");
+           //alert.showAndWait();
+
+           Optional<ButtonType> result = alert.showAndWait();
+             if (result.get() == ButtonType.OK){
+
+             iter.remove(); 
+//             users.remove(usr);
+
+             window.setTop(null);
+             setUpUserMenus();
+             setUpAdminMenus();
+             window.setTop(mainMenu);
+             man.pushUserData(); 
+
+
+System.out.println("removed user"); 
+
+    // ... user chose OK
+             } else {
+    // ... user chose CANCEL or closed the dialog
+System.out.println("cancel"); 
+
+
+             }
 
            }
 
@@ -382,16 +432,25 @@ public class JukeboxStartGUI extends Application {
           pswdT.setText("");
 
          }
-/*
-         if(button2==(Button) arg0.getSource()){
 
-          txtbox1.setText("");
-          txtbox2.setText("");
+         if(createU==(Button) arg0.getSource()){
+
+          man.checkUser(acctT.getText(),pswdT.getText());
+
+             window.setTop(null);
+             setUpUserMenus();
+             setUpAdminMenus();
+             window.setTop(mainMenu); 
+             window.setCenter(buttonGrid);
+             window.setBottom(null);
+             acctT.setText("");
+             pswdT.setText("");
+
 
 
          }
 
-*/
+
 
 
       }
