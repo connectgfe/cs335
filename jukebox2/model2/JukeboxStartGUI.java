@@ -49,7 +49,8 @@ public class JukeboxStartGUI extends Application {
 
 
         private static BorderPane window;
-        private MenuBar menuBar;
+        private MenuBar mainMenu;
+        private Menu userMenuBar, adminMenuBar;
         private TextField acctT;
         private PasswordField pswdT; 
         private Button loginB, playB, pauseB, stopB;
@@ -181,7 +182,7 @@ public class JukeboxStartGUI extends Application {
 
     loginGrid.add(loginB,1,1);
  
-    ButtonListener handler1 = new ButtonListener();
+    LoginButtonListener handler1 = new LoginButtonListener();
     loginB.setOnAction(handler1);
 
 
@@ -189,7 +190,7 @@ public class JukeboxStartGUI extends Application {
     }
 
 
-  private void setUpMenus() {
+  private void setUpUserMenus() {
 
     hoursVal = new MenuItem(mainHours); 
     Menu totHours = new Menu("Total Hours Used");
@@ -210,28 +211,99 @@ public class JukeboxStartGUI extends Application {
     playlist.getItems().addAll(buttonV, textAreaV, textAreaD);
 
     MenuItem quit = new MenuItem("Sign Out");
-    Menu options = new Menu("Menu");
-    options.getItems().addAll(account, playlist, quit);
+    Menu userOptions = new Menu("Menu");
+    userOptions.getItems().addAll(account, playlist, quit);
+/*
+    userMenuBar = new Menu("For User");
+    userMenuBar.getItems().addAll(userOptions);
+*/
+    mainMenu = new MenuBar();
 
-    menuBar = new MenuBar();
-    menuBar.getMenus().addAll(options);
+    mainMenu.getMenus().addAll(userOptions);
+
 
     // Add the same listener to all menu items requiring action
-    MenuItemListener menuListener = new MenuItemListener();
+    UserMenuItemListener userMenuListener = new UserMenuItemListener();
 
 //    totHours.setOnAction(menuListener);
 //    dailyPlays.setOnAction(menuListener);
-    quit.setOnAction(menuListener);
+    quit.setOnAction(userMenuListener);
 
-    textAreaV.setOnAction(menuListener);
+    textAreaV.setOnAction(userMenuListener);
 /*
     textAreaD.setOnAction(menuListener);
     intermediate.setOnAction(menuListener);
 */
+/*
+    MenuItem quit2 = new MenuItem("Sign Out");
+
+
+    MenuItem one = new MenuItem("one");
+    MenuItem two= new MenuItem("two");
+    Menu usr = new Menu("Users");
+    usr.getItems().addAll(one, two);
+
+    Menu adminOptions = new Menu("Menu");
+    
+    adminOptions.getItems().addAll(usr,quit2);
+
+    adminMenuBar = new MenuBar();
+    adminMenuBar.getMenus().addAll(adminOptions);
+
+
+    AdminMenuItemListener adminMenuListener = new AdminMenuItemListener();
+
+//    totHours.setOnAction(menuListener);
+//    dailyPlays.setOnAction(menuListener);
+    quit2.setOnAction(adminMenuListener);
+/*/
+
+
   }
 
+  public void setUpAdminMenus(){
+ 
 
-  private class MenuItemListener implements EventHandler<ActionEvent> {
+
+    AdminMenuItemListener adminMenuListener = new AdminMenuItemListener();
+
+    MenuItem quit2 = new MenuItem("Sign Out");
+
+
+    Menu usr = new Menu("Users");
+
+    for( User usu : users ){
+
+    MenuItem val =  new MenuItem(usu.getName());
+    val.setOnAction(adminMenuListener);
+
+    usr.getItems().addAll(val);
+
+    }
+   
+
+    Menu adminOptions = new Menu("Admin");
+    
+    adminOptions.getItems().addAll(usr,quit2);
+/*
+    adminMenuBar = new Menu("For Admin");
+    adminMenuBar.getItems().addAll(adminOptions);
+*/
+
+
+//    totHours.setOnAction(menuListener);
+//    dailyPlays.setOnAction(menuListener);
+    quit2.setOnAction(adminMenuListener);
+
+    mainMenu.getMenus().addAll(adminOptions);
+
+
+   }
+
+
+
+
+  private class UserMenuItemListener implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent e) {
@@ -265,9 +337,35 @@ public class JukeboxStartGUI extends Application {
  } 
 
 
+  private class AdminMenuItemListener implements EventHandler<ActionEvent> {
 
+    @Override
+    public void handle(ActionEvent e) {
+      // Find out the text of the JMenuItem that was just clicked
+      String text = ((MenuItem) e.getSource()).getText();
+        if (text.equals("Sign Out")){
+            
+            loginMsg.setText("Sign In"); 
+            window.setTop(loginMsg);
+            window.setCenter(acctGrid);
+            window.setBottom(loginGrid);
 
-   private class ButtonListener implements EventHandler<ActionEvent>{
+        }
+
+        for( User usr : users ){
+
+           if (text.equals(usr.getName())){
+
+           System.out.println("got it 2"); 
+
+           }
+
+        }
+
+     }
+ } 
+
+   private class LoginButtonListener implements EventHandler<ActionEvent>{
 
       @Override
       public void handle(ActionEvent arg0){
@@ -325,6 +423,22 @@ public class JukeboxStartGUI extends Application {
 
       int cnt=0;
 
+      if( logUser.equals("Merlin") && pswd.equals("7777777")){ 
+    
+System.out.println("got it"); 
+
+       setUpUserMenus();
+       setUpAdminMenus();
+       window.setTop(mainMenu);
+       window.setCenter(buttonGrid);
+       window.setBottom(null);
+ 
+
+
+
+  
+      }else{
+
       for( User user : users ){
 
         cnt++;
@@ -337,10 +451,10 @@ public class JukeboxStartGUI extends Application {
              mainPlays = mainUser.getPassword();
 //             hoursVal.setText(mainHours); 
 //             playsVal.setText(mainPlays); 
-             setUpMenus();
+             setUpUserMenus();
  
              loginMsg.setText("Success");   
-             window.setTop(menuBar);
+             window.setTop(mainMenu);
              window.setCenter(buttonGrid);
              window.setBottom(null);
 
@@ -351,6 +465,8 @@ public class JukeboxStartGUI extends Application {
         }
 
       } 
+
+     }
 
 //System.out.println("no2 "+users.size());
 
