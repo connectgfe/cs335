@@ -71,7 +71,7 @@ public class JukeboxStartGUI extends Application {
         private LinkedList<Song> songs; 
         private LinkedList<String> songQueue; 
         private static MediaPlayer player;
-        Song capture, swingCheese;
+        Song capture, swingCheese, lopingSting;
 
 
  
@@ -103,9 +103,7 @@ public class JukeboxStartGUI extends Application {
 
         addSongs();
 
-
-         play();
-
+        play();
 
 //        setUpMenus();
 
@@ -125,16 +123,21 @@ public class JukeboxStartGUI extends Application {
 
    public void addSongs(){
 
-//    capture = new Song("Capture.wav");
-    songQueue.add("Capture.wav");
+    capture = new Song("Capture.wav");
+    songs.add(capture);
 
-//    swingCheese = new Song("SwingCheese.wav");
-    songQueue.add("SwingCheese.wav");
+    swingCheese = new Song("SwingCheese.wav");
+    songs.add(swingCheese);
+
+    lopingSting = new Song("LopingSting.wav");
+    songs.add(lopingSting);
+
 
    }
 
    public void play(){
 
+        if(songQueue.size()==0){ return;}
           
         File file = new File(songQueue.get(0));
 
@@ -165,8 +168,6 @@ System.out.println("Songs has next");
                 play();
 
                 }
-
-
 
                 return;
             }
@@ -280,11 +281,18 @@ System.out.println("Songs has next");
     account.getItems().addAll(totHours, dailyPlays);
 
     // add songs for menu selections
-    MenuItem buttonV = new MenuItem("Button");
-    MenuItem textAreaV = new MenuItem("TextArea");
-    MenuItem textAreaD = new MenuItem("Drawing");
+
+    UserMenuItemListener userMenuListener = new UserMenuItemListener();
+
     Menu playlist = new Menu("Playlist");
-    playlist.getItems().addAll(buttonV, textAreaV, textAreaD);
+
+      for( Song song : songs ){
+   
+        MenuItem sng = new MenuItem(song.filePath);
+        sng.setOnAction(userMenuListener);
+        playlist.getItems().addAll(sng);
+        
+      }
 
     MenuItem quit = new MenuItem("Sign Out");
     Menu userOptions = new Menu("Menu");
@@ -297,11 +305,9 @@ System.out.println("Songs has next");
 
 
     // Add the same listener to all menu items requiring action
-    UserMenuItemListener userMenuListener = new UserMenuItemListener();
 
     quit.setOnAction(userMenuListener);
 
-    textAreaV.setOnAction(userMenuListener);
 
   }
 
@@ -354,26 +360,30 @@ System.out.println("Songs has next");
             window.setCenter(acctGrid);
             window.setBottom(loginGrid);
 
-        }else if (text.equals("TextArea")){
-
-             mainUser.setMins(2.3);
-             mainHours = mainUser.getMins();
-             hoursVal.setText(mainHours);
-             man.pushUserData();
-
-        // will be song fields
-
-        }else if (text.equals("Drawing")){
-
-        }else if (text.equals("New Game")){
-
-        }else if (text.equals("Intermediate")){
-  
-        }else if (text.equals("RandomAI")){
-
         }
 
+        for( Iterator<Song> iter = songs.iterator(); iter.hasNext();){
+
+           Song sng = iter.next();
+ 
+           if(text.equals(sng.filePath)){
+ 
+             if(songQueue.size()!=0){
+              songQueue.add(sng.filePath);
+             }else{
+              songQueue.add(sng.filePath);
+              play();
+             } 
+
+
+System.out.println(sng.filePath);
+
+           }
+
+       }
+
      }
+
  } 
 
   // menuListener for Admin
@@ -452,16 +462,16 @@ System.out.println("cancel");
               loginMsg.setText("Enter Acct/Pswd");
             }else{
 
-
-             if(songs.size()!=0){
-              songs.add("SwingCheese.wav");
-              songs.add("SwingCheese.wav");
+/*
+             if(songQueue.size()!=0){
+              songQueue.add("SwingCheese.wav");
+              songQueue.add("SwingCheese.wav");
              }else{
-              songs.add("Capture.wav");
-              songs.add("Capture.wav");
+              songQueue.add("Capture.wav");
+              songQueue.add("Capture.wav");
               play();
              } 
-
+*/
               man.checkUser(acctT.getText(),pswdT.getText());
 
             } 
