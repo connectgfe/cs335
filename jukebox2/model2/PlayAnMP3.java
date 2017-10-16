@@ -1,4 +1,4 @@
-package model;
+//package model;
 
 /**
  * This code will play "LopingSting.mp3" assuming that file is in
@@ -17,6 +17,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.scene.media.MediaPlayer.Status;
+
 
 public class PlayAnMP3 extends Application {
 
@@ -26,42 +28,55 @@ public class PlayAnMP3 extends Application {
 
   private int songsPlayed = 1;
   private static MediaPlayer mediaPlayer;
-  
+  String path; 
 
   @Override
   public void start(Stage primaryStage) throws Exception {
 
-    String path = "src/songfiles/LopingSting.mp3";
+    String path = "Capture.wav";
     File file = new File(path);
 
 
-    BorderPane all = new BorderPane();
+//    BorderPane all = new BorderPane();
 
-    all.setTop(new Label("Play one song"));
+//    all.setTop(new Label("Play one song"));
 
     // Create a complete path to the mp3 file
     URI uri = file.toURI();
-    all.setCenter(new Label(uri.toString()));
+//    all.setCenter(new Label(uri.toString()));
     Media media = new Media(uri.toString());
     // Play the song
     mediaPlayer = new MediaPlayer(media);
     mediaPlayer.setAutoPlay(true);
     mediaPlayer.play();
 
-    mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
+//    mediaPlayer.setOnEndOfMedia(new EndOfSongHandler());
 
-    Scene scene = new Scene(all, 600, 80);
-    primaryStage.setScene(scene);
-    primaryStage.show();
+//    Scene scene = new Scene(all, 600, 80);
+//    primaryStage.setScene(scene);
+//    primaryStage.show();
   }
+
+
+ 
+  public void getSong(String path){
+
+    this.path = path;
+
+  } 
 
   private class EndOfSongHandler implements Runnable {
     @Override
     public void run() {
       songsPlayed++;
+      mediaPlayer.stop();
+      return; 
+/*
       Alert alert = new Alert(AlertType.INFORMATION);
       alert.setTitle("Message");
       alert.setHeaderText("Song ended, can now play song #" + songsPlayed);
+*/
+
     }
   }
 }

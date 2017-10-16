@@ -43,6 +43,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.time.LocalDate;
 import java.util.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaPlayer.Status;
+import java.util.concurrent.TimeUnit;
+import java.time.LocalDate;
 
 
 
@@ -57,21 +62,32 @@ public class JukeboxStartGUI extends Application {
         private PasswordField pswdT; 
         private Button loginB, playB, pauseB, stopB, createU;
         private GridPane acctGrid, loginGrid, buttonGrid;
-        private Label acctLabl, pswdLabl, loginMsg; 
+        private Label acctLabl, pswdLabl, loginMsg, playsMsg; 
         private Vector<User> users;
         private FileManager man;
         private User mainUser;
         private String mainHours, mainPlays;
-        private MenuItem hoursVal, playsVal;
-  
+        private MenuItem hoursVal, song1, song2, song3;
+        private LinkedList<Song> songs; 
+        private LinkedList<String> songQueue; 
+        private static MediaPlayer player;
+        Song capture, swingCheese, lopingSting;
+
+
+ 
     @Override
     public void start(Stage stage) throws Exception {
 
 
         window = new BorderPane(); 
+
         window.setStyle( "-fx-background-image: url(\"file:jukeboxLabel.jpeg\")");
 
         users = new Vector<User>();
+
+        songs = new LinkedList<Song>();
+
+        songQueue = new LinkedList<String>();
 
         acctGrid = new GridPane();
 
@@ -85,26 +101,82 @@ public class JukeboxStartGUI extends Application {
 
         setUpGrids();
 
+        addSongs();
+
+        play();
+
 //        setUpMenus();
 
-//        window.setTop(menuBar); 
         stage.setScene(scene);
 
         stage.show();
 
-//        man = new FileManager();
-
-
 
     }
 
-    // main method to support non-JavaFX-aware environments:
 
     public static void main(String[] args) {
         launch(args); 
     }
 
 
+
+   public void addSongs(){
+
+    capture = new Song("Capture.wav");
+    songs.add(capture);
+
+    swingCheese = new Song("SwingCheese.wav");
+    songs.add(swingCheese);
+
+    lopingSting = new Song("LopingSting.wav");
+    songs.add(lopingSting);
+
+
+   }
+
+   public void play(){
+
+        if(songQueue.size()==0){ return;}
+          
+        File file = new File(songQueue.get(0));
+
+    // Create a complete path to the mp3 file
+        URI uri = file.toURI();
+        Media media = new Media(uri.toString());
+   
+
+//        Media media = new Media(mediaFile);
+        player = new MediaPlayer(media);
+        player.play();
+        player.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                player.stop();
+
+System.out.println("Stopped");
+
+                songQueue.poll();
+System.out.println("Dequeue");
+
+
+                if (songQueue.size()!=0) {
+                    //Plays the subsequent files
+System.out.println("Songs has next");
+ 
+                MediaPlayer player = new MediaPlayer(media);
+                play();
+
+                }
+
+                return;
+            }
+        });
+
+    }
+
+
+// all grids: buttonGrid loginGrid acctGrid createU(button)
 
     public void setUpGrids(){
 
@@ -169,10 +241,6 @@ public class JukeboxStartGUI extends Application {
     buttonGrid.add(playB,3,1);
     buttonGrid.add(stopB,1,1);
     buttonGrid.add(pauseB,2,1);
-
-
-
-
  
     window.setAlignment(acctGrid, Pos.CENTER); 
     window.setMargin(acctGrid, new Insets(10,10,10,10));
@@ -198,81 +266,59 @@ public class JukeboxStartGUI extends Application {
     }
 
 
+  // has mainMenu and userOptions menu
   private void setUpUserMenus() {
 
     hoursVal = new MenuItem(mainHours); 
     Menu totHours = new Menu("Total Hours Used");
     totHours.getItems().addAll(hoursVal);
 
-    playsVal = new MenuItem(mainPlays);
-    Menu dailyPlays = new Menu("Daily Available");
-    dailyPlays.getItems().addAll(playsVal);
+    song1 = new MenuItem(mainUser.song1);
+    song2 = new MenuItem(mainUser.song2);
+    song3 = new MenuItem(mainUser.song3);
+
+    Menu dailyPlays = new Menu("Daily Plays");
+
+    dailyPlays.getItems().addAll(song1, song2, song3);
 
     Menu account = new Menu("Account");
     account.getItems().addAll(totHours, dailyPlays);
 
     // add songs for menu selections
-    MenuItem buttonV = new MenuItem("Button");
-    MenuItem textAreaV = new MenuItem("TextArea");
-    MenuItem textAreaD = new MenuItem("Drawing");
+
+    UserMenuItemListener userMenuListener = new UserMenuItemListener();
+
     Menu playlist = new Menu("Playlist");
-    playlist.getItems().addAll(buttonV, textAreaV, textAreaD);
+
+      for( Song song : songs ){
+   
+        MenuItem sng = new MenuItem(song.filePath);
+        sng.setOnAction(userMenuListener);
+        playlist.getItems().addAll(sng);
+        
+      }
 
     MenuItem quit = new MenuItem("Sign Out");
     Menu userOptions = new Menu("Menu");
     userOptions.getItems().addAll(account, playlist, quit);
-/*
-    userMenuBar = new Menu("For User");
-    userMenuBar.getItems().addAll(userOptions);
-*/
+
+    // main menuBar
     mainMenu = new MenuBar();
 
     mainMenu.getMenus().addAll(userOptions);
 
 
     // Add the same listener to all menu items requiring action
-    UserMenuItemListener userMenuListener = new UserMenuItemListener();
 
-//    totHours.setOnAction(menuListener);
-//    dailyPlays.setOnAction(menuListener);
     quit.setOnAction(userMenuListener);
-
-    textAreaV.setOnAction(userMenuListener);
-/*
-    textAreaD.setOnAction(menuListener);
-    intermediate.setOnAction(menuListener);
-*/
-/*
-    MenuItem quit2 = new MenuItem("Sign Out");
-
-
-    MenuItem one = new MenuItem("one");
-    MenuItem two= new MenuItem("two");
-    Menu usr = new Menu("Users");
-    usr.getItems().addAll(one, two);
-
-    Menu adminOptions = new Menu("Menu");
-    
-    adminOptions.getItems().addAll(usr,quit2);
-
-    adminMenuBar = new MenuBar();
-    adminMenuBar.getMenus().addAll(adminOptions);
-
-
-    AdminMenuItemListener adminMenuListener = new AdminMenuItemListener();
-
-//    totHours.setOnAction(menuListener);
-//    dailyPlays.setOnAction(menuListener);
-    quit2.setOnAction(adminMenuListener);
-/*/
 
 
   }
 
+
+  // has adminOptions menu
   public void setUpAdminMenus(){
  
-
-
     AdminMenuItemListener adminMenuListener = new AdminMenuItemListener();
 
     MenuItem quit2 = new MenuItem("Sign Out");
@@ -289,21 +335,13 @@ public class JukeboxStartGUI extends Application {
 
     }
    
-
     Menu adminOptions = new Menu("Admin");
     
     adminOptions.getItems().addAll(usr,createUser,quit2);
-/*
-    adminMenuBar = new Menu("For Admin");
-    adminMenuBar.getItems().addAll(adminOptions);
-*/
 
-
-//    totHours.setOnAction(menuListener);
-//    dailyPlays.setOnAction(menuListener);
     quit2.setOnAction(adminMenuListener);
-    createUser.setOnAction(adminMenuListener);
 
+    createUser.setOnAction(adminMenuListener);
 
     mainMenu.getMenus().addAll(adminOptions);
 
@@ -312,7 +350,7 @@ public class JukeboxStartGUI extends Application {
 
 
 
-
+  // menuListener for User
   private class UserMenuItemListener implements EventHandler<ActionEvent> {
 
     @Override
@@ -326,32 +364,100 @@ public class JukeboxStartGUI extends Application {
             window.setCenter(acctGrid);
             window.setBottom(loginGrid);
 
-        }else if (text.equals("TextArea")){
-
-             mainUser.setMins(2.3);
-             mainHours = mainUser.getMins();
-             hoursVal.setText(mainHours);
-             man.pushUserData();
-
-        }else if (text.equals("Drawing")){
-
-        }else if (text.equals("New Game")){
-
-        }else if (text.equals("Intermediate")){
-  
-        }else if (text.equals("RandomAI")){
-
         }
 
+        for( Iterator<Song> iter = songs.iterator(); iter.hasNext();){
+
+           Song sng = iter.next();
+ 
+           if(text.equals(sng.filePath)){
+
+
+System.out.println(mainUser.name);
+
+             // reset plays
+             LocalDate day = LocalDate.now();
+             if(day.getDayOfYear()>mainUser.firstDate.getDayOfYear()){
+System.out.println("reseting plays");
+               mainUser.resetPlays();
+
+             }
+
+
+
+             // play if user plays availale
+             if(mainUser.song3.equals("(song 3)")){
+
+               if(songQueue.size()!=0){
+                 songQueue.add(sng.filePath);
+               }else{
+                songQueue.add(sng.filePath);
+                play();
+               } 
+
+             }
+
+
+
+            // add song to user plays
+             if(mainUser.song1.equals("(song 1)")){
+
+                mainUser.setSongOne(text, LocalDate.now());
+             }else if(mainUser.song2.equals("(song 2)")){
+
+                mainUser.setSongTwo(text);
+             }else if(mainUser.song3.equals("(song 3)")){
+
+                mainUser.setSongThree(text);
+             }else{
+System.out.println("used up songs");
+
+              // set centerMsg to no plays available
+             playsMsg = new Label("No Plays Available");
+             window.setCenter(playsMsg);
+             }
+ 
+             // push new user play
+             man.pushUserData();
+        
+             // update mainMenu
+             window.setTop(null);
+             setUpUserMenus();
+             window.setTop(mainMenu);
+
+
+             // add to queue if plays not full
+/*
+             if(mainUser.song3.equals("(song 3)")){
+
+
+               if(songQueue.size()!=0){
+                 songQueue.add(sng.filePath);
+               }else{
+                songQueue.add(sng.filePath);
+                play();
+               } 
+
+             }
+*/
+
+System.out.println(sng.filePath);
+
+           }
+
+       }
+
      }
+
  } 
 
-
+  // menuListener for Admin
   private class AdminMenuItemListener implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent e) {
-      // Find out the text of the JMenuItem that was just clicked
+      // Find out the text of the adminOptions that was just clicked
+
       String text = ((MenuItem) e.getSource()).getText();
         if (text.equals("Sign Out")){
             
@@ -361,18 +467,17 @@ public class JukeboxStartGUI extends Application {
             window.setBottom(loginGrid);
 
         }
- 
+
+         // creates new User 
          if (text.equals("Create User")){
             
-//            loginMsg.setText("Sign In"); 
-//            window.setTop(loginMsg);
             window.setCenter(acctGrid);
             window.setBottom(createU);
 
         }
        
 
-//        for( User usr : users ){
+        // finds and removes User
         for( Iterator<User> iter = users.iterator(); iter.hasNext();){
 
            User usr = iter.next();
@@ -383,13 +488,11 @@ System.out.println("got it 2");
            Alert alert = new Alert(AlertType.CONFIRMATION);
 
            alert.setHeaderText("Remove User?");
-           //alert.showAndWait();
 
            Optional<ButtonType> result = alert.showAndWait();
              if (result.get() == ButtonType.OK){
 
              iter.remove(); 
-//             users.remove(usr);
 
              window.setTop(null);
              setUpUserMenus();
@@ -400,11 +503,8 @@ System.out.println("got it 2");
 
 System.out.println("removed user"); 
 
-    // ... user chose OK
              } else {
-    // ... user chose CANCEL or closed the dialog
 System.out.println("cancel"); 
-
 
              }
 
@@ -415,6 +515,7 @@ System.out.println("cancel");
      }
  } 
 
+   // handles both login and create user
    private class LoginButtonListener implements EventHandler<ActionEvent>{
 
       @Override
@@ -425,7 +526,19 @@ System.out.println("cancel");
             if(acctT.getText().equals("") || pswdT.getText().equals("")){
               loginMsg.setText("Enter Acct/Pswd");
             }else{
+
+/*
+             if(songQueue.size()!=0){
+              songQueue.add("SwingCheese.wav");
+              songQueue.add("SwingCheese.wav");
+             }else{
+              songQueue.add("Capture.wav");
+              songQueue.add("Capture.wav");
+              play();
+             } 
+*/
               man.checkUser(acctT.getText(),pswdT.getText());
+
             } 
 
           acctT.setText("");
@@ -447,18 +560,14 @@ System.out.println("cancel");
              pswdT.setText("");
 
 
-
          }
-
-
-
 
       }
 
-
-
    }
 
+
+  // class to push and pull Vector users
   public class FileManager {
 
   
@@ -491,10 +600,6 @@ System.out.println("got it");
        window.setTop(mainMenu);
        window.setCenter(buttonGrid);
        window.setBottom(null);
- 
-
-
-
   
       }else{
 
@@ -508,11 +613,8 @@ System.out.println("got it");
              mainUser = user; 
              mainHours = mainUser.getMins();
              mainPlays = mainUser.getPassword();
-//             hoursVal.setText(mainHours); 
-//             playsVal.setText(mainPlays); 
              setUpUserMenus();
  
-             loginMsg.setText("Success");   
              window.setTop(mainMenu);
              window.setCenter(buttonGrid);
              window.setBottom(null);
@@ -530,9 +632,14 @@ System.out.println("got it");
 //System.out.println("no2 "+users.size());
 
       if(cnt==users.size()){
-         loginMsg.setText("New User");   
+
+//System.out.println("new user");
+
+         loginMsg.setText("        New User\nRe-enter Acct/Pswd");   
          User addUser = new User(logUser,pswd, "test");
          users.add(addUser); 
+
+
       }
 
 //System.out.println("no3 "+users.size());
@@ -559,7 +666,7 @@ System.out.println("got it");
   public void pullUserData(){
 
     try {
-     FileInputStream fin = new FileInputStream("thequeue.dat");
+     FileInputStream fin = new FileInputStream("users.dat");
      ObjectInputStream ois = new ObjectInputStream(fin);
      users = (Vector) ois.readObject();
      ois.close();
@@ -574,7 +681,7 @@ System.out.println("got it");
   public void pushUserData(){
 
     try {
-       FileOutputStream fout = new FileOutputStream("thequeue.dat");
+       FileOutputStream fout = new FileOutputStream("users.dat");
        ObjectOutputStream oos = new ObjectOutputStream(fout);
        oos.writeObject(users);
        oos.close();
@@ -587,136 +694,6 @@ System.out.println("got it");
 
 
  }
-
-
-/*
-  public class FileMan2 {
-
-    public FileMan2(){};
-
-    public  void checkUser(String user, String pswd) {
-        try{
-            // Create new file
-           // String content = "This is the content to write into create file";
-            String path="Users/"+user;
-            File file = new File(path);
-
-            // If file doesn't exists, then create it
-            if (!file.exists()) {
-                loginMsg.setText("New User");
-                file.createNewFile();
-
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            // Write in file
-            bw.write(pswd+"\n");
-            bw.write("0"+"\n");
-            LocalDate date = LocalDate.now();
-            bw.write(date.toString()+"\n");
-            String day= Integer.toString(date.getDayOfYear());
-            bw.write(day);
-            bw.close();
-
-            }else{
-
-            FileReader fr = new FileReader(file.getAbsoluteFile());
-            BufferedReader br = new BufferedReader(fr);
-            StringBuilder usrPswd = new StringBuilder(br.readLine());
-            StringBuilder totMins = new StringBuilder(br.readLine());
-            StringBuilder dateJoin = new StringBuilder(br.readLine());
-            StringBuilder dayDate = new StringBuilder(br.readLine());
-         
-System.out.println("User: "+acctT.getText()+"\n"+"Password: "+usrPswd+"\n"+"Total Min Used: "+totMins+"\n"+"Date Joined: "+dateJoin+"\n"+"Day: "+dayDate);
-            updatePlays(acctT.getText()); 
-              if(usrPswd.toString().equals(pswdT.getText())){
-                  loginMsg.setText("Success");
-              }else{
-                  loginMsg.setText("Bad Pswd");
-              }  
-          
-             br.close(); 
-            }
-            // Close connection
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-    }
-  
-
-     public void updatePlays(String user){
-
-           File users = new File("Users");
-           File[] list = users.listFiles();
-        
-           
-           for(File file : list){
-
-             if(file.getName().equals(user)){
-System.out.println("got: "+file.getName());             
-                try{
-                  FileReader tempFr = new FileReader(file.getAbsoluteFile());
-                  FileReader fr = new FileReader(file.getAbsoluteFile());
-                  BufferedReader tempBr = new BufferedReader(tempFr);
-                  BufferedReader br = new BufferedReader(fr);
-              
-         //         StringBuilder ln2 = new StringBuilder(br.readLine());
-                    int cnt=0; 
-                    while(tempBr.readLine()!=null){ 
-
-                     cnt++;
-                    }
-
-
-                FileWriter fw = new FileWriter(file.getAbsoluteFile(),true);
-                BufferedWriter bw = new BufferedWriter(fw);
-
-
-
-                    for(int i=0;i<cnt;i++){
-
-                       bw.write("hello");
-                    }
-
-
-
-            FileReader tfr = new FileReader(file.getAbsoluteFile());
-            BufferedReader tbr = new BufferedReader(tfr);
-            StringBuilder usrPswd = new StringBuilder(tbr.readLine());
-            StringBuilder totMins = new StringBuilder(tbr.readLine());
-            StringBuilder dateJoin = new StringBuilder(tbr.readLine());
-            StringBuilder dayDate = new StringBuilder(tbr.readLine());
-         
-System.out.println("User: "+acctT.getText()+"\n"+"Password: "+usrPswd+"\n"+"Total Min Used: "+totMins+"\n"+"Date Joined: "+dateJoin+"\n"+"Day: "+dayDate);
-
-
-
-//           StringBuilder ln1 = new StringBuilder(br.readLine());
- 
-// System.out.println(ln1);             
-
-//                 bw.write("hello");
-                 }catch(Exception e){
-                   System.out.println(e);
-                 } 
-            
-            }
-
-          }
-   
-     }
-
-
-
-  }
-
-
-
-*/
-
-
-
 
 
 }

@@ -28,7 +28,9 @@ public class Song {
 	public int timesPlayed() {
 		return songPlays;
 	}
-	
+
+
+/*	
 	public void playSong(String filePath) {
 		if(!canPlay()) {
 			return;
@@ -49,6 +51,8 @@ public class Song {
 			}         
 		}
 	}
+*/
+
 	@Override
 		public String toString() {
 		return this.name;
