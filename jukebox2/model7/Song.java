@@ -15,13 +15,11 @@ public class Song implements Serializable{
 	public String filePath;
         public int plays;
         public LocalDate firstPlay;
-
+        public Double length;
 	
-	public Song(String string) {
+	public Song(String string, Double length) {
 		filePath=string;
-//		mostRecentPlay=LocalDate.now();
-//		songPlays=0;
-
+                this.length=length; 
                 firstPlay=LocalDate.now();
                 plays=0;
 	}

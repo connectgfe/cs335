@@ -131,16 +131,16 @@ public class JukeboxStartGUI extends Application {
 
     if(songs.size()==0){
  
-    capture = new Song("Capture.wav");
+    capture = new Song("Capture.wav", .5);
     songs.add(capture);
 
-    swingCheese = new Song("SwingCheese.wav");
+    swingCheese = new Song("SwingCheese.wav", .15);
     songs.add(swingCheese);
 
-    lopingSting = new Song("LopingSting.wav");
+    lopingSting = new Song("LopingSting.wav", .5);
     songs.add(lopingSting);
    
-    determinedTumbao = new Song("DeterminedTumbao.wav");
+    determinedTumbao = new Song("DeterminedTumbao.wav", .20);
     songs.add(determinedTumbao);
     }
 
@@ -187,7 +187,7 @@ public class JukeboxStartGUI extends Application {
 
                 songQueue.poll();
 //System.out.println("Dequeue");
-
+                man.pushUserData();
 
                 if (songQueue.size()!=0) {
                     //Plays the subsequent files
