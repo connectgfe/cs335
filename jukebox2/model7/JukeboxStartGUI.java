@@ -69,7 +69,6 @@ public class JukeboxStartGUI extends Application {
         private Vector<User> users;
         private FileManager man;
         private User mainUser;
-        private String mainHours, mainPlays;
         private MenuItem hoursVal, song1, song2, song3;
         private LinkedList<Song> songs; 
         private LinkedList<String> songQueue; 
@@ -105,7 +104,6 @@ public class JukeboxStartGUI extends Application {
         setUpLoginMenu();
 
         setUpTableView();
-//        setUpGrids();
 
         addSongs();
 
@@ -131,13 +129,13 @@ public class JukeboxStartGUI extends Application {
 
     if(songs.size()==0){
  
-    capture = new Song("Capture.wav", .5);
+    capture = new Song("Capture.wav", .05);
     songs.add(capture);
 
     swingCheese = new Song("SwingCheese.wav", .15);
     songs.add(swingCheese);
 
-    lopingSting = new Song("LopingSting.wav", .5);
+    lopingSting = new Song("LopingSting.wav", .05);
     songs.add(lopingSting);
    
     determinedTumbao = new Song("DeterminedTumbao.wav", .20);
@@ -303,8 +301,8 @@ public class JukeboxStartGUI extends Application {
   // has mainMenu and userOptions menu
   private void setUpUserMenus() {
 
-    hoursVal = new MenuItem(mainHours); 
-    Menu totHours = new Menu("Total Hours Used");
+    hoursVal = new MenuItem(Double.toString(mainUser.totalMinUsed)); 
+    Menu totHours = new Menu("Total Minutes Used");
     totHours.getItems().addAll(hoursVal);
 
     song1 = new MenuItem(mainUser.song1);
@@ -413,7 +411,6 @@ public class JukeboxStartGUI extends Application {
  
           if (text.equals("Sign In")){
 
-System.out.println("Hello");
            
            window.setCenter(null);
            setUpLoginGrids();        
@@ -437,6 +434,8 @@ System.out.println("Hello");
 
             setUpLoginMenu();            
             window.setTop(mainMenu);
+            window.setCenter(buttonGrid);
+        
 
         }
        
@@ -493,6 +492,7 @@ System.out.println("Hello");
             if(mainUser.song3.equals("(song 3)") && sng.plays<3){
 
 //System.out.println(sng.filePath+" "+sng.plays+" "+sng.firstPlay.getDayOfYear());
+               mainUser.totalMinUsed+=sng.length;
 
                if(songQueue.size()!=0){
                  songQueue.add(sng.filePath);
@@ -570,11 +570,7 @@ System.out.println("Hello");
 
             setUpLoginMenu();            
             window.setTop(mainMenu);
-/*            
-            window.setTop(mainMenu);
-            window.setCenter(acctGrid);
-            window.setBottom(loginGrid);
-*/
+            window.setCenter(buttonGrid);
         }
 
          // creates new User 
@@ -704,8 +700,6 @@ System.out.println("got it");
                  if( logUser.equals("Merlin") && pswd.equals("7777777")){ 
 //System.out.println("Got Merlin");
                    mainUser = user; 
-                   mainHours = mainUser.getMins();
-                   mainPlays = mainUser.getPassword();
                    setUpUserMenus();
                    setUpAdminMenus();
                    window.setTop(mainMenu);
@@ -716,8 +710,6 @@ System.out.println("got it");
                  }else{
 
              mainUser = user; 
-             mainHours = mainUser.getMins();
-             mainPlays = mainUser.getPassword();
              setUpUserMenus();
  
              window.setTop(mainMenu);
