@@ -5,6 +5,9 @@ import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+
+
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
@@ -30,6 +33,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Sphere;
 import com.jme3.scene.shape.Sphere.TextureMode;
+
 import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 
@@ -47,6 +51,8 @@ public class HelloCollision extends SimpleApplication
   private BulletAppState bulletAppState;
   private RigidBodyControl landscape;
   private CharacterControl player;
+  
+//  private BoxCollisionShape floor;
 
   private Vector3f walkDirection = new Vector3f();
   private boolean left = false, right = false, up = false, down = false;
@@ -64,6 +70,11 @@ public class HelloCollision extends SimpleApplication
   /** Prepare geometries and physical nodes for bricks and cannon balls. */
   private RigidBodyControl    brick_phy;
   private static final Box    box;
+
+  private static final Box    box2;
+  private RigidBodyControl    box2_phy;
+
+
   private RigidBodyControl    ball_phy;
   private static final Sphere sphere;
   private RigidBodyControl    floor_phy;
@@ -77,14 +88,22 @@ public class HelloCollision extends SimpleApplication
 
   static {
     /** Initialize the cannon ball geometry */
-    sphere = new Sphere(32, 32, 0.4f, true, false);
+    sphere = new Sphere(15, 15, 0.4f, true, false);
     sphere.setTextureMode(TextureMode.Projected);
     /** Initialize the brick geometry */
     box = new Box(brickLength, brickHeight, brickWidth);
     box.scaleTextureCoordinates(new Vector2f(1f, .5f));
+
+    box2 = new Box(2,2,2);
+    box2.scaleTextureCoordinates(new Vector2f(1f, .5f));
+
+
     /** Initialize the floor geometry */
-    floor = new Box(500f, 0.1f, 300f);
-    floor.scaleTextureCoordinates(new Vector2f(3, 6));
+    floor = new Box(30f, .1f, 30f);
+    floor.scaleTextureCoordinates(new Vector2f(1, 1.5f));
+
+
+
   }
 
 
@@ -100,18 +119,18 @@ public class HelloCollision extends SimpleApplication
 
    bulletAppState = new BulletAppState();
    stateManager.attach(bulletAppState);
-   bulletAppState.setDebugEnabled(true);
+ //  bulletAppState.setDebugEnabled(true);
 
     // We re-use the flyby camera for rotation, while positioning is handled by physics
     viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
-    flyCam.setMoveSpeed(100);
+    flyCam.setMoveSpeed(150);
     setUpKeys();
     setUpLight();
 
     // We load the scene from the zip file and adjust its size.
-    assetManager.registerLocator("town.zip", ZipLocator.class);
-    sceneModel = assetManager.loadModel("main.scene");
-    sceneModel.setLocalScale(2f);
+    assetManager.registerLocator("world_05.zip", ZipLocator.class);
+    sceneModel = assetManager.loadModel("world_01.scene");
+    sceneModel.setLocalScale(10f);
 
     // We set up collision detection for the scene by creating a
     // compound collision shape and a static RigidBodyControl with mass zero.
@@ -119,6 +138,14 @@ public class HelloCollision extends SimpleApplication
             CollisionShapeFactory.createMeshShape(sceneModel);
     landscape = new RigidBodyControl(sceneShape, 0);
     sceneModel.addControl(landscape);
+
+/*
+    CollisionShape sceneShape =
+            CollisionShapeFactory.createMeshShape(floor);
+    landscape = new RigidBodyControl(sceneShape, 0);
+    sceneModel.addControl(landscape);
+*/
+
 
     // We set up collision detection for the player by creating
     // a capsule collision shape and a CharacterControl.
@@ -129,13 +156,15 @@ public class HelloCollision extends SimpleApplication
     player = new CharacterControl(capsuleShape, 0.05f);
     player.setJumpSpeed(20);
     player.setFallSpeed(30);
-    player.setGravity(30);
-    player.setPhysicsLocation(new Vector3f(0, 10, 0));
+    player.setGravity(130);
+    player.setPhysicsLocation(new Vector3f(0,0 ,-5));
 
     // We attach the scene and the player to the rootnode and the physics space,
     // to make them appear in the game world.
-//    rootNode.attachChild(sceneModel);
-//    bulletAppState.getPhysicsSpace().add(landscape);
+
+
+    rootNode.attachChild(sceneModel);
+    bulletAppState.getPhysicsSpace().add(landscape);
 
 
 
@@ -143,14 +172,20 @@ public class HelloCollision extends SimpleApplication
 
    /** Add InputManager action: Left click triggers shooting. */
     inputManager.addMapping("shoot",
-            new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+                   new KeyTrigger(KeyInput.KEY_H));
+
+//            new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
     inputManager.addListener(actionListener, "shoot");
     /** Initialize the scene, materials, and physics space */
-    initMaterials();
-    initWall();
-    initFloor();
-    initCrossHairs();
 
+
+    initMaterials();
+//    initWall(0,0);
+//    initWall(10,5);
+     makeBox(10,30);
+
+//    initFloor();
+//    initCrossHairs();
 
   }
 
@@ -158,33 +193,42 @@ public class HelloCollision extends SimpleApplication
 
   /** Initialize the materials used in this scene. */
   public void initMaterials() {
+
     wall_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     TextureKey key = new TextureKey("Textures/Terrain/BrickWall/BrickWall.jpg");
     key.setGenerateMips(true);
     Texture tex = assetManager.loadTexture(key);
     wall_mat.setTexture("ColorMap", tex);
 
+
     stone_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
     TextureKey key2 = new TextureKey("Textures/Terrain/Rock/Rock.PNG");
+
     key2.setGenerateMips(true);
     Texture tex2 = assetManager.loadTexture(key2);
     stone_mat.setTexture("ColorMap", tex2);
 
+
     floor_mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-    TextureKey key3 = new TextureKey("Textures/Terrain/Pond/Pond.jpg");
+    TextureKey key3 = new TextureKey("Textures/Terrain/splat/grass.jpg");
     key3.setGenerateMips(true);
     Texture tex3 = assetManager.loadTexture(key3);
     tex3.setWrap(WrapMode.Repeat);
+
     floor_mat.setTexture("ColorMap", tex3);
+
   }
 
 
 
   /** Make a solid floor and add it to the scene. */
   public void initFloor() {
+
     Geometry floor_geo = new Geometry("Floor", floor);
     floor_geo.setMaterial(floor_mat);
     floor_geo.setLocalTranslation(0, -0.1f, 0);
+
+    // attach floor to app
     this.rootNode.attachChild(floor_geo);
     /* Make the floor physical with mass 0.0f! */
     floor_phy = new RigidBodyControl(0.0f);
@@ -247,6 +291,8 @@ public class HelloCollision extends SimpleApplication
    */
   @Override
     public void simpleUpdate(float tpf) {
+
+        
         camDir.set(cam.getDirection()).multLocal(0.6f);
         camLeft.set(cam.getLeft()).multLocal(0.4f);
         walkDirection.set(0, 0, 0);
@@ -264,6 +310,9 @@ public class HelloCollision extends SimpleApplication
         }
         player.setWalkDirection(walkDirection);
         cam.setLocation(player.getPhysicsLocation());
+
+System.out.println("  "+player.getPhysicsLocation()+" "+cam.getLocation()+" "+walkDirection+" "+camDir+" "+cam.getDirection());
+
     }
 
 
@@ -271,6 +320,8 @@ public class HelloCollision extends SimpleApplication
    * Every time the shoot action is triggered, a new cannon ball is produced.
    * The ball is set up to fly from the camera position in the camera direction.
    */
+
+
   private ActionListener actionListener = new ActionListener() {
     public void onAction(String name, boolean keyPressed, float tpf) {
       if (name.equals("shoot") && !keyPressed) {
@@ -279,27 +330,60 @@ public class HelloCollision extends SimpleApplication
     }
   };
 
+  public void makeCannonBall() {
+	    /** Create a cannon ball geometry and attach to scene graph. */
+	    Geometry ball_geo = new Geometry("cannon ball", sphere);
+	    ball_geo.setMaterial(stone_mat);
+	    rootNode.attachChild(ball_geo);
+	    /** Position the cannon ball  */
+        Vector3f loc = new Vector3f(player.getPhysicsLocation().getX(),player.getPhysicsLocation().getY()+4,player.getPhysicsLocation().getZ());
+ 
+	    ball_geo.setLocalTranslation(loc);
+           
+//            ball_geo.setLocalTranslation(player.getLocation());
+	
+	    /** Make the ball physcial with a mass > 0.0f */
+	    ball_phy = new RigidBodyControl(1f);
+	    /** Add physical ball to physics space. */
+	    ball_geo.addControl(ball_phy);
+	    bulletAppState.getPhysicsSpace().add(ball_phy);
+	    /** Accelerate the physcial ball to shoot it. */
+//            if (cam.getDirection().getX()>0 && cam.getDirection().getZ()>0){
+	    ball_phy.setLinearVelocity(cam.getDirection().mult(50));
+
+/*
+            }else{
+            ball_phy.setLinearVelocity(cam.getDirection().mult(-25));
+            }
+*/
+System.out.println("NO: "+player.getPhysicsLocation()+" "+cam.getLocation()+" "+walkDirection+" "+camDir+" "+cam.getDirection()+" "+cam.getDirection().mult(25));
+
+
+	  }
+
+
+  public void makeBox(int x, int z) {
+	    /** Create a cannon ball geometry and attach to scene graph. */
+	    Geometry box2_geo = new Geometry("box", box2);
+	    box2_geo.setMaterial(stone_mat);
+	    rootNode.attachChild(box2_geo);
+	    /** Position the cannon ball  */
+ 
+	    box2_geo.setLocalTranslation(x,0,z);
+           
+//            ball_geo.setLocalTranslation(player.getLocation());
+	
+	    /** Make the ball physcial with a mass > 0.0f */
+	    box2_phy = new RigidBodyControl(.001f);
+	    /** Add physical ball to physics space. */
+	    box2_geo.addControl(box2_phy);
+	    bulletAppState.getPhysicsSpace().add(box2_phy);
+	    /** Accelerate the physcial ball to shoot it. */
+	  }
 
 
 
-  /** This method creates one individual physical cannon ball.
-   * By defaul, the ball is accelerated and flies
-   * from the camera position in the camera direction.*/
-   public void makeCannonBall() {
-    /** Create a cannon ball geometry and attach to scene graph. */
-    Geometry ball_geo = new Geometry("cannon ball", sphere);
-    ball_geo.setMaterial(stone_mat);
-    rootNode.attachChild(ball_geo);
-    /** Position the cannon ball  */
-    ball_geo.setLocalTranslation(cam.getLocation());
-    /** Make the ball physcial with a mass > 0.0f */
-    ball_phy = new RigidBodyControl(1f);
-    /** Add physical ball to physics space. */
-    ball_geo.addControl(ball_phy);
-    bulletAppState.getPhysicsSpace().add(ball_phy);
-    /** Accelerate the physcial ball to shoot it. */
-    ball_phy.setLinearVelocity(cam.getDirection().mult(25));
-  }
+
 
   /** A plus sign used as crosshairs to help the player with aiming.*/
   protected void initCrossHairs() {
@@ -308,20 +392,22 @@ public class HelloCollision extends SimpleApplication
     BitmapText ch = new BitmapText(guiFont, false);
     ch.setSize(guiFont.getCharSet().getRenderedSize() * 2);
     ch.setText("+");        // fake crosshairs :)
+
     ch.setLocalTranslation( // center
       settings.getWidth() / 2 - guiFont.getCharSet().getRenderedSize() / 3 * 2,
       settings.getHeight() / 2 + ch.getLineHeight() / 2, 0);
-    guiNode.attachChild(ch);
+   
+     guiNode.attachChild(ch);
   }
 
   /** This loop builds a wall out of individual bricks. */
-  public void initWall() {
+  public void initWall(int x, int z) {
     float startpt = brickLength / 4;
     float height = 0;
     for (int j = 0; j < 15; j++) {
       for (int i = 0; i < 6; i++) {
         Vector3f vt =
-         new Vector3f(i * brickLength * 2 + startpt, brickHeight + height, 0);
+         new Vector3f((i+x) * brickLength * 2 + startpt, (brickHeight + height), (0+z));
         makeBrick(vt);
       }
       startpt = -startpt;
@@ -338,7 +424,7 @@ public class HelloCollision extends SimpleApplication
     /** Position the brick geometry  */
     brick_geo.setLocalTranslation(loc);
     /** Make brick physical with a mass > 0.0f. */
-    brick_phy = new RigidBodyControl(2f);
+    brick_phy = new RigidBodyControl(.0010f);
     /** Add physical brick to physics space. */
     brick_geo.addControl(brick_phy);
     bulletAppState.getPhysicsSpace().add(brick_phy);
