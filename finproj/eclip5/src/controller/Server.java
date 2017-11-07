@@ -1,4 +1,4 @@
-package controller;
+//package controller;
 
 /*
  * This is the server part of a multi-client server. Since it is 
@@ -15,7 +15,6 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 import java.awt.Point;
-import java.awt.Color;
 
 
 
@@ -92,7 +91,7 @@ try{
       // to read any new messages from the server. When a new read
       // happens, write the new message to all Clients
 
-//System.out.println("new: "+outputStreams.size()+" "+vector.size());
+System.out.println("S: new: "+outputStreams.size()+" "+vector.size());
 
 
           try{
@@ -100,13 +99,15 @@ try{
 
                 
 //                Tj obj = (Tj)input.readObject();
-//System.out.println("here");
 
+System.out.println("S: read obj");
                    obj = (Point)input.readObject();
+System.out.println("S: point "+obj.getX()+" "+obj.getY());
 
 //                    obj = (String)input.readObject();
 //                    obj = (Tj2)input.readObject();
 
+// uncomment to store obj
 
                     vector.add(obj);
  
@@ -172,6 +173,8 @@ try{
               try{
                  stream.reset(); 
                  stream.writeObject((Point)object);
+System.out.println("S: write obj");
+
 
                   } catch (IOException ioe){
 

@@ -17,7 +17,15 @@ import javafx.stage.Stage;
 import java.net.*;
 import java.io.*;
 import javafx.concurrent.Task;
+import javafx.collections.ObservableList;
+import java.awt.Point;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.Optional;
+import javafx.concurrent.Task;
+
 
 
 import model.Pokemon;
@@ -47,6 +55,8 @@ public class PokemonMain extends Application {
   private ObjectOutputStream outputToServer;
   private ObjectInputStream inputFromServer;
   private static final String Address = "localhost";
+  public Point altPlayer;
+  
 
   FileManager man = new FileManager();
 
@@ -61,6 +71,8 @@ public class PokemonMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+
+                openConnection();
 
 		// TODO Auto-generated method stub
 		primaryStage.setTitle("Pokemon");
@@ -165,8 +177,28 @@ public class PokemonMain extends Application {
 	gameLoader.getPokemon().movePlayer(keyPressed);
 
 	}
-	//			System.out.println(keyPressed);
-	//		}
+
+
+
+
+           try {
+
+                   outputToServer.writeObject(gameLoader.getPokemon().getTrainerLoc());
+
+System.out.println("PkMain: "+gameLoader.getPokemon().getTrainerLoc().getX()+" "+gameLoader.getPokemon().getTrainerLoc().getY());
+	
+
+
+
+         	} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+                
+        
+//		}
 		}
 		
 	}
@@ -204,6 +236,8 @@ public class PokemonMain extends Application {
 //////////////
 
 
+
+
   private void openConnection() {
     // Our server is on our computer, but make sure to use the same port.
     try {
@@ -211,8 +245,10 @@ public class PokemonMain extends Application {
       outputToServer = new ObjectOutputStream(socket.getOutputStream());
       inputFromServer = new ObjectInputStream(socket.getInputStream());
 
-      // SeverListener will have a while(true) loop
+      altPlayer = new Point();
 
+
+      // SeverListener will have a while(true) loop
       ServerListener listener = new ServerListener();
       // Note: Need setDaemon when started with a JavaFX App, or it crashes.
 
@@ -228,12 +264,9 @@ public class PokemonMain extends Application {
  private class ServerListener extends Task<Object> {
 
     @Override
-    public void run() {
+    public void run()  {
 
 //      try{
-
-
-
 
          while(true){
            // instance above
@@ -243,9 +276,21 @@ public class PokemonMain extends Application {
            //sentMessages.add(message);
 */
 // System.out.println("here"); 
+           try {
+			altPlayer = (Point)inputFromServer.readObject();
 
+System.out.println("C: "+altPlayer.getX()+" "+altPlayer.getY());         
 
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+           
 
+          // need to add otherTrainer to Pokemon
 
 /*
 
