@@ -68,7 +68,7 @@ public class PokemonMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
                 // sets up server connnection
-                openConnection();
+//                openConnection();
 		
                 primaryStage.setTitle("Pokemon");
 		keyPressed = 'z';
@@ -176,11 +176,11 @@ public class PokemonMain extends Application {
 
 //////// in progress: send point to server ie comment if needed
 
-
+/*
            try {
 
 
-                   outputToServer.writeObject(gameLoader.getPokemon().getTrainerLoc());
+                  outputToServer.writeObject(gameLoader.getPokemon().getTrainerLoc());
 
 
 //System.out.println("PkMain: "+gameLoader.getPokemon().getTrainerLoc().getX()+" "+gameLoader.getPokemon().getTrainerLoc().getY());
@@ -192,7 +192,7 @@ public class PokemonMain extends Application {
 			e.printStackTrace();
 		}
 
-
+*/
                 
         
 		}

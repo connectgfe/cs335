@@ -136,6 +136,19 @@ System.out.println("FileMan:New User");
    return users;
  }
 
+ public LinkedList<String> getUserNames(){
+  
+   LinkedList<String> names = new LinkedList<>();
+
+   for( User usr : users ){
+
+     names.add(usr.name);
+   
+   }
+
+   return names;
+ }
+
 
  public void removeUser(String rmName){
 

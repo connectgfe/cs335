@@ -49,7 +49,6 @@ public class LoginView extends BorderPane implements Observer {
   
 
 
-        private MenuBar mainMenu;
         private Menu userMenuBar, adminMenuBar;
         private TextField acctT;
         private PasswordField pswdT; 
@@ -57,7 +56,6 @@ public class LoginView extends BorderPane implements Observer {
         private GridPane acctGrid, loginGrid, buttonGrid;
         private Label acctLabl, pswdLabl, loginMsg, userMsg; 
         private FileManager man;
-    //    private Pokemon theGame;
         private Observer textView;
         private GameLoader gameLoader;
 
@@ -72,8 +70,6 @@ public class LoginView extends BorderPane implements Observer {
           acctGrid = new GridPane();
 
           loginGrid = new GridPane();
-          mainMenu = new MenuBar();
-
           setUpLoginGrids();
 
          }
@@ -166,12 +162,24 @@ public class LoginView extends BorderPane implements Observer {
        this.setCenter((Node) newView);
    }
 
+  private void setViewAdminCreate() {
+       this.setCenter(acctGrid);
+       this.setBottom(createU);       
+   }
 
+  private void adminHelper(){  
+
+        this.setTop(null);
+  }
 
 
   // has adminOptions menu
   public void setUpAdminMenus(){
- 
+
+
+    MenuBar mainMenu = new MenuBar();
+
+
     AdminMenuItemListener adminMenuListener = new AdminMenuItemListener();
 
     MenuItem createUser = new MenuItem("Create User");
@@ -215,9 +223,29 @@ public class LoginView extends BorderPane implements Observer {
          // creates new User 
 
          if (text.equals("Create User")){
+
+
+           setViewAdminCreate();
     
-        }
-       
+         }
+
+
+         for( String user : man.getUserNames() ){
+
+            if (text.equals(user)){
+
+
+ System.out.println("Got User: "+user);
+                    man.removeUser(user);
+                    man.pushUserData();
+                    adminHelper();
+                    setUpAdminMenus(); 
+                    setViewToAdmin(textView);
+   
+ 
+            }
+    
+          } 
 
 
      }
@@ -288,6 +316,40 @@ System.out.println("Set Pokemon current for new");
           acctT.setText("");
           pswdT.setText("");
         }
+
+
+//////////      
+         if(createU==(Button) arg0.getSource()){
+
+    System.out.println("Got Create");
+
+
+                    man.setUser(acctT.getText(),pswdT.getText());
+System.out.println("View:Admin Create New User");
+        
+                    man.pushUserData();
+                    adminHelper();
+                    setUpAdminMenus(); 
+                    setViewToAdmin(textView);
+                    acctT.setText("");
+                    pswdT.setText("");
+ 
+/*
+             window.setTop(null);
+             setUpUserMenus();
+             setUpAdminMenus();
+             window.setTop(mainMenu); 
+             window.setCenter(vbox);
+             window.setBottom(null);
+             acctT.setText("");
+             pswdT.setText("");
+*/
+
+         }
+
+///////////
+
+
       }
 
    }
