@@ -23,12 +23,11 @@ public class Server implements Serializable{
 
   private static ServerSocket serverSocket;
   private static List<ObjectOutputStream> outputStreams = new Vector<>();
+
   private static Vector<Point> vector = new Vector<Point>();
 
 
   public static void main(String[] args) throws IOException {
-
-//System.out.println("intro: "+outputStreams.size()+" "+vector.size());
 
 
 
@@ -42,7 +41,6 @@ public class Server implements Serializable{
       ObjectOutputStream outputToClient = new ObjectOutputStream(socket.getOutputStream());
       
       outputStreams.add(outputToClient);
-
       // System.out.println("Accepted a new connection from " + socket.getInetAddress());
 
       // Start the loop that reads any Client's writeObject in the background in a 
@@ -61,30 +59,15 @@ public class Server implements Serializable{
 
   private static class ClientHandler implements Runnable {
 
-
-
-    private ObjectInputStream input;
+ private ObjectInputStream input;
     Point obj;
+    int index;
 
     public ClientHandler(ObjectInputStream input) {
       this.input = input;
 
+    index=outputStreams.size()-1;
 
-// this sends all Points in vector to newly logged in user
-/*
-      try{
-//       for( String str : vector ){
-       for(  Point object : vector ){
-         
-          outputStreams.get(outputStreams.size()-1).reset();
-          outputStreams.get(outputStreams.size()-1).writeObject((Point)object); 
-          }
-
-       } catch(IOException e){
-          //} catch(ClassNotFoundException cnfe){
-       }
-
-*/
 
     }
  
@@ -100,33 +83,14 @@ System.out.println("S: new: "+outputStreams.size()+" "+vector.size());
                  while(true){
 
                 
-//                Tj obj = (Tj)input.readObject();
 
 System.out.println("S: read obj");
+
                    obj = (Point)input.readObject();
-System.out.println("S: point "+obj.getX()+" "+obj.getY());
+System.out.println("S: point/index "+obj.getX()+" "+obj.getY()+" "+index);
 
-//                    obj = (String)input.readObject();
-//                    obj = (Tj2)input.readObject();
 
-// uncomment to store obj
-
-                    vector.add(obj);
- 
-                    writeVectorToClients(obj); 
-
- 
-
-// new
-/*
-
-                    obj = (String)input.readObject();
-                    vector.add(obj);
-                
-//                   for( String obj : vector ){
-                    writeVectorToClients(obj); 
-//                    }
-*/
+                    writeVectorToClients(obj,index); 
 
                  }
 
@@ -136,47 +100,19 @@ System.out.println("S: point "+obj.getX()+" "+obj.getY());
            } catch (ClassNotFoundException cnfe){
 
            }
- 
-
-
-/*
-  
-      while(true){
-
-           msg = null;
- 
-          try{
-            msg = (String)input.readObject();
-
-           } catch (IOException ioe){
-
-           } catch (ClassNotFoundException cnfe){
-
-           }
-          
-           writeStringToClients(msg); 
-           
- 
-      } 
-    
-*/
-
     
     }
 
-    private void writeVectorToClients(Point object) throws ClassNotFoundException{
-
-//     private void writeVectorToClients(String object) throws ClassNotFoundException{
+    private void writeVectorToClients(Point object, int index) throws ClassNotFoundException{
 
 
+            for(int i = 0; i<outputStreams.size();i++){
   
-            for(ObjectOutputStream stream : outputStreams){   
 
+              if(i!=index){
               try{
-                 stream.reset(); 
-                 stream.writeObject((Point)object);
+                 outputStreams.get(i).writeObject((Point)object);
 System.out.println("S: write obj");
-
 
                   } catch (IOException ioe){
 
@@ -184,7 +120,7 @@ System.out.println("S: write obj");
                   }
  
 
-
+               }
              }
 
  

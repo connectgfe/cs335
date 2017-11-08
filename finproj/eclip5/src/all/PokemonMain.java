@@ -68,9 +68,9 @@ public class PokemonMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
                 // sets up server connnection
-//                openConnection();
-
-		primaryStage.setTitle("Pokemon");
+                openConnection();
+		
+                primaryStage.setTitle("Pokemon");
 		keyPressed = 'z';
 		window = new BorderPane();
 		Scene scene = new Scene(window, width, height);
@@ -175,12 +175,13 @@ public class PokemonMain extends Application {
 
 
 //////// in progress: send point to server ie comment if needed
-/*
+
 
            try {
 
 
                    outputToServer.writeObject(gameLoader.getPokemon().getTrainerLoc());
+
 
 //System.out.println("PkMain: "+gameLoader.getPokemon().getTrainerLoc().getX()+" "+gameLoader.getPokemon().getTrainerLoc().getY());
 	
@@ -191,7 +192,7 @@ public class PokemonMain extends Application {
 			e.printStackTrace();
 		}
 
-*/
+
                 
         
 		}
@@ -277,28 +278,10 @@ public class PokemonMain extends Application {
          while(true){
 
            try {
-                 Point allTrainers = (Point)inputFromServer.readObject();
-
-
-                 
-System.out.println("C: All User Loc: "+allTrainers.getX()+" "+allTrainers.getY());         
-System.out.println("C: This User Loc: "+ gameLoader.getPokemon().getTrainerLoc().getX()+" "+ gameLoader.getPokemon().getTrainerLoc().getY());
-
-
-
-
-                 if( allTrainers.getX()!= gameLoader.getPokemon().getTrainerLoc().getX() && allTrainers.getY()!= gameLoader.getPokemon().getTrainerLoc().getY()   ){
-
-
-
-                altPlayer = allTrainers;
- 
-
-              }
-System.out.println("C: AltPlayers Loc: "+altPlayer.getX()+" "+altPlayer.getY());    
-
-
-    //           gameLoader.getPokemon().theMap.generatePlayer2((int)altPlayer.getX(),(int)altPlayer.getY());
+                 altPlayer = (Point)inputFromServer.readObject();
+          
+System.out.println("C: altPlayer: "+altPlayer.getX()+" "+altPlayer.getY());         
+              gameLoader.getPokemon().theMap.generatePlayer2((int)altPlayer.getX(),(int)altPlayer.getY());
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
