@@ -1,4 +1,4 @@
-package model;
+//package model;
 
 import java.awt.Point;
 import java.util.Observable;
@@ -7,7 +7,7 @@ import java.io.*;
 
 public class Pokemon extends Observable implements Serializable{
 
-	private Map theMap;
+	public Map theMap;
         private TempTrainer trainer;
         public Point tPos; 
 

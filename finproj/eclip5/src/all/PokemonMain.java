@@ -1,4 +1,4 @@
-package controller;
+//package controller;
 
 import java.util.Observer;
 
@@ -27,11 +27,11 @@ import java.util.Optional;
 import javafx.concurrent.Task;
 
 
-
+/*
 import model.Pokemon;
 import views.TextView;
 import views.LoginView;
-
+*/
 
 public class PokemonMain extends Application {
 
@@ -68,7 +68,7 @@ public class PokemonMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 
                 // sets up server connnection
-                openConnection();
+//                openConnection();
 
 		primaryStage.setTitle("Pokemon");
 		keyPressed = 'z';
@@ -173,9 +173,12 @@ public class PokemonMain extends Application {
 
 
 
+
+//////// in progress: send point to server ie comment if needed
+/*
+
            try {
 
-// send point to server ie comment if needed
 
                    outputToServer.writeObject(gameLoader.getPokemon().getTrainerLoc());
 
@@ -188,7 +191,7 @@ public class PokemonMain extends Application {
 			e.printStackTrace();
 		}
 
-
+*/
                 
         
 		}
@@ -202,8 +205,14 @@ public class PokemonMain extends Application {
 	      // Find out the text of the JMenuItem that was just clicked
 	      String text = ((MenuItem) e.getSource()).getText();
 	      if (text.equals("New Game")){
-	        gameLoader.getPokemon().startNewGame(); // The computer player has been set and should not change.
+
+                gameLoader.setPokemon(null);
+                gameLoader.setPokemon(new Pokemon());
+                textView = null;
+                textView = new TextView(gameLoader.getPokemon());
+                gameLoader.getPokemon().addObserver(textView);
                 setViewTo(textView);
+
 
 	      }else if (text.equals("Text")){
 	        setViewTo(textView);
@@ -223,14 +232,15 @@ public class PokemonMain extends Application {
                 textView = null; 
                 textView = new TextView(gameLoader.getPokemon()); 
                 loginView = new LoginView(man,gameLoader,textView);
-  		setViewTo(textView);
+                gameLoader.getPokemon().addObserver(textView);
+                setViewTo(textView);
 	
               }
 	    }
 	}
 
   
-//////////////
+//////////////// work in progress
 
 
 
@@ -267,9 +277,28 @@ public class PokemonMain extends Application {
          while(true){
 
            try {
-			altPlayer = (Point)inputFromServer.readObject();
+                 Point allTrainers = (Point)inputFromServer.readObject();
 
-System.out.println("C: "+altPlayer.getX()+" "+altPlayer.getY());         
+
+                 
+System.out.println("C: All User Loc: "+allTrainers.getX()+" "+allTrainers.getY());         
+System.out.println("C: This User Loc: "+ gameLoader.getPokemon().getTrainerLoc().getX()+" "+ gameLoader.getPokemon().getTrainerLoc().getY());
+
+
+
+
+                 if( allTrainers.getX()!= gameLoader.getPokemon().getTrainerLoc().getX() && allTrainers.getY()!= gameLoader.getPokemon().getTrainerLoc().getY()   ){
+
+
+
+                altPlayer = allTrainers;
+ 
+
+              }
+System.out.println("C: AltPlayers Loc: "+altPlayer.getX()+" "+altPlayer.getY());    
+
+
+    //           gameLoader.getPokemon().theMap.generatePlayer2((int)altPlayer.getX(),(int)altPlayer.getY());
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

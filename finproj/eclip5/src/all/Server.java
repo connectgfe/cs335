@@ -71,20 +71,20 @@ public class Server implements Serializable{
 
 
 // this sends all Points in vector to newly logged in user
-
-try{
+/*
+      try{
 //       for( String str : vector ){
        for(  Point object : vector ){
          
           outputStreams.get(outputStreams.size()-1).reset();
           outputStreams.get(outputStreams.size()-1).writeObject((Point)object); 
+          }
+
+       } catch(IOException e){
+          //} catch(ClassNotFoundException cnfe){
        }
 
-} catch(IOException e){
-//} catch(ClassNotFoundException cnfe){
-}
-
-
+*/
 
     }
  

@@ -1,4 +1,4 @@
-package views;
+//package views;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -38,12 +38,12 @@ import java.io.FileWriter;
 import java.util.*;
 import javafx.scene.Node;
 
-
+/*
 import controller.FileManager;
 import controller.User;
 import model.Pokemon;
 import controller.GameLoader;
-
+*/
 
 public class LoginView extends BorderPane implements Observer {
   
@@ -255,6 +255,7 @@ System.out.println("Player Previous: "+temp.getPokemon().getTrainerLoc().getX()+
                       gameLoader.setPokemon(temp.getPokemon());
                       textView = null;
                       textView = new TextView(gameLoader.getPokemon());
+                      gameLoader.getPokemon().addObserver(textView);
  
 
                    } else {
