@@ -1,0 +1,152 @@
+Coursera ML:
+
+octive-cli
+ending line with ; supresses output
+use , to chain commands
+addpath('~/dir')
+size(A) is size R x C
+length(v) is longest dim
+pwd shows current dir
+who show current vars
+whos show size and current vars
+laod takes dat and converts to M x N matrix
+clear removes var
+ex: v = price(1:10) gets values 1 to 10
+
+save temp_save.dat v
+  (saves v in dat file(binary), if v is cleared, loading temp_save.dat will add  v to vars.. to save as txt use temp_save.txt v -ascii)
+
+matix ops:
+A(3,2) gets val at 3,2
+A(3,:) gets all column vals at 3 row
+A(:,3) = [ 1 ; 3 ; 1] assigns new vals to col 3 of A
+A = [ A [12 ; 23 ; 22]] appends new  col vector to A
+A(:) puts all ele in a in single column
+
+ex: A = [ 1 2; 3 4] 
+    B = [ 1 3; 4 2]
+    C = [ A B ](same as [A,B]) ( concats A B ... C = [ 1 2 1 3; 3 4 4 2] )
+    C = [ A ; B ] ( C = [ 1 2 ; 3 4 ; 1 3; 4 2])
+
+* does matrix mult
+.* component wise mult
+.^2 squares components
+log(v)
+abs(v)
+-v
+
+v + ones(length(v), 1) adds vector of length v of 1's to v
+v + ones(3,1) if v is length 3
+
+A' is transpose of A
+
+val = max(v) gives max value in v
+[val, ind] = max(v) gives val and ind
+max(A) gives column wise max(no args)
+v < 3 gives boolean per value 
+find(v<3) gives index in v of ele less than 3
+[r,c] = find(A>=7) gives r = index row, c = index colum of val > 7 in A
+sum(v) gives sum of vals in v
+sum(A,1) gives sum of column using 1 as arg, row sum using 2 as arg
+prod(v) etc..
+rand(4) gives rand 4x4 
+max(A,[],1) gives column max using 1 as arg, row max as 2 as arg
+eye(4) gives I 4x4
+pinv(A) gives inv of A
+
+T=[0: .01: 4] gives array of numbers from 0 to 4 inc by 1
+y1= sin(2*pi*4*T)
+plot(T,y1) gives graph with T on x axis y1 on y axis
+legend('T','sin') places legend on plot
+title etc
+subplot(1,2,1) divides plot
+axis changes axis
+clf (something with images)
+imagesc(A), colorbar, colormap gray (gives size(A) rep in shades of gray) (using chaining commands)
+
+control statements:
+
+M = [ 1 1 1 1 1]
+
+for i=1:3, M(i)=i+1; end;
+gives M = [ 2 3 4 1 1]
+
+for i=1:3, M(i)=M(i)+1; end;
+gives M = [2 2 2 1 1]
+
+i=1;
+while i < 5, M(i)=M(i)+1; i = i+1; end;
+
+i=1;
+while true, M(i)=M(i)+1; i = i+1; if i == 3, break; end; end;
+
+ex: of elseif
+if M(i)=5, disp('Some msg1');elseif M(i)=4, disp('Some msg2'); else disp('Some msg3'); end; end;
+
+M = [ 2 2 2 2 2 2 1 ]
+i=1;
+for i=1:length(M), if M(i)==1, disp(i); end; end;
+
+functions:
+create m-file with function name in pwd
+ex: addOne.m 
+
+functions can return mult values
+ex: function[y1,y2] = addNum(x)
+    y1 = x+1;
+    y2 = x+2;
+
+   [a,b] = addNum(5)
+
+cost function ex:
+
+training examples for home sales:
+sqft, price
+
+graph has points (1,1), (2,2), (3,3)
+design matrix x = [1 1; 1 2; 1 3]
+y = [ 1 ; 2 ; 3] (y axis values)
+theta = [0;1]
+
+
+function J = costfunctionJ(X, y, theta)
+
+% X is "design matrix" has training ex
+% y is class labels
+
+m= size(X,1); % num of train ex
+predictions = X*theta;
+examples
+sqrErrors = (predictions-y).^2;
+J= 1/(2*m)*sum(sqrErrors);
+
+
+function for single theta grad descent:
+
+octave:286> while temp_theta~=0, temp_theta = der_costFunctionJ(X,y,theta), theta = [0;theta(2,1)-temp_theta]; disp('theta'); disp(theta(2,1)); end
+
+uses der_costFunctionJ
+function J = der_costFunctionJ(X, y, theta)
+
+% X is "design matrix" has training ex
+% y is class labels
+% this fucntion accompanies function h(x)=predictions, a line through data;
+% by minimzing J we get the best theta to use in h(x)
+
+
+m= size(X,1); % num of train ex
+predictions = X*theta; % uses Octave vectorized mult to create vector
+x_val = X*[0;1];
+%examples
+sqrErrors = (predictions-y); % vector
+%J= 1/(4*m)*sum((sqrErrors).*x_val);
+J= (1/(2*m))*(1/2)*sum((sqrErrors).*x_val);
+
+
+
+
+
+
+
+
+
