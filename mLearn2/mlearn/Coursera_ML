@@ -122,6 +122,8 @@ J= 1/(2*m)*sum(sqrErrors);
 
 
 function for single theta grad descent:
+X=[1 1; 1 2; 1 3] y=[1;2;3]
+theta=[0,a]
 
 octave:286> while temp_theta~=0, temp_theta = der_costFunctionJ(X,y,theta), theta = [0;theta(2,1)-temp_theta]; disp('theta'); disp(theta(2,1)); end
 
@@ -140,13 +142,50 @@ x_val = X*[0;1];
 %examples
 sqrErrors = (predictions-y); % vector
 %J= 1/(4*m)*sum((sqrErrors).*x_val);
-J= (1/(2*m))*(1/2)*sum((sqrErrors).*x_val);
+J= (1/(2*m))*(1/2)*sum((sqrErrors).*x_val)
 
 
+below functions are for mulitple theta:
+take the form y=theta0 + theta1(x), typicl linear regression
+
+//////////
+function J = der_theta1(X, y, theta0, theta1)
+
+% X is "design matrix" has training ex
+% y is class labels
+% this fucntion accompanies function h(x)=predictions, a line through data;
+% by minimzing J we get the best theta to use in h(x)
 
 
+m= size(X,1); % num of train ex
+predictions = X*theta1; % uses Octave vectorized mult to create vector
+x_val = X*[0;1];
+%examples
+sqrErrors = ((theta0 + predictions)-y); % vector
+%J= 1/(4*m)*sum((sqrErrors).*x_val);
+J= (1/(6*m))*(1/2)*sum((sqrErrors).*x_val);
+////////////
+
+function J = der_theta0(X, y, theta0, theta1)
+
+% X is "design matrix" has training ex
+% y is class labels
+% this fucntion accompanies function h(x)=predictions, a line through data;
+% by minimzing J we get the best theta to use in h(x)
 
 
+m= size(X,1); % num of train ex
+predictions = X*theta1; % uses Octave vectorized mult to create vector
+x_val = X*[0;1];
+%examples
+sqrErrors = ((theta0 + predictions)-y); % vector
+%J= 1/(4*m)*sum((sqrErrors).*x_val);
+J= (1/(6*m))*(1/2)*sum(sqrErrors);
+///////////////
+
+
+using this loop:
+octave:716> for i=1:100, temp_theta0=der_theta0(X,y,theta0,theta1), temp_theta1=der_theta1(X,y,theta0,theta1), theta0=theta0-temp_theta0, theta1(2,1)=theta1(2,1)-temp_theta1; end;
 
 
 
