@@ -1,4 +1,4 @@
-function J = der_costFunctionJ(X, y, theta)
+function J = der_theta0(X, y, theta0, theta1)
 
 % X is "design matrix" has training ex
 % y is class labels
@@ -7,12 +7,12 @@ function J = der_costFunctionJ(X, y, theta)
 
 
 m= size(X,1); % num of train ex
-predictions = X*theta; % uses Octave vectorized mult to create vector
+predictions = X*theta1; % uses Octave vectorized mult to create vector
 x_val = X*[0;1];
 %examples
-sqrErrors = (predictions-y); % vector
+sqrErrors = ((theta0 + predictions)-y); % vector
 %J= 1/(4*m)*sum((sqrErrors).*x_val);
-J= (1/(4*m))*(1/2)*sum((sqrErrors).*x_val);
+J= (1/(6*m))*(1/2)*sum(sqrErrors);
 
 
 
