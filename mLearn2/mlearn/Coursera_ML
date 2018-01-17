@@ -187,5 +187,43 @@ J= (1/(6*m))*(1/2)*sum(sqrErrors);
 using this loop:
 octave:716> for i=1:100, temp_theta0=der_theta0(X,y,theta0,theta1), temp_theta1=der_theta1(X,y,theta0,theta1), theta0=theta0-temp_theta0, theta1(2,1)=theta1(2,1)-temp_theta1; end;
 
+week3 optimization in Octave:(help fminunc, takes theta as vector)
+
+/// using the following function:
+function [jVal, gradient] = cFunction_Test(theta)
+
+jVal = (theta(1)-5)^2 + (theta(2)-5)^2;
+
+gradient = zeros(2,1);
+gradient(1)=2*(theta(1)-5);
+gradient(2)=2*(theta(2)-5);
+
+
+/// optimiztion using fminunc in Octave
+
+octave:722> options = optimset('GradObj', 'on', 'MaxIter', '100')options =
+
+  scalar structure containing the fields:
+
+    GradObj = on
+    MaxIter = 100
+
+octave:723> initialTheta = [0;0]
+initialTheta =
+
+   0
+   0
+
+octave:724> [optTheta, functionVal, exitFlag] = fminunc(@cFunction_Test,initialTheta, options)
+optTheta =
+
+   5.0000
+   5.0000
+
+functionVal =    1.5777e-30
+exitFlag =  1
+
+
+
 
 
