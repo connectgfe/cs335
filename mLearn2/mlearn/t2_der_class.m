@@ -1,4 +1,4 @@
-function J = t1_der_class(X, y, theta)
+function J = t2_der_class(X, y, theta)
 
 % X is "design matrix" has training ex
 % y is class labels
@@ -9,9 +9,7 @@ function J = t1_der_class(X, y, theta)
 m= size(X,1); % num of train ex
 predictions = X*theta; % uses Octave vectorized mult to create vector
 h  = 1 ./ (1 + e.^-(predictions));
-x_val = X*[0;1;0];
-
-%x_val = X*[0;1];
+x_val = X*[0;0;1];
 %J = (1/m).*(-y.*(log(h))-(1-y).*(log(1-h)));
 
 %J = -(1/(4*m)).*sum((y.*(log(h))+(1-y).*(log(1-h))).*x_val);

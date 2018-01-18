@@ -14,7 +14,7 @@ h  = 1 ./ (1 + e.^-(predictions));
 %J = -(1/(4*m)).*sum((y.*(log(h))+(1-y).*(log(1-h))).*x_val);
 
 
-J = (1./(40)).*sum(h-y);
+J = (1./(10*m)).*sum(h-y);
 
 
 

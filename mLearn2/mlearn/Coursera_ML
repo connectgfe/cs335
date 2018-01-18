@@ -23,6 +23,12 @@ A(:,3) = [ 1 ; 3 ; 1] assigns new vals to col 3 of A
 A = [ A [12 ; 23 ; 22]] appends new  col vector to A
 A(:) puts all ele in a in single column
 
+delete/add
+column:
+mymatrix(:,[2,4]) = []
+row:
+mymatrix([2,4],:) = []
+
 ex: A = [ 1 2; 3 4] 
     B = [ 1 3; 4 2]
     C = [ A B ](same as [A,B]) ( concats A B ... C = [ 1 2 1 3; 3 4 4 2] )
@@ -187,82 +193,17 @@ J= (1/(6*m))*(1/2)*sum(sqrErrors);
 using this loop:
 octave:716> for i=1:100, temp_theta0=der_theta0(X,y,theta0,theta1), temp_theta1=der_theta1(X,y,theta0,theta1), theta0=theta0-temp_theta0, theta1(2,1)=theta1(2,1)-temp_theta1; end;
 
-week3 optimization in Octave:(help fminunc, takes theta as vector)
 
-/// using the following function:
-function [jVal, gradient] = cFunction_Test(theta)
+wrap fminunc:
 
-jVal = (theta(1)-5)^2 + (theta(2)-5)^2;
+octave:1650> [optTheta, functionVal, exitFlag]= fminunc( @(t)(class_t(t,v,y)), initTheta,options)
 
-gradient = zeros(2,1);
-gradient(1)=2*(theta(1)-5);
-gradient(2)=2*(theta(2)-5);
+////
+function [J, grad] = costFunction(theta, X, y)
 
+////
 
-/// optimiztion using fminunc in Octave
-
-octave:722> options = optimset('GradObj', 'on', 'MaxIter', '100')options =
-
-  scalar structure containing the fields:
-
-    GradObj = on
-    MaxIter = 100
-
-octave:723> initialTheta = [0;0]
-initialTheta =
-
-   0
-   0
-
-octave:724> [optTheta, functionVal, exitFlag] = fminunc(@cFunction_Test,initialTheta, options)
-optTheta =
-
-   5.0000
-   5.0000
-
-functionVal =    1.5777e-30
-exitFlag =  1
-
-Logisitc reg:
-
-use theta^T * x in sigmoid function
-the following are functions and Octave code to get basic log reg with 
-X = [ 1 2; 1 3; 1 4; 1 5; 1 6] y=[ 0;0;0;1;1;1] theta=[a,b]
-
-/////////////////
-function J = t0_der_class(X, y, theta)
-
-m= size(X,1); % num of train ex
-predictions = X*theta; % uses Octave vectorized mult to create vector
-h  = 1 ./ (1 + e.^-(predictions));
-
-J = (1./(40)).*sum(h-y);
-///////////////
-
-function J = t1_der_class(X, y, theta)
-
-m= size(X,1); % num of train ex
-predictions = X*theta; % uses Octave vectorized mult to create vector
-h  = 1 ./ (1 + e.^-(predictions));
-x_val = X*[0;1];
-
-J = (1./(40)).*sum((h-y).*x_val);
-///////////////////
-
-
- for i=1:500, temp0 = t0_der_class(X,y,theta), temp1 = t1_der_class(X,y,theta); theta(1,1)=theta(1,1)-temp0, theta(2,1)=theta(2,1)-temp1, end;
-
-check with function below where X = [ 1; a] theta is above
-
-////////////////
-function g = class_hyp(X,theta)
-
-val = sum( X .* theta);
-
-g = 1 ./ (1 + e.^-val);
-/////////////////
-
-
+note: theta starts as guess that converges in regular function
 
 
 
