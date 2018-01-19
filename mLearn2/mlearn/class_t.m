@@ -14,15 +14,21 @@ function [jVal, gradient] = class_t(theta,X,y)
 
 
 
-gradient = zeros(3,1);
+gradient = zeros(4,1);
 %gradient = zeros(2,1);
 
 
 m= size(X,1); % num of train ex
 predictions = X*theta; % uses Octave vectorized mult to create vector
 h  = 1 ./ (1 + e.^-(predictions));
-x1_val = X*[0;1;0];
-x2_val = X*[0;0;1];
+x1_val = X*[0;1;0;0];
+x2_val = X*[0;0;1;0];
+x3_val = X*[0;0;0;1];
+%x4_val = X*[0;0;0;0;1];
+
+
+
+
 %x1_val = X*[0;1];
 
 
@@ -38,6 +44,10 @@ gradient(2) = (1./(10*m)).*sum((h-y).*x1_val);
 
 %gradient(3) = (1/(5*m)).*sum((h-y).*(sqrt(x2_val)));
 gradient(3) = (1./(10*m)).*sum((h-y).*x2_val);
+
+gradient(4) = (1./(10*m)).*sum((h-y).*x3_val);
+
+%gradient(5) = (1./(10*m)).*sum((h-y).*x4_val);
 
 
 

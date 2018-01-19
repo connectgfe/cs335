@@ -205,7 +205,9 @@ function [J, grad] = costFunction(theta, X, y)
 
 note: theta starts as guess that converges in regular function
 
+feature mapping:
 
+to incease fit of boundary increase the number of features, ie sqaure x(i) then add to features..
 
 
 
