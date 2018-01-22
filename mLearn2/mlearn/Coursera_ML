@@ -210,6 +210,29 @@ feature mapping:
 to incease fit of boundary increase the number of features, ie sqaure x(i) then add to features..
 
 
+attemping back prop:
+
+3 layer network(1 hidden layer)
+
+
+ for i=1:size(X,1), disp(X(i,:)'), a2 = [1; sigmoid(the1*X(i,:)')], hx = sigmoid(the2*a2), d3 = hx-y(i), d2 = the2'*d3.*a2.*(1-a2), d2 = [d2(2,1); d2(3,1)], bd2 = bd2 + d3*a2', bd1 = bd1 + d2*(X(i,:)), end;
+
+
+ the1 = the1 - bd1, the2 = the2 - bd2, bd1=zeros(2,3), bd2=zeros(1,3), end;
+
+
+
+/////////////////////
+
+set the1 the2 random, X = [ 1 1 1; 1 2 2; 1 3 3; 1 4 4] y= [0;0;1;1] .. result is 0 when [1 1 1] is tested
+
+for j=1:1000, disp('start inn'), for i=1:size(X,1), disp(X(i,:)'), a2 = [1; sigmoid(the1*X(i,:)')], hx = sigmoid(the2*a2), d3 = hx-y(i), d2 = the2'*d3.*a2.*(1-a2), d2 = [d2(2,1); d2(3,1)], bd2 = bd2 + d3*a2', bd1 = bd1 + d2*(X(i,:)), the1 = the1 - (1/3)*bd1, the2 = the2 - (1/3)*bd2, end, disp('end inn'), bd1=zeros(2,3), bd2= zeros(1,3), end;
+
+///////
+
+
+
+
 
 
 
