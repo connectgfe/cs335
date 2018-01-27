@@ -4,13 +4,16 @@
   "version": "1.0.0",
   "description": "test",
   "scripts": {
-    "start": "node  --experimental-modules test2.mjs"
+    "start": "node --experimental-modules test2.mjs"
   },
   "license": "ISC",
   "dependencies": {
+    "child_process": "^1.0.2",
+    "exec": "^0.2.1",
     "express": "^4.16.2",
     "express-less": "^0.1.0",
     "express-react-views": "^0.10.5",
+    "fs": "0.0.1-security",
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

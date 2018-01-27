@@ -1,18 +1,14 @@
 #/bin/bash
 
-echo begin sc
+echo begin t_sc
 
 val1='test_funct(10,3)'
 
 val2=\'$1\'\
 
-
-
-
-octave-cli --silent --eval 'test_funct(load('$val2'),3)' > xy_out.dat
+octave-cli --silent --eval 'test_funct(load('$val2'),3)' #> xy_out.dat
 
 #octave-cli --silent --eval  2+3,   , #--eval $val1+5 #>> data_file.txt
  
-
-echo end sc
+echo end t_sc
 
