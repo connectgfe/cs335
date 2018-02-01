@@ -1,4 +1,4 @@
-function [jVal, gradient] = o_class_t(theta)
+function [jVal, gradient] = o_class_t(theta,X)
 
 % X is "design matrix" has training ex
 % y is class labels
@@ -6,7 +6,7 @@ function [jVal, gradient] = o_class_t(theta)
 % by minimzing J we get the best theta to use in h(x)
 
 
-X = [ 1 1 1 1; 1 2 2 2; 1 3 3 3; 1 4 4 4];
+%X = [ 1 1 1 1; 1 2 2 2; 1 3 3 3; 1 4 4 4];
 y = [0;0;1;1];
 
 %X = [ 1 1 ; 1 2 ; 1 3 ; 1 4 ;1 5 ;1 6 ];

@@ -1,2 +1,2 @@
-function y = addOne(x)
- y = x+1;
+function y = addOne(x,z)
+ y = x+z+1;

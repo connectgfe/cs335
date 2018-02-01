@@ -243,10 +243,24 @@ exitFlag =  1
 
 wrap fminunc:
 
-octave:1650> [optTheta, functionVal, exitFlag]= fminunc( @(t)(class_t(t,v,y)), initTheta,options)
+note: t is passed param
 
-////
-function [J, grad] = costFunction(theta, X, y)
+octave:62> [optTheta, functionVal, exitFlag]=fminunc( @(t)(class_t(t,X,y)), initTheta, options)
+optTheta =
+
+  -44.2126
+    5.8535
+    5.8535
+    5.8535
+
+functionVal =    8.0616e-05
+exitFlag =  1
+
+function header:
+///
+function [jVal, gradient] = class_t(theta,X,y)
+ so same as o_class_t above without X,y in body
+
 
 ////
 
