@@ -18,13 +18,15 @@ save temp_save.dat v
 
 matix ops:
 A(3,2) gets val at 3,2
-A(3,:) gets all column vals at 3 row
+A(3,:) gets row 3
+A(:,3) gets column 3
 A(:,3) = [ 1 ; 3 ; 1] assigns new vals to col 3 of A
 A = [ A [12 ; 23 ; 22]] appends new  col vector to A
 A(:) puts all ele in a in single column
 
 delete/add
-column:
+column: 
+testM(:,3)=[]    deletes col 3
 mymatrix(:,[2,4]) = []
 row:
 mymatrix([2,4],:) = []
