@@ -1,4 +1,4 @@
-function [the1,the2,d3,d2] = test_loop(X,y)
+function [the2,the2,d3,d2] = test_loop(X,y)
 
 the1= [ 1/87 1/3 1/32 1/34 1/23 1/4 1/3 1/2   ; 
          1/2 1/ 56 1/34 1/23 1/6 1/5 1/3    1/23;

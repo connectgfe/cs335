@@ -344,7 +344,13 @@ for j=1:3000;  for i=1:size(X,1),  a2 = [1; sigmoid(the1*X(i,:)')], hx = sigmoid
 
 //// use dec_X.txt dec_y.txt to get .25 values
  
+unrolling vectors for fminunc:
 
+t1= ones(3,3); 
+t2= 2*ones(1,4);
+theVec= [t1(:),t2(:)]; (get 13X1 vec)
+reshape(theVec(1:9),3,3);
+reshape(theVec(10:13),1,4);
 
 
 
