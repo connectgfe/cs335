@@ -1,8 +1,8 @@
 function [jVal,gradientVec] = fmin_net_test(thetaVec,X,y)
 
 
-the1=reshape(thetaVec(1:10),2,5);
-the2=reshape(thetaVec(11:13),1,3);
+the1=reshape(thetaVec(1:6),2,3);
+the2=reshape(thetaVec(7:9),1,3);
 
 m = size(X,1);
 hx=zeros(m,1);
@@ -17,9 +17,9 @@ temp_bd2 = ((a2'.*d3)'*ones(m,1));
 bd2 = temp_bd2';
 
 d2 = (((a2.*d3').*the2').*(1-a2));
-d2(1,:)=[];
+d2(1,:)=[],
 
-bd1=zeros(2,5);
+bd1=zeros(2,3);
 for i=1:m; bd1 = bd1 + d2(:,i)*(X(i,:));end;
  
 
