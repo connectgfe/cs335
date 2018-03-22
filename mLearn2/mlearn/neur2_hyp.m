@@ -1,4 +1,4 @@
-function J = neur2_hyp(the1,the2,the3,X)
+function J = neur3_hyp(the1,the2,the3,X)
 
 
 a2  = [ 1; 1 ./ (1 + e.^-(the1*X'))];

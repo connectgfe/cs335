@@ -435,6 +435,7 @@ gradient2 = (1./m).*bd2,
 gradient3 = (1./m).*bd3,
 gradientVec=[gradient1(:);gradient2(:);gradient3(:)];
 
-
+//note on fminunc:
+playing with m in jVal and grads, and MaxIter improved results
 
 
