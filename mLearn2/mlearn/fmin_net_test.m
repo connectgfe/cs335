@@ -8,9 +8,11 @@ m = size(X,1);
 hx=zeros(m,1);
 a2=zeros(3,m);
 
+lam=20000;
+
 for i=1:m; a2(:,i) = [1; sigmoid(the1*X(i,:)')]; hx(i) = sigmoid(the2*a2(:,i)); end;
 
-jVal = -(1./m).*sum(y.*(log(hx))+(1-y).*(log(1-hx)));
+jVal = -(1./m).*sum(y.*(log(hx))+(1-y).*(log(1-hx)))+(lam/(2*m)).*sum(thetaVec.*thetaVec);
 
 d3 = hx-y;
 temp_bd2 = ((a2'.*d3)'*ones(m,1));
@@ -23,8 +25,8 @@ bd1=zeros(2,5);
 for i=1:m; bd1 = bd1 + d2(:,i)*(X(i,:));end;
  
 
-gradient1 = (1./m).*bd1;
-gradient2 = (1./m).*bd2;
+gradient1 = (1./m).*(bd1 + lam*the1);
+gradient2 = (1./m).*(bd2 + lam*the2);
 gradientVec=[gradient1(:);gradient2(:)];
  
 

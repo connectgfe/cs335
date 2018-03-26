@@ -10,12 +10,10 @@ hx=zeros(m,1);
 a3=zeros(3,m);
 a2=zeros(3,m);
 
+lam=.001;
 
 for i=1:m; a2(:,i) = [1; sigmoid(the1*X(i,:)')]; a3(:,i) = [1; sigmoid(the2*a2(:,i))];  hx(i) = sigmoid(the3*a3(:,i)); end;
-
-jVal = -(1./m).*(sum(y.*(log(hx))+(1-y).*(log(1-hx)))
-%+sum(thetaVec.*thetaVec)
-);
+jVal = -(1./m).*sum(y.*(log(hx))+(1-y).*(log(1-hx)))+(lam/(2*m)).*sum(thetaVec.*thetaVec);
 
 
 d4 = hx-y;
@@ -42,8 +40,8 @@ d2(1,:)=[];
 bd1=zeros(2,5);
 for i=1:m; bd1 = bd1 + d2(:,i)*(X(i,:));end;
  
-gradient1 = (1./m).*bd1;
-gradient2 = (1./m).*bd2;
-gradient3 = (1./m).*bd3;
+gradient1 = (1./m).*(bd1 + lam*the1);
+gradient2 = (1./m).*(bd2 + lam*the2);
+gradient3 = (1./m).*(bd3 + lam*the3);
 gradientVec=[gradient1(:);gradient2(:);gradient3(:)];
 
