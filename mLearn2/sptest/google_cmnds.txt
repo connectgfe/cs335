@@ -1,0 +1,15 @@
+data= urlread("http://www.google.com/finance/getprices?i=3600&p=3d&f=d,o,h,l,c,v&df=cpct&q=AAPL")
+
+octave:48> data
+data = EXCHANGE%3DNASDAQ
+MARKET_OPEN_MINUTE=570
+MARKET_CLOSE_MINUTE=960
+INTERVAL=86400
+COLUMNS=DATE,CLOSE,HIGH,LOW,OPEN,VOLUME
+DATA=
+TIMEZONE_OFFSET=-240
+
+
+
+//change 3d to 1Y etc
+
