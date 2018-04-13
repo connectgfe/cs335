@@ -1,4 +1,4 @@
-function [the1,the2,the3,jVal_diff,lam] = test4layer(thetaVec,X,y,lam)
+function [the1,the2,the3,jVal_diff,lam,lr] = test4layer(thetaVec,X,y,lam,lr)
 
 tmp_X=X;
 tmp_y=y;
@@ -47,7 +47,7 @@ Hx_b=zeros(m,1);
 
 
 %lam =.0001;
-lr=.2;
+%lr=.2;
 %lam = 0;
 
 
@@ -87,7 +87,7 @@ jVal_b = -(1./m).*sum(y.*(log(Hx_b))+(1-y).*(log(1-Hx_b)))+(lam/(2*m)).*sum(tmp_
 jVal_diff = jVal_a - jVal_b,
 end;
 
-if mod(j,10)==0 && lam<10;  tr=diff_out(the1,the2,the3,X,y); tst=diff_out_2(the1,the2,the3,tmp_X,tmp_y); if tst-tr>.1; lam=lam+.0015; elseif tst-tr<.08 && lam>0; lam=lam-.0015; end ; end;  
+if mod(j,10)==0 && lam<10;  tr=diff_out(the1,the2,the3,X,y); tst=diff_out_2(the1,the2,the3,tmp_X,tmp_y); if tst-tr>.16; lam=lam+.0015; if lr>.01; lr=lr-.001; end; elseif tst-tr<.1 && lam>0; if lr>.01; lr=lr+.0005; end; lam=lam-.0015; else; lr=lr+.0005; end ; end;  
 
 
 end;
