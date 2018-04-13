@@ -11,8 +11,8 @@ Hx=zeros(m,1);
 a2=zeros(3,m);
 bd1=0;
 bd2=0;
-e=.1;
-lam=.0001;
+e=.0001;
+lam=1;
 
 %compute grad
 for i=1:m; a2 = [1; sigmoid(the1*X(i,:)')]; hx = sigmoid(the2*a2); d3 = hx-y(i); d2 = the2'*d3.*a2.*(1-a2); d2 = [d2(2,1); d2(3,1)]; bd2 = bd2 + d3*a2'; bd1 = bd1 + d2*(X(i,:)); end; 
