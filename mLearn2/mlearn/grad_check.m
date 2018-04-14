@@ -11,7 +11,7 @@ Hx=zeros(m,1);
 a2=zeros(3,m);
 bd1=0;
 bd2=0;
-e=.0001;
+e=.1;
 lam=1;
 
 %compute grad
