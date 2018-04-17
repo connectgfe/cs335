@@ -3,8 +3,8 @@ function [the1,the2,the3,jVal_diff,lam,lr] = test4layer(thetaVec,X,y,lam,lr)
 tmp_X=X;
 tmp_y=y;
 
-X([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],:)=[];
-y([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],:)=[];
+X([1:100],:)=[];
+y([1:100],:)=[];
 
 
 %X([1,2,3,4,5,6,7,8,9,10],:)=[];
@@ -45,6 +45,8 @@ bd3=0;
 Hx_a=zeros(m,1);
 Hx_b=zeros(m,1);
 
+tmp_tst=1;
+tmp_tr=1;
 
 %lam =.0001;
 %lr=.2;
@@ -87,7 +89,33 @@ jVal_b = -(1./m).*sum(y.*(log(Hx_b))+(1-y).*(log(1-Hx_b)))+(lam/(2*m)).*sum(tmp_
 jVal_diff = jVal_a - jVal_b,
 end;
 
-if mod(j,10)==0 && lam<10;  tr=diff_out(the1,the2,the3,X,y); tst=diff_out_2(the1,the2,the3,tmp_X,tmp_y);  if tst-tr>.16; lam=lam+.0015; if lr>.01; lr=lr-.001; end; elseif tst-tr<.1 && lam>0; if lr>.01; lr=lr+.0005; end; lam=lam-.0015; else; lr=lr+.0005; end ; disp('tst'); disp(tst);  disp('lam'); disp(lam); disp('lr'); disp(lr); end;  
+if mod(j,10)==0 && lam<2;  
+
+  tr=diff_out(the1,the2,the3,X,y,100); 
+  tst=diff_out_2(the1,the2,the3,tmp_X,tmp_y,100);  
+ 
+%  d_tst = tmp_tst-tst;
+%  d_tr  = tmp_tr-tr;
+  
+%   disp('d_tst'); disp(d_tst);  disp('d_tr'); disp(d_tr); 
+
+   if tst-tr>.10; 
+     lam=lam+.0015; 
+       if lr>.01; lr=lr-.0005; 
+       end; 
+   elseif tst-tr<.06 && lam>=.0015; 
+       lam=lam-.0015; 
+%       if lr>.01; lr=lr+.00025; 
+%       end; 
+   elseif tst-tr>.06 && tst-tr<.1 ; 
+       lr=lr+.0005; 
+   end ; 
+
+   tmp_tst=tst; tmp_tr=tr;
+
+   disp('tst'); disp(tst);  disp('tr'); disp(tr); disp('lam'); disp(lam); disp('lr'); disp(lr); 
+
+end;  
 
 
 end;

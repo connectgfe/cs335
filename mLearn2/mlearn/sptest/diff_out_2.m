@@ -1,6 +1,5 @@
-function [ val]=diff_out_2(M,N,O,X,y)
+function [ val]=diff_out_2(M,N,O,X,y,m)
 
-m=30;
 hx=zeros(m,1);
 d_2=zeros(m,1);
 D=zeros(m,2);
