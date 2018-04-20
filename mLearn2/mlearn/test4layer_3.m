@@ -1,4 +1,4 @@
-function [the1,the2,the3,jVal_diff,lam,lr,out] = test4layer_3(thetaVec,X,y,lam,lr)
+function [the1,the2,the3,jVal_diff,lam,lr,out,tmp_tst,tmp_tr,tmp_d_d] = test4layer_3(thetaVec,X,y,lam,lr,tmp_tst,tmp_tr,tmp_d_d)
 
 tmp_X=X;
 tmp_y=y;
@@ -37,10 +37,10 @@ the3=reshape(thetaVec(125:129),1,5);
 %the3=reshape(thetaVec(325:329),1,5);
 
 
-it_val=5000;
+it_val=10000;
 
 
-out=zeros(it_val./5,6);
+out=zeros(it_val./5,8);
 p=1;
 
 %the1= [ 1/5  1/2 1/4 1/5 1/4; 1/5 1/9 1/4 1/5 1/9];
@@ -56,9 +56,9 @@ bd3=0;
 Hx_a=zeros(m,1);
 Hx_b=zeros(m,1);
 
-tmp_tst=0;
-tmp_tr=0;
-tmp_d_d=0;
+%tmp_tst=0;
+%tmp_tr=0;
+%tmp_d_d=0;
 %lam =.0001;
 %lr=.2;
 %lam = 0;
@@ -128,14 +128,14 @@ if mod(j,5)==0 && lam<2;
    if d_dd>.002; 
 %    if d_tr>.1; 
  
-     lam=lam+.001; 
+     lam=lam+.0015; 
      lr=lr-.01;
    end;
 
    if lam >0 &&  d_dd<.002 && d_dd > 0; 
 %   if lam >0 &&  d_tr<.1 && d_tr > 0; 
 
-      lam = lam -.001;
+      lam = lam -.0015;
       lr=lr+.01; 
    end;
 
@@ -157,6 +157,10 @@ if mod(j,5)==0 && lam<2;
 
    out(p,5)=lam;
    out(p,6)=lr;
+   out(p,7)=tst;
+   out(p,8)=tr;
+
+
    p=p+1; 
 
    tmp_tst=tst; 
