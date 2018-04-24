@@ -3,7 +3,7 @@ function [the1,the2,the3,jVal_diff,lam,lr,out,tmp_tst,tmp_tr,tmp_d_d] = test4lay
 tmp_X=X;
 tmp_y=y;
 
-spl=50;
+spl=20;
 
 X([1:spl],:)=[];
 y([1:spl],:)=[];
@@ -21,9 +21,9 @@ m=size(X,1);
 %the2=reshape(thetaVec(685:774),9,10);
 %the3=reshape(thetaVec(775:784),1,10);
 
-the1=reshape(thetaVec(1:104),4,26);
-the2=reshape(thetaVec(105:124),4,5);
-the3=reshape(thetaVec(125:129),1,5);
+the1=reshape(thetaVec(1:162),6,27);
+the2=reshape(thetaVec(163:204),6,7);
+the3=reshape(thetaVec(205:211),1,7);
 
 %the1=reshape(thetaVec(1:204),4,51);
 %the2=reshape(thetaVec(205:224),4,5);
@@ -37,7 +37,7 @@ the3=reshape(thetaVec(125:129),1,5);
 %the3=reshape(thetaVec(325:329),1,5);
 
 
-it_val=10000;
+it_val=5000;
 
 
 out=zeros(it_val./5,8);
@@ -74,7 +74,7 @@ for j=1:it_val;
 
 %while jVal_diff>.0000001;
 
- for i=1:size(X,1);  a2 = [1; sigmoid(the1*X(i,:)')]; a3 = [1; sigmoid(the2*a2)]; hx = sigmoid(the3*a3); d4 = hx-y(i); d3 = the3'*d4.*a3.*(1-a3);  d3 = [d3(2,1); d3(3,1);d3(4,1);d3(5,1)];  d2 = the2'*d3.*a2.*(1-a2); d2 = [d2(2,1); d2(3,1);d2(4,1);d2(5,1)]; bd3 = bd3 + d4*a3'; bd2 = bd2 + d3*a2'; bd1 = bd1 + d2*(X(i,:)); end;  
+ for i=1:size(X,1);  a2 = [1; sigmoid(the1*X(i,:)')]; a3 = [1; sigmoid(the2*a2)]; hx = sigmoid(the3*a3); d4 = hx-y(i); d3 = the3'*d4.*a3.*(1-a3);  d3 = [d3(2,1); d3(3,1);d3(4,1);d3(5,1);d3(6,1);d3(7,1)];  d2 = the2'*d3.*a2.*(1-a2); d2 = [d2(2,1); d2(3,1);d2(4,1);d2(5,1);d2(6,1);d2(7,1)]; bd3 = bd3 + d4*a3'; bd2 = bd2 + d3*a2'; bd1 = bd1 + d2*(X(i,:)); end;  
 
 
 if j>it_val-5;
@@ -86,7 +86,7 @@ jVal_a = -(1./m).*sum(y.*(log(Hx_a))+(1-y).*(log(1-Hx_a)))+(lam/(2*m)).*sum(tmp_
 end;
 
 % update the
-the1 = the1 - (lr/m)*(bd1 + lam*the1); the2 = the2 - (lr/m)*(bd2 + lam*the2);  the3 = the3 - (lr/m)*(bd3 + lam*the3); bd1=zeros(4,26); bd2=zeros(4,5); bd3= zeros(1,5); 
+the1 = the1 - (lr/m)*(bd1 + lam*the1); the2 = the2 - (lr/m)*(bd2 + lam*the2);  the3 = the3 - (lr/m)*(bd3 + lam*the3); bd1=zeros(6,27); bd2=zeros(6,7); bd3= zeros(1,7); 
 
 
 if j>it_val-5;
@@ -128,15 +128,15 @@ if mod(j,5)==0 && lam<2;
    if d_dd>.002; 
 %    if d_tr>.1; 
  
-     lam=lam+.0015; 
-     lr=lr-.01;
+     lam=lam+.00015; 
+     lr=lr-.005;
    end;
 
    if lam >0 &&  d_dd<.002 && d_dd > 0; 
 %   if lam >0 &&  d_tr<.1 && d_tr > 0; 
 
-      lam = lam -.0015;
-      lr=lr+.01; 
+      lam = lam -.00015;
+      lr=lr+.005; 
    end;
 
    if lam<0 ; lam =0; end;
