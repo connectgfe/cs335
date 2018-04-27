@@ -11,4 +11,17 @@ t1_jM male 2BMI:  21 elements
 t2_jM eliminate similar genes to reduce no. of genes considered
    col 2, 13, 15 all have val= -1
 
+last ele in t1_m_gpA pts over 120 80 gs
+
+must use j_t_1.txt for full data corresponding to Josh's
+
+restart:
+  use t2_jM_main
+    t2_jM_main_2
+    t2_jM_m
+    t2_jM_m_g
+
+
+
+
 
