@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>data_loader module &mdash; Army Signal Challenge Training Dataset documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Army Signal Challenge Training Dataset documentation" href="index.html"/>
+        <link rel="up" title="army_challenge_1_modrec" href="modules.html"/>
+        <link rel="next" title="example module" href="example.html"/>
+        <link rel="prev" title="army_challenge_1_modrec" href="modules.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Army Signal Challenge Training Dataset
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">army_challenge_1_modrec</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">data_loader module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example.html">example module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="license.html">license module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="version.html">version module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Army Signal Challenge Training Dataset</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="modules.html">army_challenge_1_modrec</a> &raquo;</li>
+      
+    <li>data_loader module</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/data_loader.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-data_loader">
+<span id="data-loader-module"></span><h1>data_loader module<a class="headerlink" href="#module-data_loader" title="Permalink to this headline">¶</a></h1>
+<p>Data Rights Notice</p>
+<blockquote>
+<div>This software was produced for the U. S. Government under Basic Contract No. W15P7T-13-C-A802, and is subject to the Rights in Noncommercial Computer Software and Noncommercial Computer Software Documentation Clause 252.227-7014 (FEB 2012)
+Copyright 2017 The MITRE Corporation. All Rights Reserved.</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>Classes is this module:</dt>
+<dd><a class="reference internal" href="#data_loader.LoadModRecData" title="data_loader.LoadModRecData"><code class="xref py py-class docutils literal"><span class="pre">LoadModRecData</span></code></a></dd>
+</dl>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Bill Urrego - <a class="reference external" href="mailto:wurrego&#37;&#52;&#48;mitre&#46;org">wurrego<span>&#64;</span>mitre<span>&#46;</span>org</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">date:</th><td class="field-body">08/15/16</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="data_loader.LoadModRecData">
+<em class="property">class </em><code class="descclassname">data_loader.</code><code class="descname">LoadModRecData</code><span class="sig-paren">(</span><em>datafile</em>, <em>trainRatio</em>, <em>validateRatio</em>, <em>testRatio</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for working with modulation recognition data sets</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The following methods are provided in this class:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><a class="reference internal" href="#data_loader.LoadModRecData.__init__" title="data_loader.LoadModRecData.__init__"><code class="xref py py-func docutils literal"><span class="pre">__init__()</span></code></a></li>
+<li><a class="reference internal" href="#data_loader.LoadModRecData.loadData" title="data_loader.LoadModRecData.loadData"><code class="xref py py-func docutils literal"><span class="pre">loadData()</span></code></a></li>
+<li><a class="reference internal" href="#data_loader.LoadModRecData.split" title="data_loader.LoadModRecData.split"><code class="xref py py-func docutils literal"><span class="pre">split()</span></code></a></li>
+<li><a class="reference internal" href="#data_loader.LoadModRecData.get_batch_from_indicies" title="data_loader.LoadModRecData.get_batch_from_indicies"><code class="xref py py-func docutils literal"><span class="pre">get_batch_from_indicies()</span></code></a></li>
+<li><code class="xref py py-func docutils literal"><span class="pre">get_batch_from_indicies_withSNRthrehsold()</span></code></li>
+<li><a class="reference internal" href="#data_loader.LoadModRecData.get_random_batch" title="data_loader.LoadModRecData.get_random_batch"><code class="xref py py-func docutils literal"><span class="pre">get_random_batch()</span></code></a></li>
+<li><a class="reference internal" href="#data_loader.LoadModRecData.inspect_signal" title="data_loader.LoadModRecData.inspect_signal"><code class="xref py py-func docutils literal"><span class="pre">inspect_signal()</span></code></a></li>
+<li><code class="xref py py-func docutils literal"><span class="pre">train_batch_iter()</span></code></li>
+<li><code class="xref py py-func docutils literal"><span class="pre">get_batch_from_indicies_withSNRthrehsold()</span></code></li>
+</ul>
+</div></blockquote>
+</div>
+<dl class="method">
+<dt id="data_loader.LoadModRecData.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>datafile</em>, <em>trainRatio</em>, <em>validateRatio</em>, <em>testRatio</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>init</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">calls <a class="reference internal" href="#data_loader.LoadModRecData.loadData" title="data_loader.LoadModRecData.loadData"><code class="xref py py-func docutils literal"><span class="pre">loadData()</span></code></a> and <a class="reference internal" href="#data_loader.LoadModRecData.split" title="data_loader.LoadModRecData.split"><code class="xref py py-func docutils literal"><span class="pre">split()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_loader.LoadModRecData.batch_iter">
+<code class="descname">batch_iter</code><span class="sig-paren">(</span><em>data_indicies</em>, <em>batch_size</em>, <em>num_epochs</em>, <em>use_shuffle=True</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.batch_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>provide generator for iteration of the training indicies created during initialization</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_loader.LoadModRecData.get_batch_from_indicies">
+<code class="descname">get_batch_from_indicies</code><span class="sig-paren">(</span><em>indicies</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.get_batch_from_indicies" title="Permalink to this definition">¶</a></dt>
+<dd><p>get batch from indicies</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_loader.LoadModRecData.get_indicies_withSNRthrehsold">
+<code class="descname">get_indicies_withSNRthrehsold</code><span class="sig-paren">(</span><em>indicies</em>, <em>snrThreshold_lowBound</em>, <em>snrThreshold_upperBound</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.get_indicies_withSNRthrehsold" title="Permalink to this definition">¶</a></dt>
+<dd><p>get batch from indicies with SNR threshold  - (inclusive &gt;=lowerBound, &lt;= upperBound)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_loader.LoadModRecData.get_random_batch">
+<code class="descname">get_random_batch</code><span class="sig-paren">(</span><em>index_list</em>, <em>batch_size</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.get_random_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>get batch of specific size from dataset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_loader.LoadModRecData.inspect_signal">
+<code class="descname">inspect_signal</code><span class="sig-paren">(</span><em>index</em>, <em>modulation</em>, <em>snr</em>, <em>cdata</em>, <em>time</em>, <em>number_of_samples_in_instance</em>, <em>sample_rate</em>, <em>start_freq</em>, <em>stop_freq</em>, <em>interactive=None</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.inspect_signal" title="Permalink to this definition">¶</a></dt>
+<dd><p>inspects a specific instance within the collection. Plots FFT and I,Q.  Prints to console raw I Q amplitudes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>index</strong> (<em>int</em>) &#8211; index of instance in collection</li>
+<li><strong>modulation</strong> (<em>str</em>) &#8211; the modulation schema of the instnace</li>
+<li><strong>snr</strong> (<em>int</em>) &#8211; the SNR of the instance</li>
+<li><strong>cdata</strong> (<em>numpy.array dtype='complex64'</em>) &#8211; the complex samples for the instance</li>
+<li><strong>time</strong> (<em>list of type float</em>) &#8211; time series values</li>
+<li><strong>number_of_samples_in_instance</strong> (<em>int</em>) &#8211; number of samples in the instance</li>
+<li><strong>sample_rate</strong> (<em>float</em>) &#8211; sampling rate of the collect</li>
+<li><strong>start_freq</strong> (<em>int</em>) &#8211; start frequency in Hz of the collect</li>
+<li><strong>stop_freq</strong> (<em>int</em>) &#8211; stop frequency in Hz of the collect</li>
+<li><strong>interactive</strong> (<em>bool</em>) &#8211; optional value for display of each plot (if True) requires user to close plot before next is displayed)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">N/A</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_loader.LoadModRecData.loadData">
+<code class="descname">loadData</code><span class="sig-paren">(</span><em>fname</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.loadData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load dataset from pickled file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="data_loader.LoadModRecData.split">
+<code class="descname">split</code><span class="sig-paren">(</span><em>trainRatio</em>, <em>validateRatio</em>, <em>testRatio</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.LoadModRecData.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>split dataset into train, validation, and test</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="data_loader.get_complex_samples_for_instance">
+<code class="descclassname">data_loader.</code><code class="descname">get_complex_samples_for_instance</code><span class="sig-paren">(</span><em>collect</em>, <em>index=None</em><span class="sig-paren">)</span><a class="headerlink" href="#data_loader.get_complex_samples_for_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance worth of complex samples from the collection provided</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>collect</strong> (<em>dict['modulation',snr]</em>) &#8211; a python collection of modulations and SNR values</li>
+<li><strong>index</strong> (<em>int</em>) &#8211; a specific index into the collection. Optional parameter, if None a random index will be selected</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the complex data and index of instance</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="example.html" class="btn btn-neutral float-right" title="example module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="modules.html" class="btn btn-neutral" title="army_challenge_1_modrec" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, The MITRE Corporation.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

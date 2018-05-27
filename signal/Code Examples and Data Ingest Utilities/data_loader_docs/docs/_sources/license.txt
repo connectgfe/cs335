@@ -1,0 +1,7 @@
+license module
+==============
+
+.. automodule:: license
+    :members:
+    :undoc-members:
+    :show-inheritance:
