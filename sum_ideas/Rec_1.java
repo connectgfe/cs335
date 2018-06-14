@@ -4,20 +4,23 @@
 public class Rec_1{
 
 
+  public static int cnt;
+
+
 
   public static void main(String[] args){
 
 
-  int[] list_1 = {1,2,3,4};
-  int[] list_2 = new int[4];
+  int[] list_1 = {1,2,3,4,5};
+  int[] list_2 = new int[5];
 
-//  int[] list_2 = {2,3,1,0};
-
-//  System.out.println(add(list_2,list_1));
-
+  cnt=0;
 
 
   fun(list_2,list_1,0);
+
+  System.out.println(cnt);
+
 
   }
 
@@ -26,28 +29,20 @@ public class Rec_1{
   public static void fun(int[] x, int[] list,int pos){
 
 
-   print_arr(x);
+   cnt++;
+//   print_arr(x);
 
 
-   if(x[3]!=0){ 
+   if(x[list.length-1]!=0){ 
 
 //   System.out.println("doing ret");
-
-
    return;}
 
-/*
-     for(int j=0;j<list.length;j++){ 
-
-//  add list to x
-        if(x[j]!=list[j]){
-        x[j]=list[j];
-        }
-*/
 
        for(int i=0;i<list.length;i++){ 
 
          if(x[i]==list[i]){ 
+
 //           pos++;
 //        System.out.print("in ");
 //        print_arr(x);
@@ -59,18 +54,18 @@ public class Rec_1{
          if(check(x,list[i])==0){
 
 
-         x[pos]=list[i];
+           x[pos]=list[i];
 //         if(x[i]==0){
 //         x[++pos]=add(x,list);
 
 //         if(x[pos]==0){ pos--;}
       
-         fun(x,list,++pos);
+           fun(x,list,++pos);
 // set to 0         
 
-         pos--;        
+           pos--;        
 
-         x[pos]=0;
+           x[pos]=0;
 
          }
 
@@ -79,22 +74,10 @@ public class Rec_1{
 
 //   print_arr(x);
 
-
-
-    
+ 
 //          pos--;
 
        }
-
-//       x=set_zero(x.length);
-       
-
- 
-//     }
-
-
-//   print_arr(x);
-
 
 
   }
